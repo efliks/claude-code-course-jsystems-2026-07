@@ -42,5 +42,6 @@ Thumbs.db
 # Local agent memory (user-specific)
 .claude/agent-memory-local/
 
-# Claude Code local settings (committed as example, but uncomment to ignore)
+# Claude Code local settings & instructions (committed as example, uncomment to ignore)
 # .claude/settings.local.json
+# CLAUDE.local.md
