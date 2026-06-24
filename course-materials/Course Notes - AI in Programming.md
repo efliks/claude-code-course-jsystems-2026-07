@@ -408,6 +408,21 @@ Custom project file (or many nested files) with instructions and description of 
   - [spring-ai-mcp-server-patterns - Spring AI MCP server patterns](https://skills.sh/giuseppe-trisciuoglio/developer-kit/spring-ai-mcp-server-patterns)
   - [langchain4j-spring-boot-integration - LangChain for Java with Spring Boot integration](https://skills.sh/giuseppe-trisciuoglio/developer-kit/langchain4j-spring-boot-integration)
 
+### Custom Slash Commands / Prompts
+
+**Custom slash commands** (in Claude Code) or **Custom Prompts** (in Codex) are simple reusable prompts (Markdown files) you invoke manually via `/command-name` (optionally with an extra message/argument). They are the lightweight sibling of Skills — no metadata, no auto-triggering. You write the prompt once and reuse it on demand.
+
+- **What they are:** Markdown files stored in `.claude/commands/` (Claude Code CLI, Claude Code Desktop app, or Agent SDK). Each file becomes a `/`-command. You can optionally pass `$ARGUMENTS` to inject a custom message at invocation time.
+- **When to use Commands vs Skills:**
+  - Use **Custom Commands** for *simpler, reusable prompts* you want to trigger *explicitly* (e.g. a commit-message generator, a code-review checklist, a fixed prompt template). Lower overhead, no triggering heuristics.
+  - Use **Skills** when the agent should *auto-detect* context and pull instructions in (via the `description` field), when you need to split knowledge/instructions in multiple files, or when you want bundled assets or scripts.
+- **Grouping (optional):** Placing commands in a subfolder creates a `group:name` namespace. E.g. `.claude/commands/git/commit.md` is invoked as `/git:commit`.
+- Docs in Claude Agent SDK (same mechanism for Claude Code CLI & Desktop app): [Creating custom slash commands](https://code.claude.com/docs/en/agent-sdk/slash-commands#creating-custom-slash-commands)
+- Docs in Codex (DEPRECATED, use skills instead): [Custom Prompts](https://developers.openai.com/codex/custom-prompts)
+- Example commands in this repo: [`/.claude/commands/`](.claude/commands/) — grouped under [`git/`](.claude/commands/git):
+  - [`git/commit.md`](.claude/commands/git/commit.md) → invoked as `/git:commit`
+  - [`git/diff.md`](.claude/commands/git/diff.md) → invoked as `/git:diff`
+
 ### Tools
 
 - built-in Agent tools (provided by IDE / CLI you use):
