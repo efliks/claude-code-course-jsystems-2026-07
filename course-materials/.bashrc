@@ -1,21 +1,63 @@
 # Set default editor for CLI tools
-export EDITOR=zed
+export EDITOR=zed # or micro, nano, nvim, fresh, etc. (fast and lightweight TUI recommended)
 
-# Alias to let Claude use all tools without asking for permission
-# Equivalent to `--permission-mode bypassPermissions`.
-# https://code.claude.com/docs/en/permission-modes#skip-all-checks-with-bypasspermissions-mode
+# ============================================================================
+# Claude Code: skipping permission prompts (updated 2026-06)
+# ============================================================================
+# --dangerously-skip-permissions is STILL valid — it is exactly equivalent to
+# --permission-mode bypassPermissions: it disables ALL prompts AND safety checks
+# and runs every tool call immediately. Use it ONLY inside an isolated container/
+# VM/devcontainer. On Linux/macOS it refuses to start as root/sudo unless it
+# detects a recognized sandbox. It is NO LONGER the recommended way to reduce
+# prompts for normal work — see the safer modes below.
+# Docs: https://code.claude.com/docs/en/permission-modes
 alias clauded="claude --dangerously-skip-permissions"
 
-# Claude Code backend switchers
+# Safer, newer alternatives (set with --permission-mode <mode>):
+#   auto          NEW (since 2026-03; needs Opus 4.6+/Sonnet 4.6+ on Anthropic API).
+#                 Runs without routine prompts, but a background classifier blocks
+#                 risky actions (curl|bash, force-push / push to main, prod deploys
+#                 & migrations, mass cloud deletes, IAM grants, destroying files
+#                 that predate the session). Best middle ground for long tasks.
+#   acceptEdits   Auto-approves file edits + common fs cmds (mkdir/touch/mv/cp/rm)
+#                 inside the working dir; other shell/network cmds still prompt.
+#   dontAsk       Fully non-interactive: only your permissions.allow rules (and
+#                 read-only commands) run, everything else is DENIED. Best for CI.
+#   bypassPermissions  == --dangerously-skip-permissions (no checks at all).
+# Convenience aliases:
+alias claude-auto="claude --permission-mode auto"          # safer than clauded
+alias claude-edits="claude --permission-mode acceptEdits"
+
+# ============================================================================
+# Claude Code headless / non-interactive (CI, scripts, cron, /loop, /schedule)
+# ============================================================================
+#   claude -p "Fix the failing test"                       # one-shot, prints & exits
+#   claude --bare -p "Summarize this file" --allowedTools "Read"
+#       --bare skips auto-discovery of hooks/skills/plugins/MCP/auto-memory/CLAUDE.md
+#       -> fast & reproducible across machines; RECOMMENDED for CI/SDK (slated to
+#          become the default for -p in a future release).
+#   claude -p "..." --output-format json | jq -r '.result' # structured output
+#   claude -p "Apply lint fixes" --permission-mode acceptEdits
+#   claude -p "..." --permission-mode dontAsk \
+#          --allowedTools "Bash(git diff *),Bash(git commit *)"   # locked-down CI
+# Note: in -p mode, 'auto' aborts the run after repeated classifier blocks (no human
+# to prompt), so for unattended pipelines prefer dontAsk + explicit --allowedTools.
+# Docs: https://code.claude.com/docs/en/headless
+
+# A PowerShell equivalent of the switchers below lives next to this file:
+#   course-materials/claude-backends.ps1   (dot-source it from your $PROFILE)
+
+# ============================================================================
+# Claude Code backend switchers (run Claude Code against non-Anthropic models)
+# ============================================================================
 # Usage:
-#   claude-or [claude args...]        -> OpenRouter, default model: deepseek/deepseek-v3.2
-#   claude-zai [claude args...]       -> Z.ai Coding Plan, default model mapping to GLM-4.7
-#   claude-ollama [claude args...]    -> local Ollama, default model: qwen3-coder
-#   claude-ollama-cloud [args...]     -> Ollama cloud, default model: glm-5:cloud
+#   claude-or [claude args...]        -> OpenRouter, default model: deepseek/deepseek-v4-pro
+#   claude-zai [claude args...]       -> Z.ai Coding Plan, default model mapping to GLM-5.2
+#   claude-ollama [claude args...]    -> local/cloud Ollama, default model: glm-5.2:cloud
 # Optional model overrides:
-#   CLAUDE_CODE_MODEL="z-ai/glm-5" claude-or
-#   CLAUDE_CODE_MODEL="glm-5" claude-zai
-#   CLAUDE_CODE_MODEL="glm-4.7:cloud" claude-ollama-cloud
+#   CLAUDE_CODE_MODEL="z-ai/glm-5.2" claude-or
+#   CLAUDE_CODE_MODEL="GLM-5.2" claude-zai
+#   CLAUDE_CODE_MODEL="glm-5.2:cloud" claude-ollama
 # Check active model inside Claude Code with:
 #   /status
 
@@ -55,10 +97,10 @@ claude-or() {
   export ANTHROPIC_API_KEY=""
   export ANTHROPIC_AUTH_TOKEN="${OPENROUTER_API_KEY}"
   export ANTHROPIC_CUSTOM_HEADERS="HTTP-Referer: https://openrouter.ai, X-Title: Claude Code via Git Bash"
-  export ANTHROPIC_DEFAULT_SONNET_MODEL="${CLAUDE_CODE_MODEL:-deepseek/deepseek-v3.2}"
-  export ANTHROPIC_DEFAULT_OPUS_MODEL="${CLAUDE_CODE_MODEL:-z-ai/glm-5}"
-  export ANTHROPIC_DEFAULT_HAIKU_MODEL="${CLAUDE_CODE_MODEL:-deepseek/deepseek-v3.2}"
-  export CLAUDE_CODE_SUBAGENT_MODEL="${CLAUDE_CODE_MODEL:-deepseek/deepseek-v3.2}"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="${CLAUDE_CODE_MODEL:-deepseek/deepseek-v4-pro}"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="${CLAUDE_CODE_MODEL:-z-ai/glm-5.2}"
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL="${CLAUDE_CODE_MODEL:-deepseek/deepseek-v4-flash}"
+  export CLAUDE_CODE_SUBAGENT_MODEL="${CLAUDE_CODE_MODEL:-deepseek/deepseek-v4-pro}"
   claude "$@"
 }
 
@@ -67,8 +109,8 @@ claude-zai() {
   export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
   export ANTHROPIC_API_KEY=""
   export ANTHROPIC_AUTH_TOKEN="${ZAI_API_KEY}"
-  export ANTHROPIC_DEFAULT_SONNET_MODEL="${CLAUDE_CODE_MODEL:-GLM-4.7}"
-  export ANTHROPIC_DEFAULT_OPUS_MODEL="${CLAUDE_CODE_MODEL:-GLM-4.7}"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="${CLAUDE_CODE_MODEL:-GLM-5.2}"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="${CLAUDE_CODE_MODEL:-GLM-5.2}"
   export ANTHROPIC_DEFAULT_HAIKU_MODEL="${CLAUDE_CODE_HAIKU_MODEL:-GLM-4.7}"
   export API_TIMEOUT_MS="3000000"
   claude "$@"
@@ -79,9 +121,9 @@ claude-ollama() {
   export ANTHROPIC_BASE_URL="${OLLAMA_ANTHROPIC_BASE_URL:-http://localhost:11434}"
   export ANTHROPIC_API_KEY=""
   export ANTHROPIC_AUTH_TOKEN="${OLLAMA_ANTHROPIC_AUTH_TOKEN:-ollama}"
-  export ANTHROPIC_DEFAULT_SONNET_MODEL="${CLAUDE_CODE_MODEL:-glm-5:cloud}"
-  export ANTHROPIC_DEFAULT_OPUS_MODEL="${CLAUDE_CODE_MODEL:-glm-5:cloud}"
-  export ANTHROPIC_DEFAULT_HAIKU_MODEL="${CLAUDE_CODE_HAIKU_MODEL:-glm-5:cloud}"
+  export ANTHROPIC_DEFAULT_SONNET_MODEL="${CLAUDE_CODE_MODEL:-glm-5.2:cloud}"
+  export ANTHROPIC_DEFAULT_OPUS_MODEL="${CLAUDE_CODE_MODEL:-glm-5.2:cloud}"
+  export ANTHROPIC_DEFAULT_HAIKU_MODEL="${CLAUDE_CODE_HAIKU_MODEL:-glm-5.2:cloud}"
   claude "$@"
 }
 

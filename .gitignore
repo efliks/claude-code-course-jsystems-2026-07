@@ -5,6 +5,8 @@ dist/
 .next/
 .vite/
 
+app/frontend/.angular/cache/
+
 # IDE
 .idea/
 *.iws
@@ -45,4 +47,3 @@ Thumbs.db
 # Claude Code local settings & instructions (committed as example, uncomment to ignore)
 # .claude/settings.local.json
 # CLAUDE.local.md
-app/frontend/.angular/cache/
