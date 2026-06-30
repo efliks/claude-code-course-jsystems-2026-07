@@ -30,6 +30,12 @@ Notes from course for JSystem — AI dla programistów: od pomysłu do MVP
 - **Screenshots** as a better way to provide context for vision models (less tokens thanks to compression, more information thanks to formatting, colors, images, etc.)
   - [DeepSeek OCR research paper on context compression](https://arxiv.org/abs/2510.18234)
   - [Andrej Karpathy on X.com](https://x.com/karpathy/status/1980397031542989305?lang=en) "whether pixels are better inputs to LLMs than text. Maybe it makes more sense that all inputs to LLMs should only ever be images"
+- **Agents in the Cloud**
+  - Delegating work to agents running 24/7 in the cloud, on VPS, or Codex/Claude/GH Environments
+  - Case: [Levelsio runs agents on PROD VPS for >12 months](https://x.com/levelsio/status/2071162399864889705) + Theo's T3 thoughts about this
+- **HTML replacing Markdown** - as more readable and interactive documents get easier to generate
+  - You can start PRD, ADR or Plan with Markdown draft and ask agent to convert it to HTML
+  - Example on feature branch in `/docs/PRD-Product-Requirements-Document.html`
 - **AI disappointment**, broken promises, productivity drop, less fun and joy, frustration:
   - [AI Coding Sucks - YouTube](https://www.youtube.com/watch?v=0ZUkQF6boNg)
   - undeterministic nature of LLMs,
@@ -197,7 +203,7 @@ Notes from course for JSystem — AI dla programistów: od pomysłu do MVP
   - [How was DeepSeek-R1 built; For dummies : r/LLMDevs](https://www.reddit.com/r/LLMDevs/comments/1ibhpqw/how_was_deepseekr1_built_for_dummies/)
   - It changed a lot in AI, enabled Vibe Coding, Autonomus Agents
   - Should we always use reasoning models??? :)
-- Types of AI Assistance in programming (quick history):
+- **Types of AI Assistance** in programming (quick history):
   - **autocomplete** (starting from [Tabnine](https://www.tabnine.com/), GH Copilot, now Cursor Tab [based on Supermaven](https://supermaven.com/blog/cursor-announcement))
   - Chat / Research / Talk about your code
   - Inline Generation
