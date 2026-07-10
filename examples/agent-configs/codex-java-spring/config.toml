@@ -1,0 +1,260 @@
+# ============================================================
+# Codex CLI configuration (config.toml)
+#
+# This file is loaded from CODEX_HOME (usually ~/.codex/config.toml).
+# Most settings also have CLI equivalents (shown in comments below).
+# ============================================================
+
+# ----------------------------
+# Basic model + behavior config
+# ----------------------------
+model = "gpt-5.4"                # Default model for cloud runs. CLI: codex --model gpt-5.4
+approval_policy = "on-request"   # Route approval-worthy actions through the configured reviewer.
+approvals_reviewer = "auto_review" # Let Codex review eligible approval prompts automatically.
+personality = "pragmatic"        # Style/tone preset (e.g., pragmatic/friendly/none depending on build).
+sandbox_mode = "workspace-write" # Command/file access policy: workspace-read, workspace-write, danger-full-access
+network_access = true            # Allow outbound network calls (when policy allows). Keep false in restricted environments.
+oss_provider = "ollama"          # Default OSS (Open Source) models provider
+# profile = "openrouter"         # To use profile as default setting
+
+# approval_policy controls when Codex asks before it runs tools/commands.
+# CLI override example:
+#   codex --config 'approval_policy="on-request"'
+#
+# approval_policy = "never"      # never ask (allow all). Other options: on-request, untrusted, or { granular = { ... } }
+#
+# Example granular approval policy:
+# approval_policy = { granular = {
+#   sandbox_approval = true,
+#   rules = true,
+#   mcp_elicitations = true,
+#   request_permissions = false,
+#   skill_approval = false
+# } }
+
+# -----------------------------------------
+# Projects: per-folder trust configuration
+# -----------------------------------------
+# Projects map a local path to a trust policy.
+# trust_level="trusted" reduces friction by allowing trusted execution/workflows for that project path.
+# (Keep untrusted for unknown repos to increase safety.)
+[projects.'<your-home>']
+trust_level = "trusted"
+
+[projects.'\\?\<your-project-root>']
+trust_level = "trusted"
+
+# --------------------
+# Model migrations note
+# --------------------
+# Optional reminder layer: when a model name is deprecated, map it to a replacement.
+[notice.model_migrations]
+"gpt-5.3-codex" = "gpt-5.4"
+
+# ----------------
+# Windows sandboxing
+# ----------------
+# Windows sandbox mode. "elevated" uses the Windows sandbox with elevated setup when required.
+# If not sure, keep "elevated" (recommended on Windows).
+[windows]
+sandbox = "elevated"
+
+# ----------------
+# Feature toggles
+# ----------------
+[features]
+multi_agent = true               # Allow spawning/using multiple agents (if supported by your build).
+
+# ----------------
+# TUI (terminal UI)
+# ----------------
+[tui]
+status_line = ["model-with-reasoning", "context-remaining", "current-dir", "git-branch", "five-hour-limit", "weekly-limit"]
+# status_line controls what the Terminal UI shows in the bottom status bar.
+
+# ---------------------------
+# MCP servers (external tools)
+# ---------------------------
+# MCP servers expose extra tools (browser automation, docs search, etc.).
+# Enable only what you trust and what you actually use.
+
+# Playwright (browser automation)
+[mcp_servers.playwright]
+args = ["@playwright/mcp@latest"]
+command = "npx"
+enabled = false
+
+# Context7 (docs context provider) - connect to remote server
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+env_http_headers = { "CONTEXT7_API_KEY" = "CONTEXT7_API_KEY" } # paste you API key from Contex7 or set env
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+enabled = true
+# Local MCP server with Context7 on your machine
+# [mcp_servers.context7]
+# command = "npx"
+# args = ["-y", "@upstash/context7-mcp", "--api-key", "YOUR_API_KEY"]
+# startup_timeout_sec = 20
+
+# -----------------------------------------
+# Sandbox details for workspace-write mode
+# -----------------------------------------
+# sandbox_workspace_write config applies when sandbox_mode="workspace-write".
+# network_access here is the sandbox-level permission (separate from top-level network_access).
+[sandbox_workspace_write]
+network_access = true            # Allow network when running inside the workspace-write sandbox.
+
+# ============================================================
+# Custom Model Providers
+# ============================================================
+[model_providers.openrouter]
+name = "OpenRouter"
+base_url = "https://openrouter.ai/api/v1" # OpenRouter Responses is in beta (Completions is deprecated by Codex)
+env_key = "OPENROUTER_API_KEY" # use env defined in your system
+# wire_api = "responses" # only responsnes are supported now. Completions are deprecated in Codex
+# query_params = { api-version = "2025-04-01-preview" }
+#
+# If your endpoint needs headers, you can add:
+# http_headers = { "X-Example" = "value" }
+# env_http_headers = { "X-Example-Features" = "EXAMPLE_FEATURES" }
+#
+# Z.ai doesn't work after Codex deprecated Completions API (it adds /responses to URL = 404 in Z.ai)
+# [model_providers.zai]
+# name = "Z.ai Coding Plan"
+# base_url = "https://api.z.ai/api/coding/paas/v4" # Completions endpoint, deprecated by Codex
+# model = "glm-4.7" # or "glm-5" on Pro plan
+# env_key = "ZAI_API_KEY" # use env name defined in your system
+
+# ============================================================
+# Profiles (switch configs from CLI)
+# ============================================================
+# Profiles define behaviour without editing the file.
+# Usage:
+#   codex --profile oss-cloud
+#   codex --profile oss-small
+#   codex --profile oss-sql
+#   codex --profile openrouter
+#
+# Make a profile the default by adding at the top of this file:
+# profile = "oss-small"
+
+[profiles.oss-cloud]
+# For Ollama GLM-5 cloud model (great for programming)
+# Run with:
+#   codex --oss --profile oss-cloud
+oss_provider = "ollama"
+model = "glm-5:cloud" # or "deepseek-v3.2:cloud" or "minimax-m2.7:cloud"
+model_context_window = 64000 # Set a larger context window for cloude models
+
+[profiles.oss-small]
+# Small/fast local model for automations & function-calling style workflows
+# Run with:
+#   codex --oss --profile oss-small
+oss_provider = "ollama"
+model = "lfm2.5-thinking:latest"
+model_context_window = 32000 # Recommended: set a larger context window for OSS models
+
+[profiles.local-sql]
+# Run with:
+#   codex --oss --profile oss-sql
+oss_provider = "ollama"
+model = "a-kore/Arctic-Text2SQL-R1-7B"
+model_context_window = 32000 # Recommended: set a larger context window for OSS models
+
+[profiles.openrouter]
+# To use OpenRouter run with:
+#   codex --profile openrouter
+model_provider = "openrouter"
+model = "deepseek/deepseek-v3.2" # or "z-ai/glm-5" or "minimax/minimax-m2.7", etc.
+model_context_window = 128000 # check for each model what is max contex window
+
+# ============================================================
+# Local / OSS models (Ollama / LM Studio) - OPTIONAL
+# ============================================================
+# When you run:
+#   codex --oss
+# Codex uses an "OSS provider" (built-in IDs: "ollama" or "lmstudio").
+#
+# You can set the default OSS provider on top of this file:
+# oss_provider = "ollama"
+#
+# Then run:
+#   codex --oss
+# to load default gpt-oss:20b model from OpenAI.
+#
+# Or pick a model for one run:
+#   codex --oss -m lfm2.5-thinking:latest
+#
+# IMPORTANT: do not define [model_providers.ollama] locally if your Codex build reserves that ID.
+# If you need a custom local provider ID, define a non-reserved one (example below) and use it
+# in normal (non --oss) runs with model_provider="...".
+#
+# [model_providers.ollama_local]
+# name = "Ollama (local /v1 compatible)"
+# base_url = "http://localhost:11434/v1"
+# If your Ollama endpoint needs headers, you can add:
+# http_headers = { "X-Example" = "value" }
+# env_http_headers = { "X-Example-Features" = "EXAMPLE_FEATURES" }
+
+# ------------------------------------------------------------
+# Context length (Ollama): recommended min. 64k for agents/coding
+# ------------------------------------------------------------
+# Codex + agents + web search need a large context window. For Ollama, set at least 64000 tokens.
+#
+# Two knobs exist and they are DIFFERENT:
+# 1) Ollama server context length (how much context Ollama will allocate)
+#    - App: set the "Context length" slider in Ollama settings
+#    - CLI (serve):
+#        OLLAMA_CONTEXT_LENGTH=64000 ollama serve
+#
+# 2) Codex model_context_window (what Codex assumes/targets for the selected model)
+#    - Uncomment if needed:
+#        model_context_window = 65536
+#
+# Memory warning (important):
+# - Model size (e.g., “6.6 GB”) is only the baseline to load weights.
+# - Increasing context length ALSO increases VRAM/RAM usage (KV cache grows with context size),
+#   so a 64k context can require significantly more memory than the model file size alone.
+#
+# Ollama defaults context length by VRAM (from Ollama docs):
+#   < 24 GiB VRAM   -> 4k context
+#   24–48 GiB VRAM  -> 32k context
+#   >= 48 GiB VRAM  -> 256k context
+#
+# Check models currently loaded to memory (and % loaded to CPU and GPU):
+#   ollama ps
+# Example output includes the allocated CONTEXT and PROCESSOR split.
+
+# ============================================================
+# Suggested Ollama models (CLI usage quick reference)
+# ============================================================
+# Pick a model per run:
+#   codex --oss -m glm-5:cloud
+#   codex --oss -m minimax-m2.7:cloud
+#   codex --oss -m nemotron-3-super:cloud
+#
+# SQL expert model from Snowflake:
+#   codex --oss -m a-kore/Arctic-Text2SQL-R1-7B
+#
+# Small (730mb) reasoning and function calling model (e.g. for IoT, decisions, data processing):
+#   codex --oss -m lfm2.5-thinking:latest
+#
+# Multimodal (text and image) from Google:
+#   codex --oss -m gemma3:27b-cloud
+#   codex --oss -m gemma3:4b
+#
+# Ollama shortcut commands:
+#   ollama launch codex
+#   ollama launch codex --config
+#   ollama launch codex --model minimax-m2.7:cloud
+
+# ============================================================
+# OCR model (Ollama): glm-ocr (run via Ollama directly)
+# ============================================================
+# Text recognition:
+#   ollama run glm-ocr Text Recognition: ./image.png
+# Table recognition:
+#   ollama run glm-ocr Table Recognition: ./image.png
+# Figure recognition:
+#   ollama run glm-ocr Figure Recognition: ./image.png
