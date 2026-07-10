@@ -252,5 +252,5 @@ potrzebuje planu; refactoring 40 plików bez planu to hazard.
 4. Sub-agent researcher do mapowania modułów przed pierwszą zmianą
 5. Pierwsze zmiany wyłącznie przez plan mode + małe PR-y
 
-Pełne wersje: `checklists/greenfield-checklist.md` i
-`checklists/brownfield-checklist.md` w repo ćwiczeniowym kursu.
+Pełne checklisty greenfield/brownfield: zostaną dodane do tego repo
+przed dniem 1 (TODO) - wersje robocze w repo ćwiczeniowym trenera.
