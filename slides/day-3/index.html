@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code - Dzień 3 | JSystems</title>
+<style>
+:root{
+  --dark-bg:#0f172a;--dark-bg2:#1e293b;--dark-text:#f1f5f9;
+  --light-bg:#ffffff;--light-bg2:#f1f5f9;--light-text:#1e293b;
+  --accent:#f59e0b;--accent2:#3b82f6;--accent3:#10b981;
+  --muted:#64748b;--danger:#ef4444;--code-bg:#1e293b;
+  --trener-bg:#1a1408;--trener-bd:#f59e0b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:clamp(14px,1.6vw,22px)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#000;overflow:hidden}
+#deck{position:relative;width:100vw;height:100vh}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;background:var(--light-bg);color:var(--light-text);opacity:0;pointer-events:none;transition:opacity .3s ease;overflow-y:auto;overflow-x:hidden}
+.slide.on{opacity:1;pointer-events:auto}
+.slide.dark{background:var(--dark-bg);color:var(--dark-text)}
+.slide.dark a{color:var(--accent)}
+.slide-body{max-width:1200px;margin:0 auto;padding:clamp(2rem,4vw,4rem) clamp(2rem,4vw,4rem) 5rem;min-height:100%;display:flex;flex-direction:column;justify-content:center}
+.title-body{align-items:center;text-align:center}
+.kicker{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
+h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
+h2{font-size:clamp(1.4rem,3.2vw,2.3rem);font-weight:700;line-height:1.2;margin-bottom:1.2rem}
+h3{font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:600;margin-bottom:.8rem}
+h4{font-size:1rem;font-weight:600;margin-bottom:.4rem}
+p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
+.subtitle{font-size:clamp(1rem,2vw,1.4rem);opacity:.8;margin-bottom:1.5rem}
+.accent{color:var(--accent)}
+.accent2{color:var(--accent2)}
+.accent3{color:var(--accent3)}
+.danger{color:var(--danger)}
+.title-meta{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;font-size:1.1rem;opacity:.85;margin-bottom:1.5rem}
+.title-meta div{padding:.3rem .8rem;background:rgba(255,255,255,.08);border-radius:8px}
+.break-badge{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.4);border-radius:12px;padding:1rem 1.5rem;margin-top:1rem;display:inline-block}
+.break-badge .bb-label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:.5rem}
+.break-badge .bb-items{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;font-size:.9rem}
+.break-badge .bb-items span::before{content:"\25CF";color:var(--accent);margin-right:.4rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:.5rem}
+.card{background:var(--light-bg2);border-radius:10px;padding:1.2rem 1.4rem;border-left:4px solid var(--accent2)}
+.card.warn{border-left-color:var(--danger)}
+.card.ok{border-left-color:var(--accent3)}
+.card.amber{border-left-color:var(--accent)}
+.card-title{font-weight:700;color:var(--accent);margin-bottom:.4rem;font-size:1rem}
+.slide.dark .card{background:var(--dark-bg2)}
+.slide.dark .card-title{color:var(--accent)}
+.feature-list{list-style:none;padding:0}
+.feature-list li{padding:.4rem 0 .4rem 1.6rem;position:relative;font-size:clamp(.9rem,1.5vw,1.05rem);line-height:1.5}
+.feature-list li::before{content:"\25B8";position:absolute;left:.3rem;color:var(--accent);font-weight:700}
+.feature-list.check li::before{content:"\2713";color:var(--accent3)}
+.feature-list.cross li::before{content:"\2717";color:var(--danger)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:.5rem}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}}
+.code-block{background:var(--code-bg);color:#e2e8f0;padding:.8rem 1.2rem;border-radius:8px;font-family:Consolas,Monaco,"Courier New",monospace;font-size:.85rem;overflow-x:auto;line-height:1.5;margin:.5rem 0}
+.code-inline{background:var(--light-bg2);padding:.1rem .4rem;border-radius:4px;font-family:Consolas,Monaco,monospace;font-size:.9em;color:var(--accent2)}
+.slide.dark .code-inline{background:rgba(255,255,255,.1)}
+.badge{display:inline-block;padding:.2rem .7rem;border-radius:999px;font-size:.75rem;font-weight:700;background:var(--accent);color:#fff}
+.badge.blue{background:var(--accent2)}
+.badge.green{background:var(--accent3)}
+.badge.red{background:var(--danger)}
+.badge.lab{background:var(--accent);font-size:.85rem;padding:.3rem 1rem}
+.note-box{background:#fef9c3;border:1px solid #facc15;border-radius:8px;padding:.8rem 1.2rem;margin:.5rem 0;font-size:.9rem}
+.slide.dark .note-box{background:rgba(250,204,21,.1);border-color:rgba(250,204,21,.3);color:#fef9c3}
+.todo-marker{display:inline;background:#fde68a;color:#92400e;padding:.1rem .3rem;border-radius:3px;font-size:.85em;font-weight:600}
+.proc-map{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:1rem}
+.proc-step{background:var(--light-bg2);border-radius:10px;padding:1rem;position:relative;text-align:center;border:2px solid transparent}
+.proc-step .ps-num{width:32px;height:32px;border-radius:50%;background:var(--accent2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;margin:0 auto .5rem;font-size:.9rem}
+.proc-step.active{border-color:var(--accent);background:rgba(245,158,11,.08)}
+.proc-step.active .ps-num{background:var(--accent)}
+.proc-step.optional{opacity:.6}
+.proc-step.optional .ps-num{background:var(--muted)}
+.proc-step .ps-title{font-weight:600;font-size:.85rem;margin-bottom:.2rem}
+.proc-step .ps-desc{font-size:.75rem;color:var(--muted)}
+.slide.dark .proc-step{background:var(--dark-bg2)}
+.slide.dark .proc-step .ps-desc{color:#94a3b8}
+@media(max-width:900px){.proc-map{grid-template-columns:repeat(2,1fr)}}
+.slide-footer{position:fixed;bottom:.4rem;right:1.5rem;font-size:.65rem;color:var(--muted);opacity:.5;z-index:50;pointer-events:none}
+.slide.dark .slide-footer{color:rgba(255,255,255,.3)}
+#hud{position:fixed;top:0;left:0;right:0;height:4px;background:rgba(0,0,0,.1);z-index:200}
+#bar{height:100%;width:1%;background:var(--accent);transition:width .3s ease;border-radius:0 3px 3px 0}
+#num{position:fixed;top:.5rem;left:1rem;font-size:.7rem;color:var(--muted);z-index:200;font-variant-numeric:tabular-nums}
+.slide.dark ~ #num,.slide.on.dark ~ #num{color:rgba(255,255,255,.4)}
+#clock{position:fixed;top:.5rem;right:1rem;font-size:.7rem;color:var(--muted);z-index:200;font-variant-numeric:tabular-nums}
+.nav-arrow{position:fixed;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.25);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:1.3rem;cursor:pointer;z-index:200;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.nav-arrow:hover{background:rgba(0,0,0,.5);transform:translateY(-50%) scale(1.1)}
+.nav-left{left:12px}
+.nav-right{right:12px}
+#breakbar{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-200%);background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:1.2rem 2rem;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.35);z-index:10000;transition:transform .4s ease;min-width:340px;text-align:center}
+#breakbar.show{transform:translateX(-50%) translateY(0)}
+.bb-icon{font-size:1.5rem;margin-bottom:.3rem}
+.bb-title{font-size:1.3rem;font-weight:700}
+.bb-sub{font-size:1rem;opacity:.9;margin-top:.2rem}
+#bb-x{position:absolute;top:.5rem;right:.8rem;background:rgba(255,255,255,.2);border:none;color:#fff;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;line-height:1}
+#bb-x:hover{background:rgba(255,255,255,.35)}
+.trener-notes{display:none}
+body.trener-on .slide.on .trener-notes{display:flex;gap:1.2rem;position:fixed;bottom:0;left:0;right:0;max-height:38vh;background:linear-gradient(135deg,#1a1408,#2a1e0a);border-top:3px solid var(--trener-bd);padding:1.4rem 2rem 1rem;z-index:9999;overflow-y:auto;color:#fef3c7;font-size:.82rem;line-height:1.5}
+body.trener-on .slide.on .trener-notes::before{content:"TRENER";position:absolute;top:-1px;left:2rem;background:var(--trener-bd);color:#1a1408;padding:2px 14px;font-weight:700;font-size:.7rem;letter-spacing:.12em;border-radius:0 0 6px 6px}
+.tn-section{flex:1;min-width:200px}
+.tn-section h4{color:var(--accent);margin-bottom:.4rem;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.tn-section ul{list-style:none;padding:0;margin:0}
+.tn-section li{padding:.15rem 0 .15rem 1rem;position:relative}
+.tn-section li::before{content:"-";position:absolute;left:0;color:var(--accent)}
+body.trener-on .slide.on .slide-body{padding-bottom:42vh}
+.click-zone{position:fixed;top:0;width:50%;height:100%;z-index:1;cursor:pointer}
+.click-zone.left{left:0}
+.click-zone.right{right:0}
+.big-num{font-size:3rem;font-weight:800;color:var(--accent);line-height:1}
+.timeline{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
+.timeline-item{display:flex;gap:1rem;align-items:flex-start;padding:.6rem 1rem;background:var(--light-bg2);border-radius:8px;border-left:4px solid var(--accent2)}
+.timeline-item.break{border-left-color:var(--accent)}
+.timeline-time{font-weight:700;color:var(--accent);min-width:80px;font-size:.9rem}
+.slide.dark .timeline-item{background:var(--dark-bg2)}
+hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
+.slide.dark hr.sep{border-top-color:var(--dark-text);opacity:.15}
+.strike{text-decoration:line-through;opacity:.5}
+.demo-flow{display:flex;flex-direction:column;gap:.6rem;margin-top:.5rem}
+.demo-flow .df-step{display:flex;gap:1rem;align-items:center}
+.df-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0}
+.df-text{font-size:clamp(.85rem,1.4vw,1rem)}
+</style>
+</head>
+<body>
+<div id="hud"><div id="bar"></div></div>
+<div id="num">1/44</div>
+<div id="clock">clock --:--</div>
+<button id="prev" class="nav-arrow nav-left">&lsaquo;</button>
+<button id="next" class="nav-arrow nav-right">&rsaquo;</button>
+<div class="click-zone left"></div>
+<div class="click-zone right"></div>
+<div id="breakbar">
+  <div class="bb-icon">&#9201;</div>
+  <div id="bb-t" class="bb-title"></div>
+  <div id="bb-s" class="bb-sub"></div>
+  <button id="bb-x">&times;</button>
+</div>
+
+<div id="deck">
+
+<!-- ===== SLAJD 1: TYTUŁOWY ===== -->
+<section class="slide dark on">
+  <div class="slide-body title-body">
+    <div class="kicker">JSystems | Szkolenie otwarte</div>
+    <h1>Claude Code<br><span class="accent">od zera do zespołu agentów AI</span></h1>
+    <div class="subtitle">Dzień 3 z 3: Zespoły agentów, jakość i produkcja</div>
+    <div class="title-meta">
+      <div>15 lipca 2026</div>
+      <div>Trener: Lucas</div>
+      <div>Tryb: zdalny</div>
+    </div>
+    <div class="break-badge">
+      <div class="bb-label">Harmonogram dnia (09:00 - 16:00)</div>
+      <div class="bb-items">
+        <span>10:30 Przerwa 15 min</span>
+        <span>12:30 Obiad 30 min</span>
+        <span>14:45 Przerwa 10 min</span>
+        <span>16:00 Koniec</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 2: AGENDA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Dzień 3</div>
+    <h2>Agenda dnia</h2>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-time">09:00</div><div><strong>Moduł 3.1: Agent Teams - praca równoległa</strong><br>Od sub-agentów do zespołów, git worktrees, Task Plan Matrix, 3 agentów naraz, merge i konflikty</div></div>
+      <div class="timeline-item break"><div class="timeline-time">10:30</div><div>Przerwa 15 minut (wracamy o 10:45)</div></div>
+      <div class="timeline-item"><div class="timeline-time">10:45</div><div><strong>Moduł 3.1 (ciąg dalszy): Workflows</strong><br>Nowoczesna orkiestracja - LIVE DEMO: Misja 72h</div></div>
+      <div class="timeline-item break"><div class="timeline-time">12:30</div><div>Obiad 30 minut (wracamy o 13:00)</div></div>
+      <div class="timeline-item"><div class="timeline-time">13:00</div><div><strong>Moduł 3.2: Testowanie i jakość</strong><br>Self-assessment, TDD, qa-engineer, Playwright MCP, code review</div></div>
+      <div class="timeline-item"><div class="timeline-time">14:00</div><div><strong>Moduł 3.3: Claude w chmurze i CI/CD</strong><br>Remote environments, headless -p, GitHub Actions, Jenkins, koszty</div></div>
+      <div class="timeline-item break"><div class="timeline-time">14:45</div><div>Przerwa 10 minut (wracamy o 14:55)</div></div>
+      <div class="timeline-item"><div class="timeline-time">14:55</div><div><strong>Moduł 3.4: Podsumowanie</strong><br>Demo projektów, retrospektywa, best practices, tematy zaawansowane</div></div>
+      <div class="timeline-item"><div class="timeline-time">16:00</div><div>Koniec kursu</div></div>
+    </div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Przedstaw strukturę dnia: 4 moduły, 3 przerwy</li><li>Podkreśl że to ostatni dzień - kończymy projekt kursowy (AI Chat z Vercel AI SDK)</li><li>Moduł 3.1 jest najdłuższy - praca zespołowa agentów to główny temat dnia</li><li>Workflows to dodatek 20-30 min na końcu modułu 3.1 - naturalna ewolucja wzorca</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Pokaż że agenda jest identyczna w strukturze jak dni 1 i 2</li><li>Zaznacz przerwy - te same godziny co poprzednio</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy wszyscy widzą i słyszą</li><li>Czy uczestnicy mają otwarte repo projektowe z dnia 2</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 3: KONTRAKT DNIA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Kontrakt dnia</div>
+    <h2>Skróty klawiszowe i zasady</h2>
+    <div class="two-col">
+      <div>
+        <h3>Nawigacja</h3>
+        <ul class="feature-list check">
+          <li><span class="code-inline">&rarr;</span> / <span class="code-inline">Spacja</span> / <span class="code-inline">PgDn</span> - następny slajd</li>
+          <li><span class="code-inline">&larr;</span> / <span class="code-inline">PgUp</span> - poprzedni slajd</li>
+          <li><span class="code-inline">Home</span> / <span class="code-inline">End</span> - pierwszy / ostatni slajd</li>
+          <li><span class="code-inline">F</span> - pełny ekran (fullscreen)</li>
+          <li>Klik w lewą / prawą połowę ekranu - nawigacja</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Dla trenera</h3>
+        <ul class="feature-list check">
+          <li><span class="code-inline">T</span> - pokaż / ukryj notatki trenera</li>
+        </ul>
+        <div class="note-box">
+          <strong>Zasada kursu:</strong> wszystko co pokazujemy jest prawdziwe. Żadnych mockupów, żadnych nagranych demówek. Testujemy na żywym systemie, na żywym modelu.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Te same skróty co w dniach 1 i 2 - powtórka dla nowych osób lub po przerwie</li><li>Klucz T - notatki trenera, nie pokazuj uczestnikom na rzutniku</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Wciśnij T żeby pokazać jak działa panel</li><li>Podkreśl zasadę "żadnych mockupów" - wrócimy do tego w module 3.2</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy wiedzą jak nawigować</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 4: NAWIĄZANIE (DARK) ===== -->
+<section class="slide dark">
+  <div class="slide-body">
+    <div class="kicker">Nawiązanie</div>
+    <h2>Co już umiemy</h2>
+    <div class="cards">
+      <div class="card amber">
+        <div class="card-title">Dzień 1: Podstawy</div>
+        <p>Instalacja Claude Code, pierwszy projekt, promptowanie, <span class="code-inline">CLAUDE.md</span>, uprawnienia i hooki, MCP jako narzędzie.</p>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Dzień 2: Zaawansowane</div>
+        <p>Sub-agenty (Task Tool), planowanie i rozdzielanie zadań, skill-i, Vercel AI SDK, projekt kursowy: AI Chat.</p>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Dzień 3: Zespoły i produkcja</div>
+        <p>Agent Teams, worktrees, orkiestracja (workflows), testowanie i jakość, CI/CD, chmura, zakończenie.</p>
+      </div>
+    </div>
+    <hr class="sep">
+    <p class="subtitle">Dziś łączymy wszystko w zespół agentów i wprowadzamy go do produkcji.</p>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 5: SEKCJA 3.1 (DARK) ===== -->
+<section class="slide dark">
+  <div class="slide-body title-body">
+    <div class="kicker">Moduł 3.1</div>
+    <h1>Agent Teams<br><span class="accent">praca równoległa</span></h1>
+    <div class="subtitle">Od sub-agentów do zespołów: git worktrees, Task Plan Matrix, 3 agentów naraz</div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>To najważniejszy moduł dnia - łączymy wiedzę z dni 1 i 2 w praktyczną pracę zespołową</li><li>Przejście: wczoraj używaliśmy sub-agentów pojedynczo, dziś odpalamy ich wielu naraz</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Przygotuj repo projektowe z branchami gotowymi na worktrees</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy wszyscy mają Claude Code zainstalowane i działające</li><li>Czy repo projektu AI Chat jest sklonowane lokalnie</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 6: OD SUB-AGENTÓW DO ZESPOŁÓW ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - ewolucja</div>
+    <h2>Od sub-agentów do zespołów</h2>
+    <div class="proc-map">
+      <div class="proc-step optional">
+        <div class="ps-num">1</div>
+        <div class="ps-title">Jeden agent</div>
+        <div class="ps-desc">Dzień 1: pojedyncza sesja Claude Code, praca sekwencyjna</div>
+      </div>
+      <div class="proc-step">
+        <div class="ps-num">2</div>
+        <div class="ps-title">Sub-agenty</div>
+        <div class="ps-desc">Dzień 2: Task Tool, delegowanie podzadań do osobnych kontekstów</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">3</div>
+        <div class="ps-title">Zespoły agentów</div>
+        <div class="ps-desc">Dzień 3: wielu agentów pracuje równolegle, każdy w swoim worktree</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">4</div>
+        <div class="ps-title">Workflows</div>
+        <div class="ps-desc">Skryptowa orkiestracja zespołu, delegacja programowa</div>
+      </div>
+    </div>
+    <hr class="sep">
+    <div class="two-col">
+      <div>
+        <h3>Dlaczego równolegle?</h3>
+        <ul class="feature-list">
+          <li>Funkcja backend i frontend mogą być budowane jednocześnie</li>
+          <li>Testy E2E pisane są równolegle z implementacją</li>
+          <li>Krótszy czas dostarczenia funkcjonalności</li>
+          <li>Każdy agent ma czysty kontekst - bez przesłuchu</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Wyzwania</h3>
+        <ul class="feature-list cross">
+          <li>Konflikty przy merge (nakładające się pliki)</li>
+          <li>Koordynacja zadań i zależności</li>
+          <li>Weryfikacja wyników - orkiestrator musi kontrolować jakość</li>
+          <li>Koszty: wielu agentów zużywa więcej tokenów</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 7: GIT WORKTREES ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - narzędzie</div>
+    <h2>Git worktrees - równoległe środowiska</h2>
+    <p>Git worktree pozwala mieć wiele checkout-ów tego samego repozytorium w osobnych katalogach. Każdy agent pracuje w swoim katalogu bez blokowania innych.</p>
+    <div class="code-block">
+# Tworzenie worktree dla agenta backend
+git worktree add ../project-be feature/backend-auth
+
+# Tworzenie worktree dla agenta frontend
+git worktree add ../project-fe feature/frontend-chat
+
+# Tworzenie worktree dla agenta testów E2E
+git worktree add ../project-e2e feature/e2e-tests
+
+# Lista aktywnych worktrees
+git worktree list
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="card ok">
+          <div class="card-title">Zalety worktrees</div>
+          <ul class="feature-list check">
+            <li>Każdy agent ma izolowane środowisko plików</li>
+            <li>Nie trzeba klonować repo wielokrotnie</li>
+            <li>Współdzielona historia git (jeden .git)</li>
+            <li>Łatwy merge z powrotem do main</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card warn">
+          <div class="card-title">Na co uważać</div>
+          <ul class="feature-list">
+            <li>Ten sam branch nie może być checkout w dwóch worktrees</li>
+            <li>Należy czyścić worktrees po merge (<span class="code-inline">git worktree remove</span>)</li>
+            <li>Zależności (node_modules) muszą być instalowane osobno</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 8: TASK PLAN MATRIX ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - planowanie</div>
+    <h2>Task Plan Matrix</h2>
+    <p>Zanim odpalisz 3 agentów, potrzebujesz planu. Task Plan Matrix to tabela która definiuje: <strong>co</strong> robi każdy agent, od <strong>czego</strong> zależy, w której <strong>fazie</strong> działa i jaki ma <strong>briefing</strong>.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Backend - autoryzacja</div>
+        <p><strong>Faza:</strong> 1 (niezależna)</p>
+        <p><strong>Zależności:</strong> brak</p>
+        <p><strong>Briefing:</strong> dodaj endpoint <span class="code-inline">/api/auth</span>, JWT, middleware sprawdzający token. Testy jednostkowe dla tokenu.</p>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Frontend - chat UI</div>
+        <p><strong>Faza:</strong> 1 (niezależna)</p>
+        <p><strong>Zależności:</strong> brak (może pracować na mockach API)</p>
+        <p><strong>Briefing:</strong> dodaj komponent czatu, pole wiadomości, historia rozmów. Użyj Vercel AI SDK <span class="code-inline">useChat</span>.</p>
+      </div>
+      <div class="card warn">
+        <div class="card-title">Testy E2E</div>
+        <p><strong>Faza:</strong> 2 (po merge BE + FE)</p>
+        <p><strong>Zależności:</strong> backend + frontend merged</p>
+        <p><strong>Briefing:</strong> napisz scenariusze Playwright: logowanie, wysłanie wiadomości, historia. Odpal na merged branch.</p>
+      </div>
+    </div>
+    <div class="note-box">
+      <strong>Kluczowa zasada:</strong> agenci w fazie 1 pracują równolegle i niezależnie. Agent w fazie 2 czeka na merge wyników z fazy 1.
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 9: 3 AGENTÓW RÓWNOLEGLE - PRZEGLĄD ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - praktyka</div>
+    <h2>Praktyka: 3 agentów równolegle</h2>
+    <p>Każdy agent działa w osobnym worktree, na osobnym branchu, z osobnym briefingiem. Ty jesteś orkiestratorem.</p>
+    <div class="proc-map">
+      <div class="proc-step active">
+        <div class="ps-num">1</div>
+        <div class="ps-title">Worktrees</div>
+        <div class="ps-desc">Utwórz 3 worktrees na osobnych branchach</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">2</div>
+        <div class="ps-title">Briefingi</div>
+        <div class="ps-desc">Odpal agenta w każdym worktree z dedykowanym zadaniem</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">3</div>
+        <div class="ps-title">Praca</div>
+        <div class="ps-desc">Agenci pracują równolegle, każdy commituje na swoim branchu</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">4</div>
+        <div class="ps-title">Merge</div>
+        <div class="ps-desc">Scal wyniki, rozwiąż konflikty, weryfikuj</div>
+      </div>
+    </div>
+    <div class="trener-notes">
+      <div class="tn-section"><h4>Co mówić</h4><ul><li>To ćwiczenie praktyczne - uczestnicy robią to sami na swoim repo</li><li>Backend i frontend mogą pracować równolegle bo są niezależne</li><li>Testy E2E dopiero po merge - to zależność fazowa</li></ul></div>
+      <div class="tn-section"><h4>Co robić</h4><ul><li>Pokaż na żywo: utwórz 3 worktrees, odpal 3 sesje Claude Code</li><li>Każdy agent dostaje inny briefing z Task Plan Matrix</li></ul></div>
+      <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy agenci faktycznie pracują równolegle (osobne terminale)</li><li>Czy każdy commituje na swoim branchu</li></ul></div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 10: AGENT BE ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - rola 1/3</div>
+    <h2><span class="badge blue">Backend</span> Agent BE - autoryzacja</h2>
+    <div class="two-col">
+      <div>
+        <h3>Zadanie</h3>
+        <ul class="feature-list">
+          <li>Endpoint <span class="code-inline">/api/auth/login</span> - weryfikacja użytkownika, wydanie JWT</li>
+          <li>Endpoint <span class="code-inline">/api/auth/register</span> - rejestracja</li>
+          <li>Middleware sprawdzający token na chronionych trasach</li>
+          <li>Testy jednostkowe dla generowania i weryfikacji tokenu</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Środowisko</h3>
+        <div class="code-block">cd ../project-be
+# Odpal Claude Code w tym worktree
+claude
+
+# Briefing:
+# Dodaj autoryzację JWT do API.
+# Endpointy: /api/auth/login,
+# /api/auth/register, middleware.
+# Testy jednostkowe w pliku
+# __tests__/auth.test.ts
+        </div>
+        <div class="card ok">
+          <div class="card-title">Branch</div>
+          <p><span class="code-inline">feature/backend-auth</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 11: AGENT FE ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - rola 2/3</div>
+    <h2><span class="badge blue">Frontend</span> Agent FE - interfejs czatu</h2>
+    <div class="two-col">
+      <div>
+        <h3>Zadanie</h3>
+        <ul class="feature-list">
+          <li>Komponent czatu z polem wiadomości i przyciskiem wyślij</li>
+          <li>Historia rozmów (lista poprzednich wiadomości)</li>
+          <li>Integracja z Vercel AI SDK (<span class="code-inline">useChat</span>)</li>
+          <li>Formularz logowania (na mockach API, póki BE nie jest gotowe)</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Środowisko</h3>
+        <div class="code-block">cd ../project-fe
+# Odpal Claude Code w tym worktree
+claude
+
+# Briefing:
+# Dodaj interfejs czatu używając
+# useChat z Vercel AI SDK.
+# Formularz logowania na mockach
+# (endpoint /api/auth/login).
+        </div>
+        <div class="card ok">
+          <div class="card-title">Branch</div>
+          <p><span class="code-inline">feature/frontend-chat</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 12: AGENT E2E ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - rola 3/3</div>
+    <h2><span class="badge green">QA</span> Agent E2E - testy automatyczne</h2>
+    <div class="two-col">
+      <div>
+        <h3>Zadanie (faza 2)</h3>
+        <ul class="feature-list">
+          <li>Scenariusz: rejestracja nowego użytkownika</li>
+          <li>Scenariusz: logowanie istniejącego użytkownika</li>
+          <li>Scenariusz: wysłanie wiadomości i otrzymanie odpowiedzi</li>
+          <li>Scenariusz: historia rozmów po odświeżeniu strony</li>
+        </ul>
+        <div class="note-box">Ten agent startuje dopiero po merge wyników BE i FE do main. Nie może pracować równolegle z fazą 1.</div>
+      </div>
+      <div>
+        <h3>Środowisko</h3>
+        <div class="code-block">cd ../project-e2e
+# Po merge BE + FE do main:
+git merge feature/backend-auth
+git merge feature/frontend-chat
+
+# Odpal Claude Code:
+claude
+
+# Briefing:
+# Napisz testy Playwright dla
+# scenariuszy: rejestracja,
+# logowanie, czat, historia.
+        </div>
+        <div class="card ok">
+          <div class="card-title">Branch</div>
+          <p><span class="code-inline">feature/e2e-tests</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 13: MERGE I KONFLIKTY ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.1 - finał</div>
+    <h2>Merge i konflikty</h2>
+    <div class="demo-flow">
+      <div class="df-step"><div class="df-num">1</div><div class="df-text"><strong>Merge BE do main:</strong> <span class="code-inline">git merge feature/backend-auth</span> - zazwyczaj bez konfliktów (izolowane pliki API)</div></div>
+      <div class="df-step"><div class="df-num">2</div><div class="df-text"><strong>Merge FE do main:</strong> <span class="code-inline">git merge feature/frontend-chat</span> - możliwe konflikty w <span class="code-inline">package.json</span> lub <span class="code-inline">layout.tsx</span></div></div>
+      <div class="df-step"><div class="df-num">3</div><div class="df-text"><strong>Rozwiąż konflikty:</strong> otworz pliki z konfliktami, wybierz wersję lub połącz, commituj</div></div>
+      <div class="df-step"><div class="df-num">4</div><div class="df-text"><strong>Uruchom agenta E2E:</strong> odpal testy na zmergowanym main - weryfikacja integracji</div></div>
+      <div class="df-step"><div class="df-num">5</div><div class="df-text"><strong>Weryfikacja orkiestratora:</strong> przejrzyj wyniki, sprawdź czy wszystko działa end-to-end</div></div>
+    </div>
+    <div class="note-box">
+      <strong>Wskazówka:</strong> jeśli konflikty są skomplikowane, możesz poprosić agenta o pomoc w ich rozwiązaniu - Claude Code potrafi analizować i sugerować merge.
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 14: WORKFLOWS SECTION BREAK (DARK) ===== -->
+<section class="slide dark">
+  <div class="slide-body title-body">
+    <div class="kicker">Dodatek do modułu 3.1 (20-30 min)</div>
+    <h1>Workflows<br><span class="accent">nowoczesna orkiestracja</span></h1>
+    <div class="subtitle">Naturalna ewolucja Agent Teams: zamiast ręcznie odpalać agentów, piszesz skrypt który orkiestruje ich pracę</div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>To dodatek zatwierdzony przez prowadzącego (Lucas)</li><li>Ewolucja: ręczne 3 agenty w worktree - skrypt który to robi automatycznie</li><li>Komenda/tryb "goal": agent dostaje cel wysokiego poziomu i sam planuje/deleguje</li><li>To LIVE DEMO - wszystko prawdziwe, z repo tego kursu</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Pokaż repo kursu - to jest dowód że agenci zbudowali ten kurs w 72h</li><li>Każdy slajd to akt scenariusza demo</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy rozumieją przejście od ręcznego do programowego orkiestrowania</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 15: TEZA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">LIVE DEMO - Teza modułu</div>
+    <h2>Misja 72h - jak agent zbudował ten kurs</h2>
+    <div class="note-box" style="font-size:1.1rem;">
+      "Ten kurs przygotował zespół: 1 człowiek (wieczorami), 1 model-orkiestrator i 3 tańsze modele-wykonawcy. Pokażę wam dokładnie jak, z kosztami i wpadkami."
+    </div>
+    <hr class="sep">
+    <div class="cards">
+      <div class="card amber">
+        <div class="card-title">1 człowiek</div>
+        <p>Praca wieczorami, nadzór i decyzje produktowe</p>
+      </div>
+      <div class="card">
+        <div class="card-title">1 orkiestrator</div>
+        <p>Drogi, inteligentny model - deleguje, weryfikuje, nie robi pracy masowej</p>
+      </div>
+      <div class="card ok">
+        <div class="card-title">3 wykonawców</div>
+        <p>Tańsze modele - robią konkretną pracę, wracają z raportem</p>
+      </div>
+    </div>
+    <p class="subtitle" style="margin-top:1rem;">Wszystko co pokazuję istnieje w repo. Zero mockupów.</p>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 16: AKT 1 - KONSTYTUCJA ORKIESTRATORA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Akt 1 (10 min)</div>
+    <h2>Konstytucja orkiestratora</h2>
+    <div class="demo-flow">
+      <div class="df-step"><div class="df-num">1</div><div class="df-text"><strong>Plik globalnych instrukcji orkiestratora</strong> - tabela modeli: koszt, inteligencja, taste, rola. Orkiestrator NIE robi pracy masowej - deleguje i weryfikuje.</div></div>
+      <div class="df-step"><div class="df-num">2</div><div class="df-text"><strong>Plik STATE.md misji</strong> - wzorzec "single source of truth". Każda nowa sesja (inne konto, inny dzień) czyta ten plik i kontynuuje bez pytania od zera. <span class="todo-marker">[Fable uzupelni]</span></div></div>
+      <div class="df-step"><div class="df-num">3</div><div class="df-text"><strong>Sekcja SUCCESSOR QUICKSTART</strong> i Progress log w STATE.md - następcy wiedzą co już zrobiono i co dalej.</div></div>
+      <div class="df-step"><div class="df-num">4</div><div class="df-text"><strong>Zasada kluczowa:</strong> markdown (instrukcje) to prośba, permissions (uprawnienia systemowe) to prawo. Nawiązanie do modułu o hookach z dnia 2.</div></div>
+    </div>
+    <div class="note-box">
+      <strong>Na żywo:</strong> otwórz plik instrukcji orkiestratora i STATE.md w VS Code. Pokaż tabelę modeli i sekcję Successor Quickstart.
+    </div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Pokaż że orkiestrator ma swoją "konstytucję" - plik instrukcji który definiuje role</li><li>STATE.md to najważniejszy plik - misja przeżywa restart sesji dzięki niemu</li><li>Markdown = prośba, permissions = prawo - kluczowe rozróżnienie</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Otwórz VS Code, pokaż plik orkiestratora i STATE.md na żywo</li><li>Pokaż sekcję Successor Quickstart i Progress log</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy rozumieją dlaczego plik stanu jest kluczowy dla sesji wymiennych</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 17: AKT 2 - DELEGACJA NA ŻYWO ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Akt 2 (15 min)</div>
+    <h2>Delegacja na żywo</h2>
+    <div class="demo-flow">
+      <div class="df-step"><div class="df-num">1</div><div class="df-text"><strong>Wzorzec "wrappera":</strong> tani model uruchamia CLI innego, tańszego modelu i wraca z krótkim raportem zamiast surowych plików. Dlaczego wrapper? Kontekst orkiestratora jest drogi - raport, nie surowe pliki.</div></div>
+      <div class="df-step"><div class="df-num">2</div><div class="df-text"><strong>Odpal coś małego (2-3 min):</strong> np. drugi model czytający README i wypisujący 3 ryzyka. W trakcie oczekiwania omów dlaczego wrapper, a nie bezpośrednio.</div></div>
+      <div class="df-step"><div class="df-num">3</div><div class="df-text"><strong>Pokaż raporty z nocnej pracy agentów</strong> (katalog <span class="code-inline">reports/</span>) - w tym raport z budowy tej właśnie talii slajdów, na której uczestnicy patrzą w tej chwili. <span class="todo-marker">[Fable uzupelni]</span></div></div>
+      <div class="df-step"><div class="df-num">4</div><div class="df-text"><strong>Pokaż historię commitów</strong> (<span class="code-inline">git log --oneline</span>) - misja ma pełny audit trail. Każdy agent commitował na własnych branchach, nigdy bezpośrednio na main.</div></div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 18: AKT 3 - WPADKI CZĘŚĆ 1 ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Akt 3 (15 min) - najcenniejsza część</div>
+    <h2>Wpadki - część 1</h2>
+    <p>Prawdziwe awarie z tej misji i czego uczą. Każda to lekcja, nie tylko anegdota.</p>
+    <div class="cards">
+      <div class="card warn">
+        <div class="card-title">1. Zombie proces</div>
+        <p>Model uruchomiony w tle zawiesił się z zerowym outputem. Plik raportu miał 0 bajtów.</p>
+        <p><strong>Lekcja:</strong> weryfikuj OUTPUT, nie exit code. Preferuj foreground z jawnym timeoutem.</p>
+      </div>
+      <div class="card warn">
+        <div class="card-title">2. Sandbox vs git</div>
+        <p>Model-wykonawca nie mógł zrobić commita (blokada w sandboxie, problem właściciela repo w innym środowisku).</p>
+        <p><strong>Lekcja:</strong> commituje orkiestrator albo skrypt, nigdy model w sandboxie. Sandbox to feature bezpieczeństwa, nie bug do obejścia.</p>
+      </div>
+      <div class="card warn">
+        <div class="card-title">3. Model pinning w headless</div>
+        <p>CLI listuje wiele modeli interaktywnie, ale w trybie headless flaga wyboru modelu bywa IGNOROWANA - dostajesz inny (tańszy/szybszy) model niż oczekiwany.</p>
+        <p><strong>Lekcja:</strong> zawsze weryfikuj który model FAKTYCZNIE odpowiada (zapytaj go wprost) przed zdelegowaniem poważnej pracy.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 19: AKT 3 - WPADKI CZĘŚĆ 2 ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Akt 3 (ciąg dalszy)</div>
+    <h2>Wpadki - część 2</h2>
+    <div class="cards">
+      <div class="card warn">
+        <div class="card-title">4. Odporność na prompt injection</div>
+        <p>Orkiestrator dosłał subagentowi dodatkową instrukcję W TRAKCIE jego pracy (przez output narzędzia, nie bezpośrednio od użytkownika). Subagent uznał to za możliwą próbę prompt injection i ODMÓWIŁ wykonania, flagując to w raporcie.</p>
+        <p><strong>Lekcja:</strong> słuszna paranoja, mniej wygodny wynik - i tak WŁAŚNIE ma wyglądać dobra defensywa modelu.</p>
+      </div>
+      <div class="card warn">
+        <div class="card-title">5. Kwoty i budżety</div>
+        <p>W nocy skończyła się kwota jednego z modeli-wykonawców do określonej godziny.</p>
+        <p><strong>Rozwiązanie:</strong> skrypt w tle czekał do reaktywacji kwoty, zaktualizował CLI, zrobił smoke test nowego modelu i dokończył pracę - nikt nie czuwał ręcznie.</p>
+      </div>
+      <div class="card amber">
+        <div class="card-title">6. Guardrail godzinowy (opcjonalnie)</div>
+        <p>Agent ma twardą zasadę odmawiania pracy interaktywnej po określonej porze w nocy - i użył jej wobec własnego użytkownika.</p>
+        <p><strong>Lekcja:</strong> automatyzacja obejmuje też higienę pracy człowieka, nie tylko kod.</p>
+      </div>
+    </div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>To jest NAJCENNIEJSZA część demo - prawdziwe wpadki są warte więcej niż sukcesy</li><li>Każda wpadka to lekcja - podkreśl co się nauczyliśmy</li><li>Wpadka 4 (prompt injection) - model odmówił i to było poprawne zachowanie</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Pokaż plik raportu 0 bajtów (zombie) jeśli jeszcze istnieje</li><li>Pokaż raport z odmową prompt injection</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy rozumieją że weryfikacja output > weryfikacja exit code</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 20: AKT 4 - EKONOMIA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Akt 4 (10 min)</div>
+    <h2>Ekonomia i wnioski</h2>
+    <div class="two-col">
+      <div>
+        <h3>Szczere liczby</h3>
+        <ul class="feature-list">
+          <li>Tokeny modelu-orkiestratora zużyte w misji: <span class="todo-marker">[Fable uzupelni]</span></li>
+          <li>Koszt pracy modeli-wykonawców: praktycznie zero krańcowo (plany flat-rate)</li>
+          <li>Czas człowieka: <span class="todo-marker">[Fable uzupelni]</span> wieczorami vs typowe przygotowanie kursu</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Wzorce do zabrania</h3>
+        <ul class="feature-list check">
+          <li>Orkiestrator drogi/inteligentny, wykonawcy tani, weryfikacja ZAWSZE po stronie drogiego modelu</li>
+          <li>Plik stanu (STATE.md) + git = sesje wymienne, misja przeżywa restart</li>
+          <li>Raport zamiast surowego kontekstu; weryfikuj output, nie exit code</li>
+          <li>Można delegować też W CZASIE (nocne uruchomienia, skrypty czekające na odnowienie kwot)</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="sep">
+    <p class="subtitle">Q&amp;A - pomost do finalnego labu: "teraz wy - użyjcie dowolnej poznanej techniki".</p>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Liczby zostaną uzupełnione z realnych danych billingowych przed kursem</li><li>Podkreśl: koszt wykonawców praktycznie zero na planach flat-rate</li><li>Wzorce to kluczowy takeaway dla uczestników</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Pokaż rachunki billingowe jeśli dostępne</li><li>Otwórz Q&amp;A - przejście do labu końcowego</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy mają pytania o koszty we własnych projektach</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 21: CEL MODUŁU 3.1 ===== -->
+<section class="slide dark">
+  <div class="slide-body">
+    <div class="kicker">Moduł 3.1 - podsumowanie</div>
+    <h2>Cel modułu osiągnięty</h2>
+    <div class="cards">
+      <div class="card ok">
+        <div class="card-title">Umiesz teraz</div>
+        <ul class="feature-list check">
+          <li>Tworzyć zespoły agentów z worktrees</li>
+          <li>Planować zadania w Task Plan Matrix</li>
+          <li>Odpalać 3 agentów równolegle (BE, FE, E2E)</li>
+          <li>Merge wyników i rozwiązywanie konfliktów</li>
+          <li>Orkiestrować agentów programowo (workflows)</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Następny krok</div>
+        <p>Skoro potrafimy budować równolegle, musimy też potrafić <strong>testować i weryfikować</strong> jakość pracy zespołu. To temat modułu 3.2.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 22: SEKCJA 3.2 (DARK) ===== -->
+<section class="slide dark">
+  <div class="slide-body title-body">
+    <div class="kicker">Moduł 3.2</div>
+    <h1>Testowanie i jakość<br><span class="accent">agent jako QA</span></h1>
+    <div class="subtitle">Self-assessment, TDD, Playwright MCP, code review, ograniczenia agenta</div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Przejście: umiemy budować równolegle, teraz musimy to testować</li><li>Moduł o tym jak agent weryfikuje własną pracę i pracę innych agentów</li><li>Kluczowa zasada: testy manualne przez MCP są PRAWDZIWE, nic nie mockujemy</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Przygotuj Playwright MCP zainstalowane i działające</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy mają projekt AI Chat z modułu 3.1 gotowy do testów</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 23: SELF-ASSESSMENT / TDD ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.2 - feedback loop</div>
+    <h2>Self-assessment i feedback loop TDD</h2>
+    <div class="proc-map">
+      <div class="proc-step active">
+        <div class="ps-num">1</div>
+        <div class="ps-title">Napisz test</div>
+        <div class="ps-desc">Agent generuje test jednostkowy lub E2E przed implementacją</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">2</div>
+        <div class="ps-title">Implementuj</div>
+        <div class="ps-desc">Agent pisze kod który przechodzi test</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">3</div>
+        <div class="ps-title">Weryfikuj</div>
+        <div class="ps-desc">Self-assessment: agent sprawdza czy testy przechodzą</div>
+      </div>
+      <div class="proc-step active">
+        <div class="ps-num">4</div>
+        <div class="ps-title">Iteruj</div>
+        <div class="ps-desc">Jeśli test nie przechodzi - napraw i powtórz</div>
+      </div>
+    </div>
+    <hr class="sep">
+    <div class="note-box">
+      <strong>Self-assessment</strong> oznacza że agent sam ocenia jakość swojej pracy ZANIM pokaże ją użytkownikowi. To nie jest test "czy kod się kompiluje" - to analiza czy rozwiązanie jest poprawne, bezpieczne i kompletne.
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 24: QA-ENGINEER ROLA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.2 - rola</div>
+    <h2>qa-engineer: agent testujący</h2>
+    <div class="two-col">
+      <div>
+        <h3>Dwie formy testowania</h3>
+        <div class="cards">
+          <div class="card">
+            <div class="card-title">Testy automatyczne (skill)</div>
+            <p>Agent pisze i uruchamia testy E2E jako umiejętność (skill). Playwright, testy jednostkowe, integracyjne.</p>
+          </div>
+          <div class="card amber">
+            <div class="card-title">Testy manualne (MCP)</div>
+            <p>Agent steruje przeglądarką przez Playwright MCP - klika, wpisuje, weryfikuje zachowanie NA ŻYWO.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Co sprawdza qa-engineer?</h3>
+        <ul class="feature-list">
+          <li>Czy endpointy API zwracają poprawne dane</li>
+          <li>Czy interfejs reaguje na akcje użytkownika</li>
+          <li>Czy błędy są obsługiwane (niepoprawne dane, timeout)</li>
+          <li>Czy przepływ end-to-end działa (rejestracja, logowanie, czat)</li>
+          <li>Czy nie ma regresji (poprzednie funkcje nadal działają)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 25: E2E TESTS (SKILL) ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.2 - automatyzacja</div>
+    <h2>Testy E2E jako skill</h2>
+    <p>Agent może pisać i uruchamiać testy Playwright jako dedykowaną umiejętność (skill). To oznacza że ma zdefiniowane procedury, narzędzia i wzorce.</p>
+    <div class="code-block">
+# Agent generuje test E2E
+> Napisz test Playwright dla scenariusza:
+> użytkownik rejestruje się, loguje,
+> wysyła wiadomość i widzi odpowiedź
+
+# Agent tworzy plik testu i uruchamia:
+npx playwright test e2e/chat-flow.spec.ts
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="card ok">
+          <div class="card-title">Zalety</div>
+          <ul class="feature-list check">
+            <li>Powtarzalne - można uruchamiać w CI/CD</li>
+            <li>Szybkie - sekundy do minut</li>
+            <li>Automatyczne - bez nadzoru człowieka</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card warn">
+          <div class="card-title">Ograniczenia</div>
+          <ul class="feature-list cross">
+            <li>Testują tylko to co zaplanowano - nie wykryją niespodziewanych zachowań</li>
+            <li>Krzuche - zmiana selektora CSS łamie test</li>
+            <li>Nie zastąpią testów manualnych ("czy to wygląda dobrze?")</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 26: TWARDA REGUŁA - NIC NIE JEST MOCKOWANE ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.2 - zasada jakościowa (TWARDA REGUŁA)</div>
+    <h2>Testy manualne agenta: NIC nie jest mockowane</h2>
+    <div class="card warn" style="border-left-width:6px;padding:1.5rem;">
+      <div class="card-title" style="font-size:1.2rem;">To nie jest sugestia. To jest twarda reguła tego kursu i tej firmy.</div>
+      <p style="font-size:1.05rem;">Kiedy agent testuje aplikację przez Playwright MCP lub Chrome DevTools, testy są <strong>PRAWDZIWE</strong>:</p>
+      <ul class="feature-list cross" style="margin-top:.5rem;">
+        <li><strong>NIE</strong> są symulacją ani nagraniem</li>
+        <li><strong>NIE</strong> używamy mocków dla wywołań modelu</li>
+        <li><strong>NIE</strong> testujemy na zastępczym środowisku</li>
+      </ul>
+      <ul class="feature-list check" style="margin-top:.5rem;">
+        <li><strong>TAK</strong> - prawdziwe wywołania modelu (live LLM calls)</li>
+        <li><strong>TAK</strong> - prawdziwa przeglądarka (Chrome/Chromium przez MCP)</li>
+        <li><strong>TAK</strong> - prawdziwe API, prawdziwa baza danych, prawdziwe odpowiedzi</li>
+      </ul>
+    </div>
+    <div class="note-box" style="margin-top:1rem;">
+      <strong>Dlaczego to ma znaczenie:</strong> mockowany test udaje że wszystko działa. Prawdziwy test wyłapuje co naprawdę się psuje. Jeśli testujesz agenta na mockach, nie wiesz czy agent faktycznie radzi sobie z prawdziwym zachowaniem modelu. To byłoby oszustwo wobec siebie i wobec uczestników.
+    </div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>PODKREŚL TO MOCNO - to jest zasada jakościowa tej firmy</li><li>"Twarda reguła, nie sugestia" - dosłownie to powiedz</li><li>Wyjaśnij dlaczego mocki są niebezpieczne: udają że działa</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>FAKTYCZNIE zademonstruj test na żywo: agent przez Playwright MCP klika w prawdziwą aplikację, wysyła prawdziwe zapytanie do API, dostaje prawdziwą odpowiedź od modelu</li><li>Pokaż w terminalu że wywołania modelu są realne (logi, koszty tokenów)</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy widzą że to jest NA ŻYWO (nie nagranie)</li><li>Czy rozumieją różnicę między mockiem a prawdziwym testem</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 27: PLAYWRIGHT MCP / CHROME DEVTOOLS ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.2 - narzędzia</div>
+    <h2>Playwright MCP i Chrome DevTools</h2>
+    <div class="two-col">
+      <div>
+        <h3>Playwright MCP</h3>
+        <ul class="feature-list">
+          <li>Agent steruje przeglądarką przez Model Context Protocol</li>
+          <li>Może nawigować, klikać, wpisywać tekst, robić zrzuty ekranu</li>
+          <li>Weryfikuje czy elementy są widoczne, czy tekst się wyświetla</li>
+          <li>Testuje realne przepływy użytkownika krok po kroku</li>
+        </ul>
+        <div class="code-block">cland mcp add playwright
+# lub przez konfigurację MCP
+# w .claude/settings.json
+        </div>
+      </div>
+      <div>
+        <h3>Chrome DevTools MCP</h3>
+        <ul class="feature-list">
+          <li>Agent inspectuje DOM, konsolę, network requests</li>
+          <li>Może weryfikować czy nie ma błędów JavaScript</li>
+          <li>Sprawdza status kodów HTTP w network tab</li>
+          <li>Analizuje wydajność i czasy ładowania</li>
+        </ul>
+        <div class="note-box">
+          Obie ścieżki dają agentowi <strong>prawdziwą przeglądarkę</strong>. Agent widzi to co zobaczyłby człowiek testujący ręcznie.
+        </div>
+      </div>
+    </div>
+    <div class="trener-notes">
+      <div class="tn-section"><h4>Co mówić</h4><ul><li>Pokaż że agent dosłownie "widzi" przeglądarkę</li><li>To nie jest headless bez interakcji - to pełna kontrola przeglądarki</li></ul></div>
+      <div class="tn-section"><h4>Co robić</h4><ul><li>Zademonstruj: agent otwiera stronę, klika, wpisuje, sprawdza wynik</li><li>Pokaż że odpowiedź modelu jest prawdziwa (nie mock)</li></ul></div>
+      <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy rozumieją że to realne testy, nie symulacja</li></ul></div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 28: CODE REVIEW Z AGENTEM ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.2 - weryfikacja</div>
+    <h2>Code review z agentem</h2>
+    <div class="two-col">
+      <div>
+        <h3>Co agent sprawdza w kodzie</h3>
+        <div class="cards">
+          <div class="card warn">
+            <div class="card-title">Bezpieczeństwo</div>
+            <ul class="feature-list">
+              <li>Hardcoded sekrety (klucze API, hasła)</li>
+              <li>SQL injection, XSS</li>
+              <li>Nieautoryzowany dostęp do endpointów</li>
+              <li>Przecieki danych w logach</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">Jakość kodu</div>
+            <ul class="feature-list">
+              <li>Spójność ze wzorcami projektu</li>
+              <li>Obsługa błędów i edge cases</li>
+              <li>Duplikacja kodu</li>
+              <li>Czytelność i nazewnictwo</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Jak przeprowadzić</h3>
+        <div class="code-block"># Poproś agenta o review diff-a
+> Przejrzyj moje zmiany (git diff)
+> i wskaż ryzyka bezpieczeństwa
+> oraz problemy jakości kodu
+
+# Agent analizuje diff i zwraca:
+# - listę potencjalnych problemów
+# - sugestie poprawy
+# - ocenę krytyczności
+        </div>
+        <div class="note-box">
+          Agent jest szczególnie dobry w wyłapywaniu <strong>bezpieczeństwa</strong> - widzi wzorce które mogą być podatnościami.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 29: OGRANICZENIA + HUMAN REVIEW ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.2 - granice</div>
+    <h2>Ograniczenia agenta - human review obowiązkowy</h2>
+    <div class="cards">
+      <div class="card warn">
+        <div class="card-title">Czego agent NIE widzi</div>
+        <ul class="feature-list cross">
+          <li>Kontekst biznesowy ("czy to rozwiązanie ma sens dla naszego użytkownika?")</li>
+          <li>Decyzje produktowe ("czy ten UX jest intuicyjny?")</li>
+          <li>Zgodność z regulacjami prawnymi (RODO, HIPAA, itp.)</li>
+          <li>Subtelne błędy logiczne które "wyglądają" poprawnie</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Rola człowieka</div>
+        <ul class="feature-list check">
+          <li>Weryfikacja decyzji architektonicznych</li>
+          <li>Approval przed merge do main / produkcji</li>
+          <li>Testy akceptacyjne ("czy to rozwiązuje problem użytkownika?")</li>
+          <li>Nadzór nad bezpieczeństwem krytycznych zmian</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note-box">
+      <strong>Zasada:</strong> agent przyspiesza pracę, ale NIE zwalnia człowieka z odpowiedzialności. Human review jest obowiązkowy, nie opcjonalny. Agent proponuje, człowiek decyduje.
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 30: CEL MODUŁU 3.2 ===== -->
+<section class="slide dark">
+  <div class="slide-body">
+    <div class="kicker">Moduł 3.2 - podsumowanie</div>
+    <h2>Cel modułu: testy i review</h2>
+    <div class="cards">
+      <div class="card ok">
+        <div class="card-title">Umiesz teraz</div>
+        <ul class="feature-list check">
+          <li>Self-assessment i feedback loop TDD</li>
+          <li>Rola qa-engineer (testy automatyczne i manualne)</li>
+          <li>Testy E2E jako skill (Playwright)</li>
+          <li>Testy manualne przez Playwright MCP (na żywo, bez mocków)</li>
+          <li>Code review z agentem (bezpieczeństwo i jakość)</li>
+          <li>Granice agenta - kiedy potrzebny human review</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Następny krok</div>
+        <p>Mamy zespół który potrafi budować i testować. Teraz czas wyprowadzić go <strong>do chmury i CI/CD</strong>. To temat modułu 3.3.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 31: SEKCJA 3.3 (DARK) ===== -->
+<section class="slide dark">
+  <div class="slide-body title-body">
+    <div class="kicker">Moduł 3.3</div>
+    <h1>Claude w chmurze<br><span class="accent">i CI/CD</span></h1>
+    <div class="subtitle">Remote environments, headless -p w GitHub Actions, Jenkins, koszty i optymalizacja</div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Przejście: lokalnie umiemy, teraz przenosimy do chmury i automatyzacji</li><li>Dwie ścieżki: Claude Web (remote environments) i headless -p w CI/CD</li><li>Ważne: dodatek Jenkins bo 3/4 uczestników używa Jenkinsa, nie GHA</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Przygotuj przykład GitHub Actions workflow YAML</li><li>Przygotuj przykład Jenkinsfile</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy rozumieją różnicę między lokalnym a headless trybem</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 32: CLAUDE WEB REMOTE ENVIRONMENTS ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.3 - chmura</div>
+    <h2>Claude Web - remote environments</h2>
+    <p>Claude Web oferuje zdalne środowiska (remote environments) - uruchamiasz Claude Code w chmurze bez instalacji lokalnej. Idealne dla pracy zespołowej i CI/CD.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Sekrety</div>
+        <ul class="feature-list">
+          <li>Zmienne środowiskowe konfigurowane w panelu</li>
+          <li>Klucze API przechowywane bezpiecznie</li>
+          <li>Dostęp do prywatnych repozytoriów GitHub</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Starting script</div>
+        <ul class="feature-list">
+          <li>Skrypt uruchamiany przy starcie środowiska</li>
+          <li>Instalacja zależności, konfiguracja narzędzi</li>
+          <li>Może klonować repo i przygotować projekt</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Integracja z GitHub</div>
+        <ul class="feature-list">
+          <li>Auto-klonowanie repozytorium</li>
+          <li>Tworzenie branchy i PR z poziomu chmury</li>
+          <li>Praca na kodzie bez lokalnego checkout</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 33: STARTING SCRIPT + GITHUB INTEGRATION ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.3 - konfiguracja</div>
+    <h2>Starting script i integracja z GitHub</h2>
+    <p>Starting script definiuje co się dzieje gdy środowisko rusza. To jak Dockerfile dla Twojej sesji Claude.</p>
+    <div class="code-block">
+# Przykład starting script
+#!/bin/bash
+# Instalacja zależności projektu
+npm install
+
+# Konfiguracja narzędzi
+npx playwright install --with-deps
+
+# Ustawienie zmiennych z sekretów
+export DATABASE_URL=$SECRET_DB_URL
+export ANTHROPIC_API_KEY=$SECRET_API_KEY
+
+# Klonowanie repo (jeśli nie auto)
+git clone $REPO_URL /workspace/project
+cd /workspace/project
+
+echo "Środowisko gotowe"
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="card ok">
+          <div class="card-title">Sekrety w chmurze</div>
+          <p>Sekrety są wstrzykiwane jako zmienne środowiskowe. Nigdy nie wpisuj ich w starting script jako plain text - używaj mechanizmu sekretów platformy.</p>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title">GitHub integration</div>
+          <p>Połącz konto GitHub w panelu Claude Web. Środowisko automatycznie uzyskuje dostęp do Twoich repozytoriów.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 34: HEADLESS -P W GITHUB ACTIONS ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.3 - CI/CD</div>
+    <h2>Headless <span class="code-inline">-p</span> w GitHub Actions</h2>
+    <p>Flaga <span class="code-inline">-p</span> (print) uruchamia Claude Code w trybie headless - jedno zapytanie, jedna odpowiedź, koniec. Idealne do automatyzacji w CI/CD.</p>
+    <div class="code-block">
+name: AI Code Review
+on: [pull_request]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+      - name: AI Review
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          claude -p "Przejrzyj zmiany w tym \
+          pull request i wskaż ryzyka \
+          bezpieczeństwa oraz problemy \
+          jakości kodu" \
+          --output-format json > review.json
+      - name: Post review comment
+        run: |
+          cat review.json | jq '.response' \
+          > comment.md
+          gh pr comment ${{ github.event.pull_request.number }} \
+          --body-file comment.md
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 35: WARIANT JENKINS ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.3 - CI/CD wariant</div>
+    <h2>Wariant Jenkins</h2>
+    <div class="note-box">
+      <strong>Fakt z ankiety uczestników:</strong> 3 na 4 przebadanych uczestników używa Jenkinsa (nie GitHub Actions) w swojej pracy. Dlatego pokazujemy jak analogicznie wywołać Claude Code headless z poziomu Jenkinsa.
+    </div>
+    <div class="code-block">
+// Jenkinsfile - AI Code Review
+pipeline {
+    agent any
+    environment {
+        CLAUDE_API_KEY = credentials('claude-api-key')
+        // <span class="todo-marker">[TODO-VERIFY: dokładna składnia withCredentials vs environment credentials w Jenkins Pipeline]</span>
+    }
+    stages {
+        stage('AI Review') {
+            steps {
+                sh '''claude -p "Przejrzyj zmiany w \
+                tym pull request i wskaż ryzyka" \
+                --output-format json > review.json'''
+                // <span class="todo-marker">[TODO-VERIFY: czy wymagany dodatkowy plugin do uruchamiania CLI w kontenerze Jenkins agenta]</span>
+            }
+        }
+    }
+}
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="card warn">
+          <div class="card-title">Różnice vs GitHub Actions</div>
+          <ul class="feature-list">
+            <li><strong>Runner:</strong> self-hosted agent/executor zamiast hostowanego runnera GHA</li>
+            <li><strong>Sekrety:</strong> Jenkins Credentials Binding zamiast GitHub Secrets</li>
+            <li><strong>Wykonanie:</strong> <span class="code-inline">sh</span> step w Pipeline zamiast <span class="code-inline">run</span> w YAML</li>
+          </ul>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-title">To samo wywołanie</div>
+          <p>Sama komenda <span class="code-inline">claude -p "..."</span> jest identyczna niezależnie od platformy CI/CD. Różni się tylko otoczenie: jak definiujesz sekrety, jak uruchamiasz kroki, gdzie logujesz wyniki.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Podkreśl fakt z ankiety: 3/4 uczestników używa Jenkinsa</li><li>To nie jest "Jenkins vs GitHub Actions" - to pokazanie że Claude działa w obu</li><li>Sekrety przez Jenkins Credentials, nie hardcoded</li><li>TODO-VERIFY oznacza fragmenty gdzie dokładna składnia Jenkins wymaga weryfikacji - bądź uczciwy</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Pokaż Jenkinsfile obok pliku workflow YAML z GHA - porównanie</li><li>Zaznacz że sama komenda claude -p jest taka sama</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy rozumieją mapowanie: GHA secrets = Jenkins credentials</li><li>Czy ktoś używa innego CI/CD (GitLab CI, CircleCI)</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 36: KOSZTY I OPTYMALIZACJA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.3 - ekonomia</div>
+    <h2>Koszty i optymalizacja</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Tokeny</div>
+        <p>Największy koszt to tokeny modelu-orkiestratora. Każde wywołanie headless zużywa tokeny. Monitoruj zużycie w panelu billingowym Anthropic.</p>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Modele</div>
+        <p>Orkiestrator: drogi, inteligentny model. Wykonawcy: tańsze modele. Wybór modelu to tradeoff między jakością a kosztem.</p>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Cache</div>
+        <p>Prompt caching redukuje koszty powtarzalnych wywołań. Instrukcje systemowe, kontekst projektu, CLAUDE.md - wszystko co się powtarza powinno być cache-owane.</p>
+      </div>
+    </div>
+    <hr class="sep">
+    <div class="two-col">
+      <div>
+        <h3>Strategie optymalizacji</h3>
+        <ul class="feature-list check">
+          <li>Używaj tańszych modeli do prostych zadań (review, formatowanie)</li>
+          <li>Drogi model tylko do orkiestracji i weryfikacji</li>
+          <li>Cache-uj kontekst który się powtarza</li>
+          <li>Ograniczaj kontekst: raport zamiast surowych plików</li>
+          <li>Monitoruj zużycie - ustaw alerty budżetowe</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Czego unikać</h3>
+        <ul class="feature-list cross">
+          <li>Wrzucanie całego repo jako kontekst do każdego wywołania</li>
+          <li>Używanie najdroższego modelu do wszystkiego</li>
+          <li>Brak limitów budżetowych w CI/CD (partyjka kosztów)</li>
+          <li>Ignorowanie cache - płacisz wielokrotnie za to samo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 37: CEL MODUŁU 3.3 ===== -->
+<section class="slide dark">
+  <div class="slide-body">
+    <div class="kicker">Moduł 3.3 - podsumowanie</div>
+    <h2>Cel modułu: agent w chmurze i CI/CD</h2>
+    <div class="cards">
+      <div class="card ok">
+        <div class="card-title">Umiesz teraz</div>
+        <ul class="feature-list check">
+          <li>Konfigurować Claude Web remote environments</li>
+          <li>Używać starting script i sekretów</li>
+          <li>Integrować z GitHub</li>
+          <li>Wywoływać headless -p w GitHub Actions</li>
+          <li>Wywoływać headless -p w Jenkins</li>
+          <li>Optymalizować koszty (tokeny, modele, cache)</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Następny krok</div>
+        <p>Mamy zespół agentów, który buduje, testuje i działa w CI/CD. Czas <strong>podsumować cały kurs</strong> i przygotować Cię do samodzielnej pracy. To moduł 3.4.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 38: SEKCJA 3.4 (DARK) ===== -->
+<section class="slide dark">
+  <div class="slide-body title-body">
+    <div class="kicker">Moduł 3.4</div>
+    <h1>Podsumowanie<br><span class="accent">samodzielność po kursie</span></h1>
+    <div class="subtitle">Demo projektów, retrospektywa, best practices, tematy zaawansowane, zasoby końcowe</div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Ostatni moduł - podsumowanie całego kursu (3 dni)</li><li>Demo projektów uczestników - daj im przestrzeń na pokazanie co zbudowali</li><li>Retrospektywa - co działało, co nie</li><li>Tematy zaawansowane: n8n, modele lokalne - oznacz TODO-VERIFY przy claimach</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Przygotuj checklistę samooceny dla uczestników</li><li>Miej gotowe zasoby końcowe (linki, dokumentacja)</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy uczestnicy czują się gotowi do samodzielnej pracy</li><li>Czy mają zapisane wszystkie materiały</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 39: DEMO PROJEKTÓW UCZESTNIKÓW ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.4 - prezentacje</div>
+    <h2>Demo projektów uczestników</h2>
+    <p>Czas pokazać co zbudowaliście. Każdy uczestnik (lub zespół) ma kilka minut na prezentację swojego AI Chat z Vercel AI SDK.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Co pokazać</div>
+        <ul class="feature-list">
+          <li>Działający czat z prawdziwym modelem</li>
+          <li>Autoryzacja (logowanie, rejestracja)</li>
+          <li>Historia rozmów</li>
+          <li>Cokolwiek dodatkowego co zbudowali</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Jak oceniać</div>
+        <ul class="feature-list">
+          <li>Czy działa end-to-end?</li>
+          <li>Czy testy (jeśli są) przechodzą?</li>
+          <li>Czy kod jest czytelny?</li>
+          <li>Czy agent pomógł, czy przeszkadzał?</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Cel</div>
+        <p>Nie ocena, ale nauka. Pokaż co działało, zapytaj o problemy, podziel się spostrzeżeniami. To też feedback dla trenera.</p>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 40: RETROSPEKTYWA ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.4 - refleksja</div>
+    <h2>Retrospektywa kursu</h2>
+    <p>Pytania do grupy - szczere odpowiedzi, bez oceniania.</p>
+    <div class="two-col">
+      <div>
+        <h3>Co działało?</h3>
+        <ul class="feature-list check">
+          <li>Które techniki z kursu sprawdziły się najlepiej w Twoim projekcie?</li>
+          <li>W których momentach agent był najbardziej przydatny?</li>
+          <li>Czy CLAUDE.md / instructions poprawiły jakość współpracy z agentem?</li>
+          <li>Czy sub-agenty / zespoły agentów przyspieszyły pracę?</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Co nie działało?</h3>
+        <ul class="feature-list cross">
+          <li>Gdzie agent zawiodł lub wygenerował błędny kod?</li>
+          <li>Które techniki były trudne do zastosowania w praktyce?</li>
+          <li>Czy były momenty kiedy szybciej byłoby napisać kod ręcznie?</li>
+          <li>Jakie przeszkody napotkaliście (koszty, limity, context)?</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="sep">
+    <div class="note-box">
+      <strong>Dla trenera:</strong> zbierz feedback ustny. Co powtórzyć, co zmienić, co dodać przy następnej edycji kursu. Zapisz uwagi.
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 41: BEST PRACTICES ZESPOŁOWE ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.4 - wzorce</div>
+    <h2>Best practices zespołowe</h2>
+    <div class="cards">
+      <div class="card ok">
+        <div class="card-title">Orkiestracja</div>
+        <ul class="feature-list check">
+          <li>Drogi model orkiestruje, tani wykonują</li>
+          <li>Weryfikacja zawsze po stronie orkiestratora</li>
+          <li>Raport zamiast surowego kontekstu</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Stan i ciągłość</div>
+        <ul class="feature-list check">
+          <li>STATE.md = single source of truth</li>
+          <li>Git jako audit trail (branch per agent)</li>
+          <li>Sesje wymienne - misja przeżywa restart</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Bezpieczeństwo</div>
+        <ul class="feature-list check">
+          <li>Sandbox jako feature, nie bug</li>
+          <li>Permissions = prawo, markdown = prośba</li>
+          <li>Sekrety przez credentials, nigdy hardcoded</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Jakość</div>
+        <ul class="feature-list check">
+          <li>Testy na żywo, bez mocków</li>
+          <li>Self-assessment przed pokazaniem wyniku</li>
+          <li>Human review obowiązkowy przy krytycznych zmianach</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Ekonomia</div>
+        <ul class="feature-list check">
+          <li>Cache dla powtarzalnego kontekstu</li>
+          <li>Limity budżetowe w CI/CD</li>
+          <li>Delegacja w czasie (nocne uruchomienia)</li>
+        </ul>
+      </div>
+      <div class="card ok">
+        <div class="card-title">Zasady pracy</div>
+        <ul class="feature-list check">
+          <li>Weryfikuj output, nie exit code</li>
+          <li>Weryfikuj który model faktycznie odpowiada</li>
+          <li>Guardraile chronią też człowieka (higiena pracy)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 42: TEMATY ZAAWANSOWANE ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.4 - co dalej</div>
+    <h2>Tematy zaawansowane</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">n8n - automatyzacja bez kodu</div>
+        <p><strong>n8n</strong> to platforma automatyzacji workflow no-code/low-code. Możesz używać jej jako alternatywnego lub uzupełniającego narzędzia do orkiestracji agentów - wizualny edytor przepływów, integracje z setkami usług, webhook-i i harmonogramy.</p>
+        <div class="note-box">
+          n8n może orkiestrować wywołania Claude Code (lub innych modeli) jako kroki w szerszym workflow biznesowym - np. przetwarzanie maili, zgłoszeń, raportów.
+        </div>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Modele lokalne</div>
+        <p>Modele uruchamiane lokalnie (na własnym sprzęcie) dają prywatność i brak kosztów krańcowych, ale wymagają odpowiedniego hardware-u.</p>
+        <p><span class="todo-marker">[TODO-VERIFY: sprawdzić aktualne wymagania/wydajność modelu lokalnego]</span></p>
+        <p>Przykłady kierunków: modele z rodziny Gemma <span class="todo-marker">[TODO-VERIFY: sprawdzić aktualne nazwy i wersje dostępnych modeli lokalnych]</span>, Llama, Mistral. Dokładne nazwy, wydajność i wymagania sprzętowe zmieniają się szybko - zweryfikuj przed użyciem w produkcji.</p>
+      </div>
+    </div>
+    <hr class="sep">
+    <p class="subtitle">To są kierunki rozwoju po kursie. Wybierz jeden i zgłębiaj go.</p>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 43: ZASOBY KOŃCOWE ===== -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">3.4 - materiały</div>
+    <h2>Zasoby końcowe</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="card-title">Dokumentacja</div>
+        <ul class="feature-list">
+          <li>Dokumentacja Claude Code (oficjalna)</li>
+          <li>Vercel AI SDK docs</li>
+          <li>Playwright docs + MCP</li>
+          <li>Anthropic API reference</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Repozytoria</div>
+        <ul class="feature-list">
+          <li>Repo projektowe kursu (AI Chat)</li>
+          <li>Przykłady z wszystkich 3 dni</li>
+          <li>Konfiguracja CLAUDE.md z kursu</li>
+          <li>Konfiguracja MCP z kursu</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">Społeczność</div>
+        <ul class="feature-list">
+          <li>Grupa kursantów JSystems</li>
+          <li>Kanał komunikacji po kursie</li>
+          <li>Materiały dodatkowe i nagrania</li>
+          <li>Wsparcie trenera po kursie</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note-box">
+      <strong>Linki</strong> do wszystkich zasobów zostaną udostępnione w kanale kursu po zakończeniu szkolenia. <span class="todo-marker">[Fable uzupelni]</span>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ===== SLAJD 44: ZAKOŃCZENIE (DARK) ===== -->
+<section class="slide dark">
+  <div class="slide-body title-body">
+    <div class="kicker">Dziękujemy</div>
+    <h1>Koniec kursu<br><span class="accent">Claude Code - od zera do zespołu agentów AI</span></h1>
+    <div class="subtitle">3 dni, 12 modułów, 1 projekt kursowy - teraz czas na Twoje projekty</div>
+    <div class="title-meta">
+      <div>13-15 lipca 2026</div>
+      <div>Trener: Lucas</div>
+      <div>JSystems</div>
+    </div>
+    <hr class="sep" style="width:60%;">
+    <div class="cards" style="max-width:800px;">
+      <div class="card ok">
+        <div class="card-title">Co masz teraz</div>
+        <ul class="feature-list check">
+          <li>Działający projekt AI Chat z Vercel AI SDK</li>
+          <li>Konfigurację CLAUDE.md w swoim repo</li>
+          <li>Doświadczenie z zespołami agentów</li>
+          <li>Umiejętność testowania i weryfikacji</li>
+        </ul>
+      </div>
+      <div class="card amber">
+        <div class="card-title">Co dalej?</div>
+        <ul class="feature-list">
+          <li>Użyj agentów w swoim prawdziwym projekcie</li>
+          <li>Eksperymentuj z workflows i orkiestracją</li>
+          <li>Dziel się spostrzeżeniami w grupie kursantów</li>
+          <li>Wróć do materiałów kiedy potrzebujesz</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="trener-notes">
+    <div class="tn-section"><h4>Co mówić</h4><ul><li>Podziękuj uczestnikom za 3 dni pracy</li><li>Podkreśl że to początek, nie koniec - narzędzia się zmieniają, zasady zostają</li><li>"Orkiestrator drogi, wykonawcy tani, weryfikacja po stronie człowieka" - to zabierzcie</li></ul></div>
+    <div class="tn-section"><h4>Co robić</h4><ul><li>Rozdaj informacje o grupie kursantów i kanale komunikacji</li><li>Poinformuj o dostępności nagrań i materiałów</li><li>Zaproś do kontaktu po kursie</li></ul></div>
+    <div class="tn-section"><h4>Co sprawdzić</h4><ul><li>Czy wszyscy mają sklonowane repo projektowe</li><li>Czy CLAUDE.md jest zapisane w ich repo</li><li>Czy mają dostęp do grupy / kanału</li><li>Zbierz ostatnie pytania</li></ul></div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+</div>
+
+<script>
+// KONFIGURACJA PRZERW - edytuj godziny tutaj
+const BREAKS=[
+ ["10:30","Przerwa 15 minut","Wracamy o 10:45"],
+ ["12:30","Obiad 30 minut","Wracamy o 13:00"],
+ ["14:45","Przerwa 10 minut","Wracamy o 14:55"]
+];
+
+const S=document.querySelectorAll('.slide');
+let i=0;
+
+function show(n){
+ if(n<0)n=0;
+ if(n>S.length-1)n=S.length-1;
+ S[i].classList.remove('on');
+ i=n;
+ S[i].classList.add('on');
+ document.getElementById('bar').style.width=((i+1)/S.length*100)+'%';
+ document.getElementById('num').textContent=(i+1)+'/'+S.length;
+ document.getElementById('prev').style.opacity=i===0?'0.25':'1';
+ document.getElementById('next').style.opacity=i===S.length-1?'0.25':'1';
+}
+
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(i+1);e.preventDefault();}
+ else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(i-1);}
+ else if(e.key==='Home'){show(0);}
+ else if(e.key==='End'){show(S.length-1);}
+ else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
+ else if(e.key.toLowerCase()==='t'){document.body.classList.toggle('trener-on');}
+});
+
+document.getElementById('prev').onclick=()=>show(i-1);
+document.getElementById('next').onclick=()=>show(i+1);
+
+document.querySelector('.click-zone.left').onclick=()=>show(i-1);
+document.querySelector('.click-zone.right').onclick=()=>show(i+1);
+
+const fired=new Set(JSON.parse(sessionStorage.getItem('fired')||'[]'));
+function beep(){
+ try{
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  [0,.35,.7].forEach((d,k)=>{
+   const o=ctx.createOscillator(),g=ctx.createGain();
+   o.connect(g);g.connect(ctx.destination);o.type='sine';o.frequency.value=k===2?1175:880;
+   g.gain.setValueAtTime(.0001,ctx.currentTime+d);
+   g.gain.exponentialRampToValueAtTime(.4,ctx.currentTime+d+.03);
+   g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+d+.3);
+   o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.32);
+  });
+ }catch(e){}
+}
+function showBreak(b){
+ document.getElementById('bb-t').textContent=b[1];
+ document.getElementById('bb-s').textContent=b[2];
+ document.getElementById('breakbar').classList.add('show');
+ beep();
+ setTimeout(beep,4000);
+}
+document.getElementById('bb-x').onclick=()=>document.getElementById('breakbar').classList.remove('show');
+
+function tick(){
+ const now=new Date();
+ const hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+ document.getElementById('clock').textContent='clock '+hm;
+ const mins=now.getHours()*60+now.getMinutes();
+ BREAKS.forEach(b=>{
+  if(hm>=b[0]&&!fired.has(b[0])){
+   fired.add(b[0]);
+   sessionStorage.setItem('fired',JSON.stringify([...fired]));
+   const bm=+b[0].slice(0,2)*60+ +b[0].slice(3,5);
+   if(mins-bm<=10)showBreak(b);
+  }
+ });
+}
+
+tick();
+setInterval(tick,15000);
+show(0);
+</script>
+</body>
+</html>
