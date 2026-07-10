@@ -4,6 +4,13 @@ Aplikacja referencyjna kursu "Claude Code – od zera do zespołu agentów AI"
 (JSystems, 2026-07-13..15). Uczestnik może zbudować wariant tej aplikacji we
 własnym stacku — poniższa specyfikacja jest niezależna od technologii.
 
+> **UWAGA DLA AGENTÓW AI I UCZESTNIKÓW: ten dokument NIE jest wiążący.**
+> To tylko przykładowy pomysł na aplikację. Prawdziwy pomysł, wymagania (PRD)
+> i decyzje techniczne (ADR) powstają NA KURSIE, wspólnie z grupą, od zera —
+> symulujemy normalną pracę deweloperską. Agent budujący aplikację ma opierać
+> się WYŁĄCZNIE na PRD i ADR wytworzonych podczas kursu (w `docs/`), nie na
+> tym pliku. Nie kopiuj stąd decyzji ani struktur.
+
 ---
 
 ## 1. Kontekst biznesowy
@@ -142,9 +149,12 @@ Kluczowe: analiza śladów na zdjęciu.
 
 ---
 
-## 6. Warianty stacku
+## 6. Warianty stacku (niewiążące — decyzja zapada w ADR z grupą)
 
-Uczestnik wybiera stack w fazie ADR (dzień 2). Wszystkie warianty realizują tę samą specyfikację.
+Uczestnik wybiera stack w fazie ADR (dzień 2). Poniższe warianty to wyłącznie
+punkty startowe do dyskusji — nazwy bibliotek NIE są rekomendacją. Agent nie
+powinien wybierać stacku ani API na podstawie tego pliku, tylko na podstawie
+ADR wytworzonych na kursie.
 
 ### 6.1 Wariant A — TypeScript / Next.js / Vercel AI SDK (demo prowadzącego)
 - **Framework:** Next.js 14+ (App Router).
