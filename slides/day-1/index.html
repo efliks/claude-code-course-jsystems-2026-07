@@ -6,11 +6,24 @@
 <title>JSystems | Claude Code - od zera do zespołu agentów AI | Dzień 1</title>
 <style>
 :root{
+  /* Slajdy tytulowe (granat/biel/zloto) - identyczne w obu motywach */
   --dark-bg:#0f172a;--dark-bg2:#1e293b;--dark-text:#f1f5f9;
-  --light-bg:#ffffff;--light-bg2:#f1f5f9;--light-text:#1e293b;
-  --accent:#f59e0b;--accent2:#3b82f6;--accent3:#10b981;
-  --muted:#64748b;--danger:#ef4444;--code-bg:#1e293b;
-  --trener-bg:#1a1408;--trener-bd:#f59e0b;
+  /* Motyw domyslny: dark (Tokyo Night) */
+  --bg:#1a1b26;--bg2:#24283b;--bg3:#2f3549;
+  --text:#c0caf5;--heading:#e6ecff;
+  --accent:#e0af68;--accent2:#7aa2f7;--accent3:#9ece6a;
+  --muted:#7d84a8;--danger:#f7768e;
+  --code-bg:#16161e;--code-text:#a9b1d6;
+  --note-bg:rgba(224,175,104,.09);--note-bd:rgba(224,175,104,.35);--note-text:#e6c187;
+  --trener-bg:#1a1408;--trener-bd:#e0af68;
+}
+body.light{
+  --bg:#ffffff;--bg2:#f1f5f9;--bg3:#e2e8f0;
+  --text:#1e293b;--heading:#0f172a;
+  --accent:#d97706;--accent2:#2563eb;--accent3:#059669;
+  --muted:#64748b;--danger:#dc2626;
+  --code-bg:#1e293b;--code-text:#e2e8f0;
+  --note-bg:#fef9c3;--note-bd:#facc15;--note-text:#92400e;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{font-size:clamp(14px,1.6vw,22px)}
@@ -18,13 +31,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 #deck{position:relative;width:100vw;height:100vh}
 .slide{
   position:absolute;top:0;left:0;width:100%;height:100%;
-  background:var(--light-bg);color:var(--light-text);
+  background:var(--bg);color:var(--text);
   opacity:0;pointer-events:none;transition:opacity .3s ease;
   overflow-y:auto;overflow-x:hidden;
 }
 .slide.on{opacity:1;pointer-events:auto}
 .slide.dark{background:var(--dark-bg);color:var(--dark-text)}
+.slide a{color:var(--accent2);text-decoration:underline;text-underline-offset:3px}
 .slide.dark a{color:var(--accent)}
+.slide h1,.slide h2,.slide h3{color:var(--heading)}
+.slide.dark h1,.slide.dark h2,.slide.dark h3{color:var(--dark-text)}
 .slide-body{
   max-width:1200px;margin:0 auto;
   padding:clamp(2rem,4vw,4rem) clamp(2rem,4vw,4rem) 5rem;
@@ -60,9 +76,12 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 }
 .break-badge .bb-items{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;font-size:.9rem}
 .break-badge .bb-items span::before{content:"\25CF";color:var(--accent);margin-right:.4rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:.5rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:.5rem}
+/* 4 kafle = zawsze symetryczne 2x2 (zamiast 3+1) */
+.cards:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,1fr)}
+@media(max-width:700px){.cards:has(> :nth-child(4):last-child){grid-template-columns:1fr}}
 .card{
-  background:var(--light-bg2);border-radius:10px;padding:1.2rem 1.4rem;
+  background:var(--bg2);border-radius:10px;padding:1.2rem 1.4rem;
   border-left:4px solid var(--accent2);
 }
 .card.warn{border-left-color:var(--danger)}
@@ -79,12 +98,21 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:.5rem}
 @media(max-width:768px){.two-col{grid-template-columns:1fr}}
 .code-block{
-  background:var(--code-bg);color:#e2e8f0;padding:.8rem 1.2rem;border-radius:8px;
+  background:var(--code-bg);color:var(--code-text);padding:.8rem 1.2rem;border-radius:8px;
   font-family:Consolas,Monaco,"Courier New",monospace;font-size:.85rem;
   overflow-x:auto;line-height:1.5;margin:.5rem 0;
+  position:relative;border:1px solid rgba(125,132,168,.25);
 }
+.copy-btn{
+  position:absolute;top:.4rem;right:.4rem;
+  background:var(--bg3);color:var(--text);border:1px solid var(--muted);
+  border-radius:6px;font-size:.65rem;padding:.2rem .55rem;cursor:pointer;
+  opacity:.65;transition:opacity .15s;font-family:inherit;
+}
+.copy-btn:hover{opacity:1}
+.copy-btn.ok{background:var(--accent3);color:#0f172a;border-color:var(--accent3);opacity:1}
 .code-inline{
-  background:var(--light-bg2);padding:.1rem .4rem;border-radius:4px;
+  background:var(--bg2);padding:.1rem .4rem;border-radius:4px;
   font-family:Consolas,Monaco,monospace;font-size:.9em;color:var(--accent2);
 }
 .slide.dark .code-inline{background:rgba(255,255,255,.1)}
@@ -95,20 +123,16 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .badge.blue{background:var(--accent2)}
 .badge.green{background:var(--accent3)}
 .badge.red{background:var(--danger)}
-.badge.lab{background:var(--accent);font-size:.85rem;padding:.3rem 1rem}
+.badge.lab{background:var(--accent);color:#1a1b26;font-size:.85rem;padding:.3rem 1rem}
 .note-box{
-  background:#fef9c3;border:1px solid #facc15;border-radius:8px;
-  padding:.8rem 1.2rem;margin:.5rem 0;font-size:.9rem;
+  background:var(--note-bg);border:1px solid var(--note-bd);border-radius:8px;
+  padding:.8rem 1.2rem;margin:.5rem 0;font-size:.9rem;color:var(--note-text);
 }
-.slide.dark .note-box{background:rgba(250,204,21,.1);border-color:rgba(250,204,21,.3);color:#fef9c3}
-.todo-marker{
-  display:inline;background:#fde68a;color:#92400e;padding:.1rem .3rem;
-  border-radius:3px;font-size:.85em;font-weight:600;
-}
+.slide.dark .note-box{background:rgba(250,204,21,.1);border-color:rgba(250,204,21,.3);color:#fef3c7}
 /* Process map */
 .proc-map{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:1rem}
 .proc-step{
-  background:var(--light-bg2);border-radius:10px;padding:1rem;
+  background:var(--bg2);border-radius:10px;padding:1rem;
   position:relative;text-align:center;border:2px solid transparent;
 }
 .proc-step .ps-num{
@@ -116,7 +140,7 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
   display:flex;align-items:center;justify-content:center;font-weight:700;
   margin:0 auto .5rem;font-size:.9rem;
 }
-.proc-step.active{border-color:var(--accent);background:rgba(245,158,11,.08)}
+.proc-step.active{border-color:var(--accent);background:rgba(224,175,104,.1)}
 .proc-step.active .ps-num{background:var(--accent)}
 .proc-step.optional{opacity:.6}
 .proc-step.optional .ps-num{background:var(--muted)}
@@ -138,11 +162,17 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
   position:fixed;top:.5rem;left:1rem;font-size:.7rem;color:var(--muted);
   z-index:200;font-variant-numeric:tabular-nums;
 }
-.slide.dark ~ #num,.slide.on.dark ~ #num{color:rgba(255,255,255,.4)}
 #clock{
-  position:fixed;top:.5rem;right:1rem;font-size:.7rem;color:var(--muted);
+  position:fixed;top:.5rem;right:3.4rem;font-size:.7rem;color:var(--muted);
   z-index:200;font-variant-numeric:tabular-nums;
 }
+#theme-btn{
+  position:fixed;top:.3rem;right:1rem;width:26px;height:26px;z-index:210;
+  background:transparent;border:1px solid var(--muted);border-radius:50%;
+  color:var(--muted);cursor:pointer;font-size:.8rem;line-height:1;
+  display:flex;align-items:center;justify-content:center;opacity:.7;
+}
+#theme-btn:hover{opacity:1;color:var(--accent)}
 /* Nav arrows */
 .nav-arrow{
   position:fixed;top:50%;transform:translateY(-50%);
@@ -190,14 +220,11 @@ body.trener-on .slide.on .trener-notes::before{
 .tn-section li{padding:.15rem 0 .15rem 1rem;position:relative}
 .tn-section li::before{content:"-";position:absolute;left:0;color:var(--accent)}
 body.trener-on .slide.on .slide-body{padding-bottom:42vh}
-/* Click zones */
-.click-zone{position:fixed;top:0;width:50%;height:100%;z-index:1;cursor:pointer}
-.click-zone.left{left:0}
-.click-zone.right{right:0}
+/* Nawigacja klikiem obslugiwana na .slide (linki i przyciski maja priorytet) */
 /* Misc */
 .big-num{font-size:3rem;font-weight:800;color:var(--accent);line-height:1}
 .timeline{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
-.timeline-item{display:flex;gap:1rem;align-items:flex-start;padding:.6rem 1rem;background:var(--light-bg2);border-radius:8px;border-left:4px solid var(--accent2)}
+.timeline-item{display:flex;gap:1rem;align-items:flex-start;padding:.6rem 1rem;background:var(--bg2);border-radius:8px;border-left:4px solid var(--accent2)}
 .timeline-item.break{border-left-color:var(--accent)}
 .timeline-time{font-weight:700;color:var(--accent);min-width:80px;font-size:.9rem}
 .slide.dark .timeline-item{background:var(--dark-bg2)}
@@ -214,11 +241,10 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
 
 <div id="hud"><div id="bar"></div></div>
 <div id="num">1/46</div>
-<div id="clock">clock --:--</div>
+<div id="clock">--:--</div>
+<button id="theme-btn" title="Motyw jasny/ciemny (D)">&#9681;</button>
 <button id="prev" class="nav-arrow nav-left">&lsaquo;</button>
 <button id="next" class="nav-arrow nav-right">&rsaquo;</button>
-<div class="click-zone left"></div>
-<div class="click-zone right"></div>
 
 <div id="breakbar">
   <div class="bb-icon">&#9201;</div>
@@ -1688,8 +1714,8 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
 // KONFIGURACJA PRZERW - edytuj godziny tutaj
 const BREAKS=[
  ["10:30","Przerwa 15 minut","Wracamy o 10:45"],
- ["12:30","Obiad 30 minut","Wracamy o 13:00"],
- ["14:45","Przerwa 10 minut","Wracamy o 14:55"]
+ ["13:00","Obiad 30 minut","Wracamy o 13:30"],
+ ["14:45","Przerwa 10 minut (opcjonalna)","Tylko jesli grupa potrzebuje"]
 ];
 
 const S=document.querySelectorAll('.slide');
@@ -1714,13 +1740,45 @@ document.addEventListener('keydown',e=>{
  else if(e.key==='End'){show(S.length-1);}
  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
  else if(e.key.toLowerCase()==='t'){document.body.classList.toggle('trener-on');}
+ else if(e.key.toLowerCase()==='d'){toggleTheme();}
 });
 
 document.getElementById('prev').onclick=()=>show(i-1);
 document.getElementById('next').onclick=()=>show(i+1);
 
-document.querySelector('.click-zone.left').onclick=()=>show(i-1);
-document.querySelector('.click-zone.right').onclick=()=>show(i+1);
+// Klik w slajd nawiguje, ALE linki, przyciski i bloki kodu dzialaja normalnie
+document.getElementById('deck').addEventListener('click',e=>{
+ if(e.target.closest('a,button,.code-block,input,textarea,select,.trener-notes'))return;
+ if(window.getSelection&&String(window.getSelection()))return;
+ if(e.clientX<window.innerWidth/2)show(i-1);else show(i+1);
+});
+// Linki zewnetrzne otwieraja sie w nowej karcie
+document.querySelectorAll('#deck a[href^="http"]').forEach(a=>{
+ a.target='_blank';a.rel='noopener';
+});
+
+// Motyw jasny/ciemny (przycisk lub klawisz D), zapamietany w localStorage
+function toggleTheme(){
+ document.body.classList.toggle('light');
+ try{localStorage.setItem('theme',document.body.classList.contains('light')?'light':'dark');}catch(_){}
+}
+document.getElementById('theme-btn').onclick=toggleTheme;
+try{if(localStorage.getItem('theme')==='light')document.body.classList.add('light');}catch(_){}
+
+// Przycisk kopiowania na kazdym bloku kodu
+document.querySelectorAll('.code-block').forEach(b=>{
+ const code=b.innerText;
+ const btn=document.createElement('button');
+ btn.className='copy-btn';btn.textContent='Kopiuj';
+ btn.onclick=ev=>{
+  ev.stopPropagation();
+  navigator.clipboard.writeText(code).then(()=>{
+   btn.textContent='Skopiowano!';btn.classList.add('ok');
+   setTimeout(()=>{btn.textContent='Kopiuj';btn.classList.remove('ok');},1600);
+  });
+ };
+ b.appendChild(btn);
+});
 
 const fired=new Set(JSON.parse(sessionStorage.getItem('fired')||'[]'));
 function beep(){
