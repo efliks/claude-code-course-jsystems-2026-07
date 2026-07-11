@@ -35,6 +35,8 @@ app/                 Application built during the course (start: empty scaffold)
 assets/              Design tokens, logo, favicon
 docs/                PRD, ADR, design system
 course-materials/    Notes, scripts, examples, research
+course-materials/slides/   Slide decks day-1.html..day-3.html (single-file HTML)
+                           + publish-slides.ps1 (sync to the DevPowers site repo)
 ```
 
 ---
