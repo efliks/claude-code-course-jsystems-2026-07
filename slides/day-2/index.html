@@ -6,11 +6,24 @@
 <title>JSystems | Claude Code - od zera do zespołu agentów AI | Dzień 2</title>
 <style>
 :root{
+  /* Slajdy tytulowe (granat/biel/zloto) - identyczne w obu motywach */
   --dark-bg:#0f172a;--dark-bg2:#1e293b;--dark-text:#f1f5f9;
-  --light-bg:#ffffff;--light-bg2:#f1f5f9;--light-text:#1e293b;
-  --accent:#f59e0b;--accent2:#3b82f6;--accent3:#10b981;
-  --muted:#64748b;--danger:#ef4444;--code-bg:#1e293b;
-  --trener-bg:#1a1408;--trener-bd:#f59e0b;
+  /* Motyw domyslny: dark (Tokyo Night) */
+  --bg:#1a1b26;--bg2:#24283b;--bg3:#2f3549;
+  --text:#c0caf5;--heading:#e6ecff;
+  --accent:#e0af68;--accent2:#7aa2f7;--accent3:#9ece6a;
+  --muted:#7d84a8;--danger:#f7768e;
+  --code-bg:#16161e;--code-text:#a9b1d6;
+  --note-bg:rgba(224,175,104,.09);--note-bd:rgba(224,175,104,.35);--note-text:#e6c187;
+  --trener-bg:#1a1408;--trener-bd:#e0af68;
+}
+body.light{
+  --bg:#ffffff;--bg2:#f1f5f9;--bg3:#e2e8f0;
+  --text:#1e293b;--heading:#0f172a;
+  --accent:#d97706;--accent2:#2563eb;--accent3:#059669;
+  --muted:#64748b;--danger:#dc2626;
+  --code-bg:#1e293b;--code-text:#e2e8f0;
+  --note-bg:#fef9c3;--note-bd:#facc15;--note-text:#92400e;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{font-size:clamp(14px,1.6vw,22px)}
@@ -18,13 +31,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 #deck{position:relative;width:100vw;height:100vh}
 .slide{
   position:absolute;top:0;left:0;width:100%;height:100%;
-  background:var(--light-bg);color:var(--light-text);
+  background:var(--bg);color:var(--text);
   opacity:0;pointer-events:none;transition:opacity .3s ease;
   overflow-y:auto;overflow-x:hidden;
 }
 .slide.on{opacity:1;pointer-events:auto}
 .slide.dark{background:var(--dark-bg);color:var(--dark-text)}
+.slide a{color:var(--accent2);text-decoration:underline;text-underline-offset:3px}
 .slide.dark a{color:var(--accent)}
+.slide h1,.slide h2,.slide h3{color:var(--heading)}
+.slide.dark h1,.slide.dark h2,.slide.dark h3{color:var(--dark-text)}
 .slide-body{
   max-width:1200px;margin:0 auto;
   padding:clamp(2rem,4vw,4rem) clamp(2rem,4vw,4rem) 5rem;
@@ -60,9 +76,14 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 }
 .break-badge .bb-items{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;font-size:.9rem}
 .break-badge .bb-items span::before{content:"\25CF";color:var(--accent);margin-right:.4rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.2rem;margin-top:.5rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:.5rem}
+/* Symetryczne siatki: 4 kafle = 2x2, 5-6 kafli = 3 kolumny (zamiast 3+1 / 4+1) */
+.cards:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,1fr)}
+.cards:has(> :nth-child(5):last-child),.cards:has(> :nth-child(6):last-child){grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.cards:has(> :nth-child(5):last-child),.cards:has(> :nth-child(6):last-child){grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.cards{grid-template-columns:1fr !important}}
 .card{
-  background:var(--light-bg2);border-radius:10px;padding:1.2rem 1.4rem;
+  background:var(--bg2);border-radius:10px;padding:1.2rem 1.4rem;
   border-left:4px solid var(--accent2);
 }
 .card.warn{border-left-color:var(--danger)}
@@ -79,12 +100,21 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:.5rem}
 @media(max-width:768px){.two-col{grid-template-columns:1fr}}
 .code-block{
-  background:var(--code-bg);color:#e2e8f0;padding:.8rem 1.2rem;border-radius:8px;
+  background:var(--code-bg);color:var(--code-text);padding:.8rem 1.2rem;border-radius:8px;
   font-family:Consolas,Monaco,"Courier New",monospace;font-size:.85rem;
   overflow-x:auto;line-height:1.5;margin:.5rem 0;
+  position:relative;border:1px solid rgba(125,132,168,.25);
 }
+.copy-btn{
+  position:absolute;top:.4rem;right:.4rem;
+  background:var(--bg3);color:var(--text);border:1px solid var(--muted);
+  border-radius:6px;font-size:.65rem;padding:.2rem .55rem;cursor:pointer;
+  opacity:.65;transition:opacity .15s;font-family:inherit;
+}
+.copy-btn:hover{opacity:1}
+.copy-btn.ok{background:var(--accent3);color:#0f172a;border-color:var(--accent3);opacity:1}
 .code-inline{
-  background:var(--light-bg2);padding:.1rem .4rem;border-radius:4px;
+  background:var(--bg2);padding:.1rem .4rem;border-radius:4px;
   font-family:Consolas,Monaco,monospace;font-size:.9em;color:var(--accent2);
 }
 .slide.dark .code-inline{background:rgba(255,255,255,.1)}
@@ -97,18 +127,14 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .badge.red{background:var(--danger)}
 .badge.lab{background:var(--accent);font-size:.85rem;padding:.3rem 1rem}
 .note-box{
-  background:#fef9c3;border:1px solid #facc15;border-radius:8px;
-  padding:.8rem 1.2rem;margin:.5rem 0;font-size:.9rem;
+  background:var(--note-bg);border:1px solid var(--note-bd);border-radius:8px;
+  padding:.8rem 1.2rem;margin:.5rem 0;font-size:.9rem;color:var(--note-text);
 }
 .slide.dark .note-box{background:rgba(250,204,21,.1);border-color:rgba(250,204,21,.3);color:#fef3c7}
-.todo-marker{
-  display:inline;background:#fde68a;color:#92400e;padding:.1rem .3rem;
-  border-radius:3px;font-size:.85em;font-weight:600;
-}
 /* Process map */
 .proc-map{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:1rem}
 .proc-step{
-  background:var(--light-bg2);border-radius:10px;padding:1rem;
+  background:var(--bg2);border-radius:10px;padding:1rem;
   position:relative;text-align:center;border:2px solid transparent;
 }
 .proc-step .ps-num{
@@ -116,7 +142,7 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
   display:flex;align-items:center;justify-content:center;font-weight:700;
   margin:0 auto .5rem;font-size:.9rem;
 }
-.proc-step.active{border-color:var(--accent);background:rgba(245,158,11,.08)}
+.proc-step.active{border-color:var(--accent);background:rgba(224,175,104,.1)}
 .proc-step.active .ps-num{background:var(--accent)}
 .proc-step.optional{opacity:.6}
 .proc-step.optional .ps-num{background:var(--muted)}
@@ -138,11 +164,17 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
   position:fixed;top:.5rem;left:1rem;font-size:.7rem;color:var(--muted);
   z-index:200;font-variant-numeric:tabular-nums;
 }
-.slide.dark ~ #num,.slide.on.dark ~ #num{color:rgba(255,255,255,.4)}
 #clock{
-  position:fixed;top:.5rem;right:1rem;font-size:.7rem;color:var(--muted);
+  position:fixed;top:.5rem;right:3.4rem;font-size:.7rem;color:var(--muted);
   z-index:200;font-variant-numeric:tabular-nums;
 }
+#theme-btn{
+  position:fixed;top:.3rem;right:1rem;width:26px;height:26px;z-index:210;
+  background:transparent;border:1px solid var(--muted);border-radius:50%;
+  color:var(--muted);cursor:pointer;font-size:.8rem;line-height:1;
+  display:flex;align-items:center;justify-content:center;opacity:.7;
+}
+#theme-btn:hover{opacity:1;color:var(--accent)}
 /* Nav arrows */
 .nav-arrow{
   position:fixed;top:50%;transform:translateY(-50%);
@@ -190,14 +222,11 @@ body.trener-on .slide.on .trener-notes::before{
 .tn-section li{padding:.15rem 0 .15rem 1rem;position:relative}
 .tn-section li::before{content:"-";position:absolute;left:0;color:var(--accent)}
 body.trener-on .slide.on .slide-body{padding-bottom:42vh}
-/* Click zones */
-.click-zone{position:fixed;top:0;width:50%;height:100%;z-index:1;cursor:pointer}
-.click-zone.left{left:0}
-.click-zone.right{right:0}
+/* Nawigacja klikiem obslugiwana na .slide (linki i przyciski maja priorytet) */
 /* Misc */
 .big-num{font-size:3rem;font-weight:800;color:var(--accent);line-height:1}
 .timeline{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
-.timeline-item{display:flex;gap:1rem;align-items:flex-start;padding:.6rem 1rem;background:var(--light-bg2);border-radius:8px;border-left:4px solid var(--accent2)}
+.timeline-item{display:flex;gap:1rem;align-items:flex-start;padding:.6rem 1rem;background:var(--bg2);border-radius:8px;border-left:4px solid var(--accent2)}
 .timeline-item.break{border-left-color:var(--accent)}
 .timeline-time{font-weight:700;color:var(--accent);min-width:80px;font-size:.9rem}
 .slide.dark .timeline-item{background:var(--dark-bg2)}
@@ -214,11 +243,10 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
 
 <div id="hud"><div id="bar"></div></div>
 <div id="num">1/44</div>
-<div id="clock">clock --:--</div>
+<div id="clock">--:--</div>
+<button id="theme-btn" title="Motyw jasny/ciemny (D)">&#9681;</button>
 <button id="prev" class="nav-arrow nav-left">&lsaquo;</button>
 <button id="next" class="nav-arrow nav-right">&rsaquo;</button>
-<div class="click-zone left"></div>
-<div class="click-zone right"></div>
 
 <div id="breakbar">
   <div class="bb-icon">&#9201;</div>
@@ -237,16 +265,13 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="subtitle">Dzień 2 z 3: Narzędzia, sub-agenci i budowa funkcjonalności</div>
     <div class="title-meta">
       <div>14 lipca 2026</div>
-      <div>Trener: Lucas</div>
+      <div>Trener: &#321;ukasz Matuszewski</div>
       <div>Tryb: zdalny</div>
     </div>
     <div class="break-badge">
-      <div class="bb-label">Harmonogram dnia (09:00 - 16:00)</div>
-      <div class="bb-items">
-        <span>10:30 Przerwa 15 min</span>
-        <span>12:30 Obiad 30 min</span>
-        <span>14:45 Przerwa 10 min</span>
-        <span>16:00 Koniec</span>
+      <div class="bb-label" data-schedule-label>Harmonogram dnia (godziny orientacyjne)</div>
+      <div class="bb-items" data-schedule-items>
+        <span>wypelniane z konfiguracji SCHEDULE</span>
       </div>
     </div>
   </div>
@@ -276,14 +301,14 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="kicker">Dzień 2</div>
     <h2>Agenda dnia</h2>
     <div class="timeline">
-      <div class="timeline-item"><div class="timeline-time">09:00</div><div><strong>Moduł 2.1</strong> MCP - Model Context Protocol, Context7, Playwright MCP, trend CLI vs MCP</div></div>
-      <div class="timeline-item break"><div class="timeline-time">10:30</div><div><strong>Przerwa</strong> 15 minut</div></div>
-      <div class="timeline-item"><div class="timeline-time">10:45</div><div><strong>Moduł 2.2</strong> Skills - umiejętności agenta, instalowanie, tworzenie własnych, custom slash commands</div></div>
-      <div class="timeline-item break"><div class="timeline-time">12:30</div><div><strong>Obiad</strong> 30 minut</div></div>
-      <div class="timeline-item"><div class="timeline-time">13:00</div><div><strong>Moduł 2.3</strong> Sub-agenci - architektura, orkiestracja, typy, definiowanie specjalistów</div></div>
-      <div class="timeline-item break"><div class="timeline-time">14:45</div><div><strong>Przerwa</strong> 10 minut</div></div>
-      <div class="timeline-item"><div class="timeline-time">14:55</div><div><strong>Moduł 2.4</strong> Budowa aplikacji z sub-agentami - TDD, API, React, integracja, git</div></div>
-      <div class="timeline-item"><div class="timeline-time">16:00</div><div><strong>Koniec dnia 2</strong></div></div>
+      <div class="timeline-item"><div class="timeline-time" data-mod-time="0">09:00</div><div><strong>Moduł 2.1</strong> MCP - Model Context Protocol, Context7, Playwright MCP, trend CLI vs MCP</div></div>
+      <div class="timeline-item break"><div class="timeline-time" data-break-time="0">10:30</div><div data-break-label="0"><strong>Przerwa</strong> 15 minut</div></div>
+      <div class="timeline-item"><div class="timeline-time" data-mod-time="1">10:45</div><div><strong>Moduł 2.2</strong> Skills - umiejętności agenta, instalowanie, tworzenie własnych, custom slash commands</div></div>
+      <div class="timeline-item break"><div class="timeline-time" data-break-time="1">13:00</div><div data-break-label="1"><strong>Obiad</strong> 30 minut</div></div>
+      <div class="timeline-item"><div class="timeline-time" data-mod-time="2">13:30</div><div><strong>Moduł 2.3</strong> Sub-agenci - architektura, orkiestracja, typy, definiowanie specjalistów</div></div>
+      <div class="timeline-item break"><div class="timeline-time" data-break-time="2">14:45</div><div data-break-label="2"><strong>Przerwa</strong> 10 minut (opcjonalna - jeśli grupa potrzebuje)</div></div>
+      <div class="timeline-item"><div class="timeline-time" data-mod-time="3">~14:55</div><div><strong>Moduł 2.4</strong> Budowa aplikacji z sub-agentami - TDD, API, React, integracja, git</div></div>
+      <div class="timeline-item"><div class="timeline-time" data-end-time>16:00</div><div><strong>Koniec dnia 2</strong></div></div>
     </div>
     <div class="note-box" style="margin-top:1rem"><strong>Cel dnia:</strong> agent z dokumentacją i przeglądarką, skonfigurowane narzędzia i workflows, zespół sub-agentów, wstępny kod aplikacji od wielu agentów</div>
   </div>
@@ -300,10 +325,10 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <h3 class="accent2">Jak pracujemy</h3>
         <ul class="feature-list">
           <li>Pytania w każdej chwili - nie czekaj na koniec modułu</li>
-          <li>Ćwiczenia hands-on po każdym module (labs)</li>
-          <li>Każdy lab ma timebox i kryteria sukcesu</li>
+          <li>Pracujemy razem: rób u siebie to, co pokazuję - wchodź tam, gdzie ja wchodzę</li>
+          <li>Możesz robić po swojemu i na własnym pomyśle aplikacji - byle te same elementy</li>
           <li>Dzisiaj zaczynamy pisać kod aplikacji demo</li>
-          <li>Przerwy o wyznaczonych godzinach (banner + dźwięk)</li>
+          <li>Przerwy o wyznaczonych godzinach (banner + dźwięk); 14:45 tylko na prośbę grupy</li>
         </ul>
       </div>
       <div>
@@ -331,7 +356,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="proc-map">
       <div class="proc-step optional"><div class="ps-num">1</div><div class="ps-title">Ideacja + PRD</div><div class="ps-desc">Zrobione w dniu 1</div></div>
       <div class="proc-step optional"><div class="ps-num">2</div><div class="ps-title">Wireframes</div><div class="ps-desc">Opcjonalne, pominięte</div></div>
-      <div class="proc-step active"><div class="ps-num">3</div><div class="ps-title">Design Guidelines</div><div class="ps-desc">Dzisiaj (lab 2.1): Playwright MCP</div></div>
+      <div class="proc-step active"><div class="ps-num">3</div><div class="ps-title">Design Guidelines</div><div class="ps-desc">Dzisiaj (RAZEM 2.1): Playwright MCP</div></div>
       <div class="proc-step optional"><div class="ps-num">4</div><div class="ps-title">ADR</div><div class="ps-desc">Zrobione w dniu 1</div></div>
       <div class="proc-step active"><div class="ps-num">5</div><div class="ps-title">Plan</div><div class="ps-desc">Dzisiaj (moduł 2.3): sub-agenci</div></div>
       <div class="proc-step active"><div class="ps-num">6</div><div class="ps-title">Implementacja z TDD</div><div class="ps-desc">Dzisiaj (moduł 2.4): testy PRZED kodem</div></div>
@@ -396,7 +421,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
   <div class="slide-body title-body">
     <div class="kicker">Moduł 2.1</div>
     <h1>MCP - narzędzia<br>Context7 i Playwright</h1>
-    <div class="subtitle">09:00 - 10:30</div>
+    <div class="subtitle" data-mod-range="0">09:00 - 10:30</div>
     <div class="title-meta">
       <div>Cel: agent z dokumentacją i przeglądarką</div>
     </div>
@@ -513,8 +538,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
             <li>Agent wczytuje konfigurację przy starcie</li>
           </ul>
         </div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Sprawdź:</strong> użyj komendy listującej aktywne serwery MCP w swoim CLI, aby zweryfikować że konfiguracja zadziałała.</div>
-        <p style="margin-top:.5rem;font-size:.85rem"><span class="todo-marker">TODO-VERIFY: dokładna komenda sprawdzająca aktywne serwery MCP w aktualnej wersji CLI</span></p>
+        <div class="note-box" style="margin-top:.6rem"><strong>Sprawdź:</strong> użyj komendy <span class="code-inline">/mcp</span> w CLI, aby zobaczyć aktywne serwery MCP i ich status - tak zweryfikujesz że konfiguracja zadziałała.</div>
       </div>
     </div>
   </div>
@@ -568,7 +592,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <p>Agent testuje aplikację jak człowiek: otwiera, wchodzi przez flow, sprawdza rezultaty. <strong>Nic nie mockujemy</strong> - LLM testowany na żywo.</p>
       </div>
     </div>
-    <div class="note-box" style="margin-top:.8rem"><strong>W naszym procesie:</strong> Playwright MCP jest kluczowe na dwóch etapach - Design Guidelines (lab 2.1) oraz testy manualne aplikacji (moduł 2.4 i dzień 3).</div>
+    <div class="note-box" style="margin-top:.8rem"><strong>W naszym procesie:</strong> Playwright MCP jest kluczowe na dwóch etapach - Design Guidelines (RAZEM 2.1) oraz testy manualne aplikacji (moduł 2.4 i dzień 3).</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -622,19 +646,19 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
       </div>
     </div>
     <div class="note-box" style="margin-top:1rem"><strong>Na tym kursie</strong> skupiamy się na Context7 i Playwright MCP. Pozostałe jako przegląd - wiadomość, że MCP jest ekosystemem, nie pojedynczym narzędziem.</div>
-    <p style="margin-top:.5rem;font-size:.85rem"><span class="todo-marker">TODO-VERIFY: aktualna lista preinstalowanych serwerów MCP na VM kursowych</span></p>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 15: LAB 2.1 ============ -->
+<!-- ============ SLIDE 15: RAZEM 2.1 ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 2.1</div>
-    <h2><span class="badge lab">LAB</span> Design Guidelines przez Playwright MCP</h2>
+    <h2><span class="badge lab">RAZEM</span> Design Guidelines przez Playwright MCP</h2>
+    <p class="subtitle">Robimy to razem - ja pokazuję, Ty powtarzasz u siebie (możesz na własnym pomyśle aplikacji)</p>
     <div class="two-col">
       <div>
-        <h3 class="accent">Timebox: 35 minut</h3>
+        <h3 class="accent">Zrób u siebie</h3>
         <ul class="feature-list">
           <li>Wybierz stronę (firmową uczestnika lub dowolną)</li>
           <li>Użyj Playwright MCP do zbadania jej designu</li>
@@ -644,14 +668,14 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         </ul>
       </div>
       <div>
-        <h3 class="accent3">Kryteria sukcesu</h3>
+        <h3 class="accent3">Zanim ruszymy dalej, upewnij się że</h3>
         <ul class="feature-list check">
-          <li>Lista tokenów kolorów (paleta)</li>
-          <li>Tokeny typografii (fonty, rozmiary, wagi)</li>
-          <li>Min. 3 zrzuty ekranu kluczowych komponentów</li>
-          <li>Notatka: co przenieść do aplikacji demo</li>
-          <li>Wynik zapisany w repo (design/ folder)</li>
+          <li>Masz listę tokenów kolorów (paleta)</li>
+          <li>Masz tokeny typografii (fonty, rozmiary, wagi)</li>
+          <li>Masz min. 3 zrzuty ekranu kluczowych komponentów</li>
+          <li>Wynik jest zapisany w repo (<span class="code-inline">design/</span>), nie tylko w pamięci agenta</li>
         </ul>
+        <div class="note-box" style="margin-top:.8rem">Prompty podsyłam na czacie - ale zachęcam do eksperymentowania z własną stroną.</div>
       </div>
     </div>
     <div class="note-box" style="margin-top:.8rem"><strong>Wskazówka:</strong> poproś agenta: "Zbadaj design strony [URL] przez Playwright MCP. Wyciągnij design tokens i zrób zrzuty ekranu kluczowych elementów."</div>
@@ -671,7 +695,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
       <li>Czy Playwright MCP odpala na każdej VM</li>
       <li>Czy każdy ma min. 3 zrzuty ekranu</li>
       <li>Czy tokens są zapisane, nie tylko w pamięci agenta</li>
-      <li>Uczestnicy Java: ten sam lab, design tokens uniwersalne</li>
+      <li>Uczestnicy Java: to samo zadanie, design tokens uniwersalne</li>
     </ul></div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
@@ -682,7 +706,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
   <div class="slide-body title-body">
     <div class="kicker">Moduł 2.2</div>
     <h1>Skills<br>umiejętności agenta</h1>
-    <div class="subtitle">10:45 - 12:30</div>
+    <div class="subtitle" data-mod-range="1">10:45 - 13:00</div>
     <div class="title-meta">
       <div>Cel: skonfigurowane narzędzia i workflows</div>
     </div>
@@ -760,7 +784,6 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <div class="note-box" style="margin-top:.6rem"><strong>Uwaga:</strong> w repo kursowym skille mogą być w <span class="code-inline">.agents/skills</span>. Sprawdź czy są też w <span class="code-inline">.claude/skills</span> - jeśli brak, skopiuj.</div>
       </div>
     </div>
-    <p style="margin-top:.5rem;font-size:.85rem"><span class="todo-marker">TODO-VERIFY: dokładna komenda instalacji skilla w aktualnej wersji CLI</span></p>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -799,33 +822,33 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 2.2</div>
-    <h2>Custom Commands vs Skills</h2>
-    <p class="subtitle">Dwa sposoby na reużywalne prompty - świadome vs automatyczne</p>
+    <h2>Komendy i Skills - to samo pod spodem</h2>
+    <p class="subtitle">Custom slash commands zostały scalone ze skills - oba tworzą <span class="code-inline">/x</span></p>
     <div class="two-col">
       <div>
-        <h3 class="accent2">Custom Commands</h3>
+        <h3 class="accent2">Jeden plik Markdown</h3>
         <div class="card ok"><ul class="feature-list">
-          <li><strong>Świadome, jawne wywołanie</strong> <span class="code-inline">/nazwa</span></li>
-          <li>Lekki plik Markdown w <span class="code-inline">.claude/commands/</span></li>
-          <li>Brak auto-triggera - wywołujesz ręcznie</li>
+          <li><span class="code-inline">.claude/commands/x.md</span> tworzy komendę <span class="code-inline">/x</span></li>
+          <li>To samo co <span class="code-inline">.claude/skills/x/SKILL.md</span> - oba tworzą <span class="code-inline">/x</span></li>
+          <li>Świadome, jawne wywołanie <span class="code-inline">/nazwa</span></li>
           <li>Wspiera <span class="code-inline">$ARGUMENTS</span> (wstrzykiwanie argumentu)</li>
           <li>Grupowanie w podfolderach tworzy namespace</li>
         </ul></div>
         <div class="note-box" style="margin-top:.6rem"><strong>Przykład:</strong> <span class="code-inline">.claude/commands/git/commit.md</span> wywołuje się jako <span class="code-inline">/git:commit</span>. Drugi przykład: <span class="code-inline">.claude/commands/git/diff.md</span> - <span class="code-inline">/git:diff</span>.</div>
       </div>
       <div>
-        <h3 class="accent">Skills</h3>
+        <h3 class="accent">Skill wielo-plikowy</h3>
         <div class="card amber"><ul class="feature-list">
+          <li>Katalog <span class="code-inline">.claude/skills/x/</span> z <span class="code-inline">SKILL.md</span> + skryptami</li>
           <li>Agent <strong>sam dobiera skill</strong> z pola <span class="code-inline">description</span></li>
           <li>Auto-trigger kontekstowy (heurystyka opisu)</li>
-          <li>Może dołączać skrypty, assets i referencje</li>
-          <li>Wielo-plikowa wiedza (nie jeden plik MD)</li>
-          <li>Metadane określają kiedy się aktywuje</li>
+          <li>Dołącza skrypty, assets i referencje</li>
+          <li>Metadane określające kiedy się aktywuje</li>
         </ul></div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Kiedy Skills:</strong> gdy agent ma SAM wykryć kontekst, gdy wiedza wymaga wielu plików, gdy potrzebne są dołączone skrypty i assets.</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Kiedy skill wielo-plikowy:</strong> gdy agent ma SAM wykryć kontekst, gdy wiedza wymaga wielu plików, gdy potrzebne są dołączone skrypty i assets.</div>
       </div>
     </div>
-    <div class="note-box" style="margin-top:.8rem"><strong>Reguła wyboru:</strong> Commands do prostych, świadomie wywoływanych promptów (generator commit message, checklist code review, stały szablon). Skills gdy agent ma SAM wykryć kontekst i dociągnąć instrukcje - z metadanymi i wielo-plikową wiedzą.</div>
+    <div class="note-box" style="margin-top:.8rem"><strong>Reguła:</strong> prosty, jednokrotny prompt = jeden plik Markdown wywoływany świadomie. Złożony workflow z auto-triggerem i skryptami = skill wielo-plikowy. Pod spodem to ten sam mechanizm - oba tworzą <span class="code-inline">/x</span>.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -925,7 +948,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
   <div class="slide-body title-body">
     <div class="kicker">Moduł 2.3</div>
     <h1>Sub-agenci<br>delegowanie zadań</h1>
-    <div class="subtitle">13:00 - 14:45</div>
+    <div class="subtitle" data-mod-range="2">13:30 - 14:45</div>
     <div class="title-meta">
       <div>Cel: zespół sub-agentów</div>
     </div>
@@ -1081,12 +1104,12 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
       <div>
         <h3 class="accent">Limity i konfiguracja</h3>
         <div class="card amber"><ul class="feature-list">
-          <li><strong>Claude Code</strong> dopuszcza głębokość zagnieżdżenia do <strong>5</strong></li>
-          <li><strong>Codex</strong> steruje tym przez <span class="code-inline">agent.max_depth</span></li>
-          <li><strong>Codex</strong> limit równoległości przez <span class="code-inline">agent.max_threads</span></li>
+          <li>Zagnieżdżenie wymaga, by sub-agent miał dostęp do narzędzia <span class="code-inline">Agent</span> / <span class="code-inline">Task</span></li>
+          <li>Każdy harness ma własny limit głębokości i równoległości</li>
           <li>Limity chronią przed nieskończoną rekurencją i kosztami</li>
+          <li>Sprawdzaj limity w dokumentacji swojego harnessu</li>
         </ul></div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Praktyka:</strong> sub-agent może delegować dalej - Claude dopuszcza głębokość 5, Codex steruje tym przez <span class="code-inline">agent.max_depth</span> i <span class="code-inline">agent.max_threads</span>.</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Praktyka:</strong> sub-agent może delegować dalej, gdy ma do tego uprawnienia. Konkretne limity głębokości zależą od harnessu - sprawdź w dokumentacji.</div>
       </div>
     </div>
   </div>
@@ -1164,14 +1187,15 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 27: LAB 2.3 ============ -->
+<!-- ============ SLIDE 27: RAZEM 2.3 ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 2.3</div>
-    <h2><span class="badge lab">LAB</span> Definiowanie specjalistów</h2>
+    <h2><span class="badge lab">RAZEM</span> Definiowanie specjalistów</h2>
+    <p class="subtitle">Robimy to razem - ja pokazuję, Ty powtarzasz u siebie (możesz na własnym pomyśle aplikacji)</p>
     <div class="two-col">
       <div>
-        <h3 class="accent">Timebox: 35 minut</h3>
+        <h3 class="accent">Zrób u siebie</h3>
         <ul class="feature-list">
           <li>Zdefiniuj 3 sub-agentów: be-developer, fe-developer, qa-engineer</li>
           <li>Dla każdego: rola, stack, zakres, ograniczenia</li>
@@ -1180,18 +1204,18 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         </ul>
       </div>
       <div>
-        <h3 class="accent3">Kryteria sukcesu</h3>
+        <h3 class="accent3">Zanim ruszymy dalej, upewnij się że</h3>
         <ul class="feature-list check">
-          <li>3 sub-agenci zdefiniowani z jasnym zakresem</li>
+          <li>3 sub-agenci mają jasny zakres (bez nakładania ról)</li>
           <li>Każdy ma określony stack i narzędzia</li>
-          <li>Brak nakładania ról między specjalistami</li>
           <li>Agent główny deleguje min. 1 zadanie do każdego</li>
           <li>Feedback loop działa (wyniki wracają do głównego)</li>
-          <li>Definicje zapisane w repo</li>
+          <li>Definicje są zapisane w repo</li>
         </ul>
+        <div class="note-box" style="margin-top:.8rem">Zacznij od roli i zakresu. Dopiero gdy role są jasne, przypisz stack i narzędzia.</div>
       </div>
     </div>
-    <div class="note-box" style="margin-top:.8rem"><strong>Wskazówka:</strong> zacznij od role i zakresu. Dopiero gdy role są jasne, przypisz stack i narzędzia. Nie definiuj sub-agenta bez wiedzy, co ma robić.</div>
+    <div class="note-box" style="margin-top:.8rem"><strong>Wskazówka:</strong> nie definiuj sub-agenta bez wiedzy, co ma robić. Podeślę swoje definicje na czacie - ale zachęcam do eksperymentowania.</div>
   </div>
   <div class="trener-notes">
     <div class="tn-section"><h4>Co mówić</h4><ul>
@@ -1219,7 +1243,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
   <div class="slide-body title-body">
     <div class="kicker">Moduł 2.4</div>
     <h1>Budowa aplikacji<br>z sub-agentami</h1>
-    <div class="subtitle">14:55 - 16:00</div>
+    <div class="subtitle" data-mod-range="3">14:55 - 16:00</div>
     <div class="title-meta">
       <div>Cel: wstępny kod aplikacji od wielu agentów</div>
     </div>
@@ -1425,7 +1449,7 @@ git commit -m "test: endpoint analizy zdjęcia (red)"
 git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
       </div>
     </div>
-    <div class="note-box" style="margin-top:1rem"><strong>Dlaczego:</strong> granularne commity pozwalają cofnąć się do działającego stanu. Jeśli refactor zepsuje kod, wracasz o jeden commit. Wymóg Lucasa.</div>
+    <div class="note-box" style="margin-top:1rem"><strong>Dlaczego:</strong> granularne commity pozwalają cofnąć się do działającego stanu. Jeśli refactor zepsuje kod, wracasz o jeden commit. Wymóg &#321;ukasza.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1456,14 +1480,15 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 36: LAB 2.4 ============ -->
+<!-- ============ SLIDE 36: RAZEM 2.4 ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 2.4</div>
-    <h2><span class="badge lab">LAB</span> Budowa aplikacji z sub-agentami</h2>
+    <h2><span class="badge lab">RAZEM</span> Budowa aplikacji z sub-agentami</h2>
+    <p class="subtitle">Robimy to razem - ja pokazuję, Ty powtarzasz u siebie (możesz na własnym pomyśle aplikacji)</p>
     <div class="two-col">
       <div>
-        <h3 class="accent">Timebox: 50 minut</h3>
+        <h3 class="accent">Zrób u siebie</h3>
         <ul class="feature-list">
           <li>Deleguj pierwsze zadanie do be-dev: endpoint analizy zdjęcia</li>
           <li>TDD: test PRZED implementacją (Red)</li>
@@ -1474,24 +1499,25 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
         </ul>
       </div>
       <div>
-        <h3 class="accent3">Kryteria sukcesu</h3>
+        <h3 class="accent3">Dobry przebieg poznasz po tym, że</h3>
         <ul class="feature-list check">
-          <li>Endpoint API analizy zdjęcia działający (streaming)</li>
+          <li>Endpoint API analizy zdjęcia działa (streaming)</li>
           <li>Formularz z uploadem zdjęcia (zwrot/reklamacja)</li>
-          <li>Decyzja wyświetlana w chacie (komponent UI)</li>
-          <li>Min. 1 test E2E przechodzący (qa)</li>
+          <li>Decyzja wyświetla się w chacie (komponent UI)</li>
+          <li>Min. 1 test E2E przechodzi (qa)</li>
           <li>LLM testowany na żywo (bez mockowania)</li>
-          <li>Granularne commity (min. 3 osobne commity)</li>
+          <li>Commity są granularne (min. 3 osobne)</li>
         </ul>
+        <div class="note-box" style="margin-top:.8rem">To duża praca - nie wszystko skończymy razem. Reszta to praca domowa D2.</div>
       </div>
     </div>
-    <div class="note-box" style="margin-top:.8rem"><strong>Uwaga czasowa:</strong> to duża praca. Dokończysz w pracy domowej D2. Na labie osiągnij min. działający endpoint + podstawowy formularz.</div>
+    <div class="note-box" style="margin-top:.8rem"><strong>Plan minimum na teraz:</strong> działający endpoint + podstawowy formularz. Dokończysz w pracy domowej.</div>
   </div>
   <div class="trener-notes">
     <div class="tn-section"><h4>Co mówić</h4><ul>
-      <li>To najważniejszy lab dnia - realny kod aplikacji</li>
+      <li>To najważniejsze ćwiczenie dnia - realny kod aplikacji</li>
       <li>TDD bez wyjątków, commity po każdej zielonej fazie</li>
-      <li>Nie wszystko skończycie na labie - reszta to praca domowa</li>
+      <li>Nie wszystko skończycie na zajęciach - reszta to praca domowa</li>
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
       <li>Krąż, pomagaj z TDD (najczęstszy zgrzyt)</li>
@@ -1532,7 +1558,6 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
       </div>
     </div>
     <div class="note-box" style="margin-top:1rem"><strong>Bez mockowania:</strong> LLM testowany na żywo przez cały czas. Agent używa realnego modelu, realnego zdjęcia, realnej decyzji.</div>
-    <p style="margin-top:.5rem;font-size:.85rem"><span class="todo-marker">TODO-VERIFY: czy Chrome DevTools MCP jest preinstalowany na VM kursowych, czy tylko Playwright MCP</span></p>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1574,7 +1599,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
         <h3 class="accent3">Moduły 2.1 - 2.4</h3>
         <ul class="feature-list check">
           <li><strong>2.1</strong> MCP - Context7 (dokumentacja) i Playwright (przeglądarka)</li>
-          <li><strong>2.1</strong> Design Guidelines (lab) - design tokens ze strony</li>
+          <li><strong>2.1</strong> Design Guidelines (razem) - design tokens ze strony</li>
           <li><strong>2.2</strong> Skills - reusable workflows i custom slash commands</li>
           <li><strong>2.3</strong> Sub-agenci - zespół specjalistów (be-dev, fe-dev, qa)</li>
           <li><strong>2.4</strong> Kod aplikacji - TDD, streaming, integracja FE-BE</li>
@@ -1609,11 +1634,10 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
         <p>Claude Web remote environments (secrets, starting script, GitHub integration). Headless <span class="code-inline">-p</span> w GitHub Actions. Koszty i optymalizacja (tokeny, modele, cache).</p>
       </div>
       <div class="card warn"><div class="card-title">3.4 Podsumowanie</div>
-        <p>Demo projektów. Retrospektywa. Best practices zespołowe. Tematy zaawansowane, modele lokalne (Gemma 4). Zasoby.</p>
+        <p>Demo projektów. Retrospektywa. Best practices zespołowe. Tematy zaawansowane, modele lokalne. Zasoby.</p>
       </div>
     </div>
     <div class="note-box" style="margin-top:1rem"><strong>Przygotuj:</strong> dokończ pracę domową D2. Jutro zaczynamy od równoległej pracy zespołu agentów (git worktrees).</div>
-    <p style="margin-top:.5rem;font-size:.85rem"><span class="todo-marker">TODO-VERIFY: czy Workflows (skrypty JS orkiestrujące subagentów) będą pokazane w dniu 3 - zależy od decyzji Lucasa</span></p>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1650,6 +1674,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
       <div>
         <h3 class="accent2">Repo kursowe</h3>
         <ul class="feature-list">
+          <li><a href="https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07">github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07</a></li>
           <li>Materiały kursowe (main branch)</li>
           <li>Skille: write-a-prd, create-adr, create-design-system</li>
           <li>Example prompts (Plan-SubAgents-matrix, Design System reverse-engineering)</li>
@@ -1665,7 +1690,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
             <li>Przygotuj się na git worktrees (równoległa praca)</li>
           </ul>
         </div>
-        <p style="margin-top:.5rem;font-size:.85rem"><span class="todo-marker">TODO-VERIFY: dokładny URL repo kursowego do podania uczestnikom</span></p>
+        <p style="margin-top:.5rem;font-size:.85rem">Repo: <a href="https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07">github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07</a></p>
       </div>
     </div>
   </div>
@@ -1698,7 +1723,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
 <section class="slide dark">
   <div class="slide-body title-body">
     <div class="kicker">Dzień 2 - podsumowanie</div>
-    <h1>Dziękujemy!<br><span class="accent">Do zobaczenia w dniu 3</span></h1>
+    <h1>Dziękuję!<br><span class="accent">Do zobaczenia w dniu 3</span></h1>
     <div class="two-col" style="margin-top:1.5rem;text-align:left">
       <div>
         <h3 class="accent3">Co zrobiliśmy dziś</h3>
@@ -1727,6 +1752,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
         <span>Eksperymentuj z delegowaniem</span>
       </div>
     </div>
+    <p style="margin-top:1.6rem;opacity:.85">&#321;ukasz Matuszewski &nbsp;|&nbsp; <a href="https://devpowers.com">devpowers.com</a> &nbsp;|&nbsp; <a href="https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07">repo kursowe</a></p>
   </div>
   <div class="trener-notes">
     <div class="tn-section"><h4>Co mówić</h4><ul>
@@ -1752,12 +1778,45 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
 </div><!-- /deck -->
 
 <script>
-// KONFIGURACJA PRZERW - edytuj godziny tutaj
-const BREAKS=[
- ["10:30","Przerwa 15 minut","Wracamy o 10:45"],
- ["12:30","Obiad 30 minut","Wracamy o 13:00"],
- ["14:45","Przerwa 10 minut","Wracamy o 14:55"]
-];
+// ============================================================
+// KONFIGURACJA HARMONOGRAMU - JEDYNE zrodlo prawdy dla godzin.
+// Zmien godziny TUTAJ - slajd tytulowy, agenda, podtytuly modulow
+// i alarmy przerw zaktualizuja sie same.
+// ============================================================
+const SCHEDULE={
+ start:"09:00",
+ end:"16:00",
+ breaks:[
+  {time:"10:30",dur:15,label:"Przerwa"},
+  {time:"13:00",dur:30,label:"Obiad"},
+  {time:"14:45",dur:10,label:"Przerwa",optional:true}
+ ]
+};
+
+function addMin(hm,m){const[h,mi]=hm.split(':').map(Number);const t=h*60+mi+m;return String(Math.floor(t/60)).padStart(2,'0')+':'+String(t%60).padStart(2,'0');}
+function modStart(k){return k===0?SCHEDULE.start:addMin(SCHEDULE.breaks[k-1].time,SCHEDULE.breaks[k-1].dur);}
+function modEnd(k){return k<SCHEDULE.breaks.length?SCHEDULE.breaks[k].time:SCHEDULE.end;}
+
+// Alarmy przerw (banner + dzwiek) - wyliczane z SCHEDULE
+const BREAKS=SCHEDULE.breaks.map(b=>[
+ b.time,
+ b.label+" "+b.dur+" minut"+(b.optional?" (opcjonalna)":""),
+ b.optional?"Tylko jesli grupa potrzebuje":"Wracamy o "+addMin(b.time,b.dur)
+]);
+
+// Wypelnia godziny na slajdach z SCHEDULE (elementy z atrybutami data-*)
+function fillSchedule(){
+ const lbl=document.querySelector('[data-schedule-label]');
+ if(lbl)lbl.textContent='Harmonogram dnia '+SCHEDULE.start+' - '+SCHEDULE.end+' (godziny orientacyjne)';
+ const items=document.querySelector('[data-schedule-items]');
+ if(items)items.innerHTML=SCHEDULE.breaks.map(b=>'<span>'+b.time+' '+b.label+' '+b.dur+' min'+(b.optional?' (opcjonalna)':'')+'</span>').join('')+'<span>'+SCHEDULE.end+' Koniec</span>';
+ document.querySelectorAll('[data-break-time]').forEach(el=>{el.textContent=SCHEDULE.breaks[+el.dataset.breakTime].time;});
+ document.querySelectorAll('[data-break-label]').forEach(el=>{const b=SCHEDULE.breaks[+el.dataset.breakLabel];el.innerHTML='<strong>'+b.label+'</strong> '+b.dur+' minut'+(b.optional?' (opcjonalna - jeśli grupa potrzebuje)':'');});
+ document.querySelectorAll('[data-mod-time]').forEach(el=>{const k=+el.dataset.modTime;el.textContent=(k>0&&SCHEDULE.breaks[k-1].optional?'~':'')+modStart(k);});
+ document.querySelectorAll('[data-mod-range]').forEach(el=>{const k=+el.dataset.modRange;el.textContent=(k>0&&SCHEDULE.breaks[k-1].optional?'~':'')+modStart(k)+' - '+modEnd(k);});
+ document.querySelectorAll('[data-end-time]').forEach(el=>{el.textContent=SCHEDULE.end;});
+}
+
 
 const S=document.querySelectorAll('.slide');
 let i=0;
@@ -1780,14 +1839,46 @@ document.addEventListener('keydown',e=>{
  else if(e.key==='Home'){show(0);}
  else if(e.key==='End'){show(S.length-1);}
  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}
- else if(e.key.toLowerCase()==='t'){document.body.classList.toggle('trener-on');}
+  else if(e.key.toLowerCase()==='t'){document.body.classList.toggle('trener-on');}
+  else if(e.key.toLowerCase()==='d'){toggleTheme();}
 });
 
 document.getElementById('prev').onclick=()=>show(i-1);
 document.getElementById('next').onclick=()=>show(i+1);
 
-document.querySelector('.click-zone.left').onclick=()=>show(i-1);
-document.querySelector('.click-zone.right').onclick=()=>show(i+1);
+// Klik w slajd nawiguje, ALE linki, przyciski i bloki kodu dzialaja normalnie
+document.getElementById('deck').addEventListener('click',e=>{
+ if(e.target.closest('a,button,.code-block,input,textarea,select,.trener-notes'))return;
+ if(window.getSelection&&String(window.getSelection()))return;
+ if(e.clientX<window.innerWidth/2)show(i-1);else show(i+1);
+});
+// Linki zewnetrzne otwieraja sie w nowej karcie
+document.querySelectorAll('#deck a[href^="http"]').forEach(a=>{
+ a.target='_blank';a.rel='noopener';
+});
+
+// Motyw jasny/ciemny (przycisk lub klawisz D), zapamietany w localStorage
+function toggleTheme(){
+ document.body.classList.toggle('light');
+ try{localStorage.setItem('theme',document.body.classList.contains('light')?'light':'dark');}catch(_){}
+}
+document.getElementById('theme-btn').onclick=toggleTheme;
+try{if(localStorage.getItem('theme')==='light')document.body.classList.add('light');}catch(_){}
+
+// Przycisk kopiowania na kazdym bloku kodu
+document.querySelectorAll('.code-block').forEach(b=>{
+ const code=b.innerText;
+ const btn=document.createElement('button');
+ btn.className='copy-btn';btn.textContent='Kopiuj';
+ btn.onclick=ev=>{
+  ev.stopPropagation();
+  navigator.clipboard.writeText(code).then(()=>{
+   btn.textContent='Skopiowano!';btn.classList.add('ok');
+   setTimeout(()=>{btn.textContent='Kopiuj';btn.classList.remove('ok');},1600);
+  });
+ };
+ b.appendChild(btn);
+});
 
 const fired=new Set(JSON.parse(sessionStorage.getItem('fired')||'[]'));
 function beep(){
@@ -1815,7 +1906,7 @@ document.getElementById('bb-x').onclick=()=>document.getElementById('breakbar').
 function tick(){
  const now=new Date();
  const hm=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
- document.getElementById('clock').textContent='clock '+hm;
+  document.getElementById('clock').textContent=hm;
  const mins=now.getHours()*60+now.getMinutes();
  BREAKS.forEach(b=>{
   if(hm>=b[0]&&!fired.has(b[0])){
@@ -1827,6 +1918,7 @@ function tick(){
  });
 }
 
+fillSchedule();
 tick();
 setInterval(tick,15000);
 show(0);
