@@ -26,7 +26,7 @@ body.light{
   --note-bg:#fef9c3;--note-bd:#facc15;--note-text:#92400e;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{font-size:clamp(14px,1.6vw,22px)}
+html{font-size:clamp(13px,1.4vw,19px)}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#000;overflow:hidden}
 #deck{position:relative;width:100vw;height:100vh}
 .slide{
@@ -42,8 +42,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 .slide h1,.slide h2,.slide h3{color:var(--heading)}
 .slide.dark h1,.slide.dark h2,.slide.dark h3{color:var(--dark-text)}
 .slide-body{
-  max-width:1200px;margin:0 auto;
-  padding:clamp(2rem,4vw,4rem) clamp(2rem,4vw,4rem) 5rem;
+  max-width:min(1680px,95vw);margin:0 auto;
+  padding:clamp(1.2rem,2.5vw,2.5rem) clamp(1.6rem,3vw,3.5rem) 4rem;
   min-height:100%;display:flex;flex-direction:column;justify-content:center;
 }
 .title-body{align-items:center;text-align:center}
@@ -52,11 +52,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
   letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem;
 }
 h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
-h2{font-size:clamp(1.4rem,3.2vw,2.3rem);font-weight:700;line-height:1.2;margin-bottom:1.2rem}
+h2{font-size:clamp(1.4rem,3vw,2.1rem);font-weight:700;line-height:1.2;margin-bottom:.9rem}
 h3{font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:600;margin-bottom:.8rem}
 h4{font-size:1rem;font-weight:600;margin-bottom:.4rem}
 p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
-.subtitle{font-size:clamp(1rem,2vw,1.4rem);opacity:.8;margin-bottom:1.5rem}
+.subtitle{font-size:clamp(1rem,1.9vw,1.3rem);opacity:.8;margin-bottom:1rem}
 .accent{color:var(--accent)}
 .accent2{color:var(--accent2)}
 .accent3{color:var(--accent3)}
@@ -76,14 +76,14 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 }
 .break-badge .bb-items{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;font-size:.9rem}
 .break-badge .bb-items span::before{content:"\25CF";color:var(--accent);margin-right:.4rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:.5rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:.5rem}
 /* Symetryczne siatki: 4 kafle = 2x2, 5-6 kafli = 3 kolumny (zamiast 3+1 / 4+1) */
 .cards:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,1fr)}
 .cards:has(> :nth-child(5):last-child),.cards:has(> :nth-child(6):last-child){grid-template-columns:repeat(3,1fr)}
 @media(max-width:900px){.cards:has(> :nth-child(5):last-child),.cards:has(> :nth-child(6):last-child){grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.cards{grid-template-columns:1fr !important}}
 .card{
-  background:var(--bg2);border-radius:10px;padding:1.2rem 1.4rem;
+  background:var(--bg2);border-radius:10px;padding:1rem 1.2rem;
   border-left:4px solid var(--accent2);
 }
 .card.warn{border-left-color:var(--danger)}
@@ -93,7 +93,7 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .slide.dark .card{background:var(--dark-bg2)}
 .slide.dark .card-title{color:var(--accent)}
 .feature-list{list-style:none;padding:0}
-.feature-list li{padding:.4rem 0 .4rem 1.6rem;position:relative;font-size:clamp(.9rem,1.5vw,1.05rem);line-height:1.5}
+.feature-list li{padding:.32rem 0 .32rem 1.6rem;position:relative;font-size:clamp(.9rem,1.5vw,1.05rem);line-height:1.5}
 .feature-list li::before{content:"\25B8";position:absolute;left:.3rem;color:var(--accent);font-weight:700}
 .feature-list.check li::before{content:"\2713";color:var(--accent3)}
 .feature-list.cross li::before{content:"\2717";color:var(--danger)}
@@ -380,7 +380,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
       <div class="proc-step"><div class="ps-num">8</div><div class="ps-title">Live demo + nowe funkcje</div><div class="ps-desc">Prezentacja, rozszerzenia</div></div>
     </div>
     <div class="note-box" style="margin-top:1rem">
-      <strong>Rytm kursu:</strong> zwykle 2 dni przygotowujemy wszystko (narzędzia, dokumentacja, agenci), a trzeciego dnia agenci realizują cały plan.
+      <strong>Rytm kursu:</strong> zwykle 2 dni przygotowujemy wszystko, a trzeciego dnia agenci realizują cały plan.
       <strong>Dzień 1</strong> = kroki <span class="badge">0</span> <span class="badge">1</span> <span class="badge">2 (opcjonalnie)</span>; plan minimum: dojść do ADR <span class="badge blue">4</span>. ADR i inicjalizację zwykle kończymy rano w dniu 2.
     </div>
   </div>
@@ -494,7 +494,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <ul class="feature-list">
           <li><strong>OpenAI</strong> - GPT-5.6 Sol/Terra/Luna, ChatGPT Work, Codex</li>
           <li><strong>Anthropic</strong> - Claude Fable 5 (redeploy 01.07)</li>
-          <li><strong>SpaceXAI+Cursor</strong> - Grok 4.5 (niedostępny w UE)</li>
+          <li><strong>SpaceXAI+Cursor</strong> - Grok 4.5 (w UE na start tylko przez Cursor/OpenRouter)</li>
           <li><strong>Z.ai</strong> - GLM-5.2 + ZCode (1M kontekst, MIT)</li>
           <li><strong>Google</strong> - Antigravity 2.0: desktop app + CLI + SDK (zastąpiło Gemini CLI)</li>
         </ul>
@@ -626,11 +626,8 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
           <li><strong>IntelliJ</strong> - uwaga: na VM działa wolno, na co dzień lepszy micro / Lite XL</li>
         </ul>
       </div>
-      <div class="card warn"><div class="card-title">Uwaga</div>
-        <p>IntelliJ IDEA jest zainstalowany, ale na maszynach wirtualnych kursowych działa <strong>znacznie wolniej</strong>. Na co dzień używaj <strong>micro</strong> lub <strong>Lite XL</strong>. IntelliJ tylko jeśli koniecznie potrzebujesz refaktoryzacji Java.</p>
-      </div>
     </div>
-    <div class="note-box" style="margin-top:.8rem"><strong>Harness</strong> (ang. uprząż) = narzędzie, w które "zaprzęgamy" model: pętla agenta + narzędzia + zarządzanie kontekstem. Claude Code, Codex, OpenCode i Antigravity to harnessy - model (Claude, GPT, Gemini) jest tylko silnikiem. Ten sam model w różnych harnessach działa różnie.</div>
+    <div class="note-box" style="margin-top:.8rem"><strong>Harness</strong> (uprząż) = pętla agenta + narzędzia + zarządzanie kontekstem wokół modelu. Claude Code, Codex, OpenCode i Antigravity to harnessy - model jest tylko silnikiem i w różnych harnessach działa różnie.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1022,30 +1019,24 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
     <div class="cards">
       <div class="card warn"><div class="card-title">Claude Fable 5</div>
         <p>Najinteligentniejszy model Anthropic. $10 / $50, kontekst 1M tokenów, thinking zawsze włączony.</p>
-        <p style="margin-top:.4rem"><span class="badge red">Najtrudniejsze zadania</span></p>
-      </div>
+              </div>
       <div class="card ok"><div class="card-title">Claude Opus 4.8</div>
         <p>Koń roboczy do pracy agentowej: długie, autonomiczne zadania. $5 / $25, kontekst 1M.</p>
-        <p style="margin-top:.4rem"><span class="badge green">Codzienna praca agentowa</span></p>
-      </div>
+              </div>
       <div class="card"><div class="card-title">Claude Sonnet 5 / Haiku 4.5</div>
-        <p>Sonnet 5: $3 / $15 (promocja $2/$10 do 31.08), 1M. Haiku: $1 / $5, 200K. Do prostszych zadań i sub-agentów - ale do trudnej pracy już nie dorównują Fable, Opusowi ani GPT-5.6 Sol.</p>
-        <p style="margin-top:.4rem"><span class="badge blue">Proste i masowe zadania</span></p>
-      </div>
+        <p>Sonnet 5: $3 / $15 (promocja $2/$10 do 31.08). Haiku: $1 / $5. Do prostszych zadań i sub-agentów - do trudnej pracy nie dorównują Fable, Opusowi ani GPT-5.6 Sol.</p>
+              </div>
       <div class="card amber"><div class="card-title">GPT-5.6 (OpenAI)</div>
         <p>Trzy poziomy: <strong>Sol</strong> (flagowy, $5 / $30 - klasa Fable/Opus), <strong>Terra</strong> (średni), <strong>Luna</strong> (szybki i tani). Napędza Codex.</p>
-        <p style="margin-top:.4rem"><span class="badge">Główna alternatywa</span></p>
-      </div>
+              </div>
       <div class="card"><div class="card-title">Grok 4.5 (SpaceXAI + Cursor)</div>
-        <p>$2 / $6, deklarowana "klasa Opusa". Wspólny release z Cursorem (07.07). <strong>Niedostępny w UE.</strong></p>
-        <p style="margin-top:.4rem"><span class="badge red">Brak w UE</span></p>
-      </div>
+        <p>$2 / $6, deklarowana "klasa Opusa" (release z Cursorem 08.07). Start bez UE przez aplikacje/API xAI (EU AI Act) - ale w UE działa już przez Cursora i OpenRouter.</p>
+              </div>
       <div class="card ok"><div class="card-title">GLM-5.2 (Z.ai)</div>
         <p>Open source (MIT), 1M kontekstu, ~1/5 ceny Opusa. Świetne UI, dobry copywriting, autentyczne poczucie humoru. Harness: ZCode.</p>
-        <p style="margin-top:.4rem"><span class="badge green">UI i teksty</span></p>
-      </div>
+              </div>
     </div>
-    <div class="note-box" style="margin-top:.8rem">Na VM kursowych masz dostęp do wielu modeli przez <span class="code-inline">OPENROUTER_API_KEY</span> - porównuj i dobieraj model do zadania, nie odwrotnie.</div>
+    <div class="note-box" style="margin-top:.8rem">Na VM masz wiele modeli przez <span class="code-inline">OPENROUTER_API_KEY</span> - dobieraj model do zadania, nie odwrotnie.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1862,6 +1853,7 @@ function show(n){
  S[i].classList.add('on');
  document.getElementById('bar').style.width=((i+1)/S.length*100)+'%';
  document.getElementById('num').textContent=(i+1)+'/'+S.length;
+ try{history.replaceState(null,'','#'+(i+1));}catch(_){}
  document.getElementById('prev').style.opacity=i===0?'0.25':'1';
  document.getElementById('next').style.opacity=i===S.length-1?'0.25':'1';
 }
@@ -1954,7 +1946,10 @@ function tick(){
 fillSchedule();
 tick();
 setInterval(tick,15000);
-show(0);
+// Deep-link: #12 w URL otwiera slajd 12 (link mozna wyslac uczestnikom)
+function slideFromHash(){const n=parseInt((location.hash||'').slice(1),10);return isNaN(n)?0:Math.min(Math.max(n-1,0),S.length-1);}
+window.addEventListener('hashchange',()=>show(slideFromHash()));
+show(slideFromHash());
 </script>
 </body>
 </html>

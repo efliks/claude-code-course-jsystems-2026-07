@@ -26,7 +26,7 @@ body.light{
   --note-bg:#fef9c3;--note-bd:#facc15;--note-text:#92400e;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{font-size:clamp(14px,1.6vw,22px)}
+html{font-size:clamp(13px,1.4vw,19px)}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#000;overflow:hidden}
 #deck{position:relative;width:100vw;height:100vh}
 .slide{
@@ -42,8 +42,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 .slide h1,.slide h2,.slide h3{color:var(--heading)}
 .slide.dark h1,.slide.dark h2,.slide.dark h3{color:var(--dark-text)}
 .slide-body{
-  max-width:1200px;margin:0 auto;
-  padding:clamp(2rem,4vw,4rem) clamp(2rem,4vw,4rem) 5rem;
+  max-width:min(1680px,95vw);margin:0 auto;
+  padding:clamp(1.2rem,2.5vw,2.5rem) clamp(1.6rem,3vw,3.5rem) 4rem;
   min-height:100%;display:flex;flex-direction:column;justify-content:center;
 }
 .title-body{align-items:center;text-align:center}
@@ -52,11 +52,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
   letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem;
 }
 h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
-h2{font-size:clamp(1.4rem,3.2vw,2.3rem);font-weight:700;line-height:1.2;margin-bottom:1.2rem}
+h2{font-size:clamp(1.4rem,3vw,2.1rem);font-weight:700;line-height:1.2;margin-bottom:.9rem}
 h3{font-size:clamp(1.1rem,2.2vw,1.6rem);font-weight:600;margin-bottom:.8rem}
 h4{font-size:1rem;font-weight:600;margin-bottom:.4rem}
 p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
-.subtitle{font-size:clamp(1rem,2vw,1.4rem);opacity:.8;margin-bottom:1.5rem}
+.subtitle{font-size:clamp(1rem,1.9vw,1.3rem);opacity:.8;margin-bottom:1rem}
 .accent{color:var(--accent)}
 .accent2{color:var(--accent2)}
 .accent3{color:var(--accent3)}
@@ -76,14 +76,14 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 }
 .break-badge .bb-items{display:flex;gap:1.2rem;flex-wrap:wrap;justify-content:center;font-size:.9rem}
 .break-badge .bb-items span::before{content:"\25CF";color:var(--accent);margin-right:.4rem}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:.5rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:.5rem}
 /* Symetryczne siatki: 4 kafle = 2x2, 5-6 kafli = 3 kolumny (zamiast 3+1 / 4+1) */
 .cards:has(> :nth-child(4):last-child){grid-template-columns:repeat(2,1fr)}
 .cards:has(> :nth-child(5):last-child),.cards:has(> :nth-child(6):last-child){grid-template-columns:repeat(3,1fr)}
 @media(max-width:900px){.cards:has(> :nth-child(5):last-child),.cards:has(> :nth-child(6):last-child){grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.cards{grid-template-columns:1fr !important}}
 .card{
-  background:var(--bg2);border-radius:10px;padding:1.2rem 1.4rem;
+  background:var(--bg2);border-radius:10px;padding:1rem 1.2rem;
   border-left:4px solid var(--accent2);
 }
 .card.warn{border-left-color:var(--danger)}
@@ -93,7 +93,7 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .slide.dark .card{background:var(--dark-bg2)}
 .slide.dark .card-title{color:var(--accent)}
 .feature-list{list-style:none;padding:0}
-.feature-list li{padding:.4rem 0 .4rem 1.6rem;position:relative;font-size:clamp(.9rem,1.5vw,1.05rem);line-height:1.5}
+.feature-list li{padding:.32rem 0 .32rem 1.6rem;position:relative;font-size:clamp(.9rem,1.5vw,1.05rem);line-height:1.5}
 .feature-list li::before{content:"\25B8";position:absolute;left:.3rem;color:var(--accent);font-weight:700}
 .feature-list.check li::before{content:"\2713";color:var(--accent3)}
 .feature-list.cross li::before{content:"\2717";color:var(--danger)}
@@ -1829,6 +1829,7 @@ function show(n){
  S[i].classList.add('on');
  document.getElementById('bar').style.width=((i+1)/S.length*100)+'%';
  document.getElementById('num').textContent=(i+1)+'/'+S.length;
+ try{history.replaceState(null,'','#'+(i+1));}catch(_){}
  document.getElementById('prev').style.opacity=i===0?'0.25':'1';
  document.getElementById('next').style.opacity=i===S.length-1?'0.25':'1';
 }
@@ -1921,7 +1922,10 @@ function tick(){
 fillSchedule();
 tick();
 setInterval(tick,15000);
-show(0);
+// Deep-link: #12 w URL otwiera slajd 12 (link mozna wyslac uczestnikom)
+function slideFromHash(){const n=parseInt((location.hash||'').slice(1),10);return isNaN(n)?0:Math.min(Math.max(n-1,0),S.length-1);}
+window.addEventListener('hashchange',()=>show(slideFromHash()));
+show(slideFromHash());
 </script>
 </body>
 </html>
