@@ -271,7 +271,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="break-badge">
       <div class="bb-label" data-schedule-label>Harmonogram dnia (godziny orientacyjne)</div>
       <div class="bb-items" data-schedule-items>
-        <span>wypelniane z konfiguracji SCHEDULE</span>
+        <span>wypełniane z konfiguracji SCHEDULE</span>
       </div>
     </div>
   </div>
@@ -435,7 +435,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="tn-section"><h4>Co robić</h4><ul>
       <li>Pokaż na żywo działanie Context7 w CLI</li>
       <li>Miej gotowy .mcp.json jako przykład konfiguracji</li>
-      <li>Przygotuj stronę do labu Design Guidelines</li>
+      <li>Przygotuj stronę do części RAZEM: Design Guidelines</li>
     </ul></div>
     <div class="tn-section"><h4>Co sprawdzić</h4><ul>
       <li>Czy .mcp.json jest poprawnie skonfigurowany na VM</li>
@@ -519,12 +519,12 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <div class="code-block" style="margin-top:.6rem">{
   "mcpServers": {
     "context7": {
-      "command": "npx",
-      "args": ["-y", "@context7/mcp"]
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
     },
     "playwright": {
-      "command": "npx",
-      "args": ["-y", "@playwright/mcp"]
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@playwright/mcp@latest"]
     }
   }
 }</div>
@@ -538,7 +538,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
             <li>Agent wczytuje konfigurację przy starcie</li>
           </ul>
         </div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Sprawdź:</strong> użyj komendy <span class="code-inline">/mcp</span> w CLI, aby zobaczyć aktywne serwery MCP i ich status - tak zweryfikujesz że konfiguracja zadziałała.</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Sprawdź:</strong> użyj komendy <span class="code-inline">/mcp</span> w CLI, aby zobaczyć aktywne serwery MCP i ich status - tak zweryfikujesz, że konfiguracja zadziałała.</div>
       </div>
     </div>
   </div>
@@ -556,7 +556,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <ul class="feature-list">
           <li>Serwer MCP dostarczający <strong>aktualną dokumentację</strong> bibliotek</li>
           <li>Agent pobiera dokumentację na żądanie, gdy pisze kod</li>
-          <li>Rozwiązuje problem <strong>halucynacji API</strong> - agent nie zmyśla</li>
+          <li>Ogranicza ryzyko użycia nieaktualnego lub wymyślonego API; wynik nadal trzeba zweryfikować</li>
           <li>Działa dla dowolnej biblioteki z indeksem Context7</li>
         </ul>
       </div>
@@ -589,7 +589,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <p>Automatyczne testy end-to-end. Agent wchodzi na aplikację, klika, weryfikuje czy funkcja działa. Bez mockowania.</p>
       </div>
       <div class="card warn"><div class="card-title">Manualne testy agenta</div>
-        <p>Agent testuje aplikację jak człowiek: otwiera, wchodzi przez flow, sprawdza rezultaty. <strong>Nic nie mockujemy</strong> - LLM testowany na żywo.</p>
+        <p>Agent testuje aplikację jak człowiek: otwiera, przechodzi przez flow i sprawdza rezultaty. W E2E używa realnego stosu, w tym prawdziwego LLM.</p>
       </div>
     </div>
     <div class="note-box" style="margin-top:.8rem"><strong>W naszym procesie:</strong> Playwright MCP jest kluczowe na dwóch etapach - Design Guidelines (RAZEM 2.1) oraz testy manualne aplikacji (moduł 2.4 i dzień 3).</div>
@@ -608,7 +608,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <div class="card"><ul class="feature-list cross">
           <li>Serwer MCP działa cały czas, nawet gdy niepotrzebny</li>
           <li>Narzut: proces, pamięć, konfiguracja utrzymania</li>
-          <li>Dobre dla integracji, które używasz non-stop</li>
+          <li>Dobre dla integracji, których używasz stale</li>
         </ul></div>
       </div>
       <div>
@@ -668,7 +668,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         </ul>
       </div>
       <div>
-        <h3 class="accent3">Zanim ruszymy dalej, upewnij się że</h3>
+        <h3 class="accent3">Zanim ruszymy dalej, upewnij się, że</h3>
         <ul class="feature-list check">
           <li>Masz listę tokenów kolorów (paleta)</li>
           <li>Masz tokeny typografii (fonty, rozmiary, wagi)</li>
@@ -689,7 +689,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="tn-section"><h4>Co robić</h4><ul>
       <li>Krąż, pomagaj z Playwright MCP (konfiguracja)</li>
       <li>Pokaż na własnym ekranie: jak agent wyciąga tokens</li>
-      <li>Zadbaj żeby wynik był w repo (design/ folder)</li>
+      <li>Zadbaj, żeby wynik był w repo (katalog design/)</li>
     </ul></div>
     <div class="tn-section"><h4>Co sprawdzić</h4><ul>
       <li>Czy Playwright MCP odpala na każdej VM</li>
@@ -751,7 +751,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
           <li>Plik <span class="code-inline">SKILL.md</span> - instrukcje dla agenta</li>
           <li>Skrypty pomocnicze (bash, python, node)</li>
           <li>Szablony i referencje</li>
-          <li>Metadane określające kiedy się aktywuje</li>
+          <li>Metadane określające, kiedy się aktywuje</li>
         </ul></div>
       </div>
     </div>
@@ -808,7 +808,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <div class="card amber"><ul class="feature-list">
           <li>Opisz workflow jako sekwencję kroków</li>
           <li>Dołącz skrypty, które automatyzują powtarzalne części</li>
-          <li>Zdefiniuj kiedy skill ma się aktywować</li>
+          <li>Zdefiniuj, kiedy skill ma się aktywować</li>
           <li>Przetestuj na nowej sesji</li>
         </ul></div>
       </div>
@@ -843,7 +843,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
           <li>Agent <strong>sam dobiera skill</strong> z pola <span class="code-inline">description</span></li>
           <li>Auto-trigger kontekstowy (heurystyka opisu)</li>
           <li>Dołącza skrypty, assets i referencje</li>
-          <li>Metadane określające kiedy się aktywuje</li>
+          <li>Metadane określające, kiedy się aktywuje</li>
         </ul></div>
         <div class="note-box" style="margin-top:.6rem"><strong>Kiedy skill wielo-plikowy:</strong> gdy agent ma SAM wykryć kontekst, gdy wiedza wymaga wielu plików, gdy potrzebne są dołączone skrypty i assets.</div>
       </div>
@@ -872,13 +872,13 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <h3 class="accent">Hook na zdarzenie</h3>
         <div class="card amber"><ul class="feature-list">
           <li>Uruchamia akcję <strong>deterministycznie</strong> po zdarzeniu</li>
-          <li>Np. po zapisaniu pliku - automatycznie lint</li>
+          <li>Np. <span class="code-inline">PostToolUse</span> po edycji wykonanej przez narzędzia <span class="code-inline">Edit|Write</span> - automatycznie lint</li>
           <li>Niezależne od tego, czy agent o tym pomyśli</li>
           <li>Gwarancja wykonania, nie prośba</li>
         </ul></div>
       </div>
     </div>
-    <div class="note-box" style="margin-top:1rem"><strong>Kontrast:</strong> instrukcja prosi o lint; hook uruchamia lint deterministycznie po zdarzeniu (np. po zapisaniu pliku), niezależnie od tego czy agent o tym pomyśli. Hook to automat, nie sugestia.</div>
+    <div class="note-box" style="margin-top:1rem"><strong>Kontrast:</strong> instrukcja prosi o lint; hook uruchamia lint po edycji wykonanej przez narzędzia agenta. Zmiany przez Bash wymagają dodatkowej obsługi. Hook działa niezależnie od tego, czy agent o nim pomyśli.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -979,7 +979,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <h2>Architektura sub-agentów</h2>
     <div class="two-col">
       <div>
-        <h3 class="accent2">Task tool</h3>
+        <h3 class="accent2">Agent tool (dawniej Task)</h3>
         <div class="card"><ul class="feature-list">
           <li>Mechanizm uruchamiania sub-agenta przez głównego agenta</li>
           <li>Główny agent <strong>deleguje</strong> zadanie, sub-agent <strong>wykonuje</strong></li>
@@ -1090,26 +1090,26 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 2.3 | Zaawansowane</div>
-    <h2>Nested sub-agents - delegowanie dalej</h2>
+    <h2>Nested sub-agents — delegowanie dalej</h2>
     <div class="two-col">
       <div>
-        <h3 class="accent2">Sub-agent deleguje dalej</h3>
+        <h3 class="accent2">Subagent może uruchamiać własnych subagentów</h3>
         <div class="card ok"><ul class="feature-list">
-          <li>Sub-agent może sam uruchomić kolejnego sub-agenta</li>
-          <li>Drzewo delegowania - nie tylko płaska lista</li>
-          <li>Przydatne gdy specjalista ma własne podzadania</li>
-          <li>Każdy poziom ma izolowany kontekst</li>
+          <li>Od Claude Code <strong>v2.1.172</strong> subagent może spawnować kolejnych subagentów</li>
+          <li>Warunek: subagent ma <code>Agent</code> na liście <code>tools</code> w swojej definicji</li>
+          <li>Limit głębokości: <strong>5 poziomów</strong> poniżej głównej sesji (stały, nie do zmiany)</li>
+          <li>Do głównej rozmowy wraca tylko podsumowanie subagenta najwyższego poziomu</li>
         </ul></div>
       </div>
       <div>
-        <h3 class="accent">Limity i konfiguracja</h3>
+        <h3 class="accent">Kiedy używać, kiedy nie</h3>
         <div class="card amber"><ul class="feature-list">
-          <li>Zagnieżdżenie wymaga, by sub-agent miał dostęp do narzędzia <span class="code-inline">Agent</span> / <span class="code-inline">Task</span></li>
-          <li>Każdy harness ma własny limit głębokości i równoległości</li>
-          <li>Limity chronią przed nieskończoną rekurencją i kosztami</li>
-          <li>Sprawdzaj limity w dokumentacji swojego harnessu</li>
+          <li>Użyj, gdy delegowane zadanie samo dzieli się na podzadania (np. reviewer odpala weryfikatora per finding)</li>
+          <li>Prostsza alternatywa: sekwencja subagentów sterowana z głównej sesji</li>
+          <li>Skills dla powtarzalnej procedury, workflow/skrypt dla złożonej orkiestracji</li>
+          <li>Zawsze jawne limity równoległości, czasu i kosztu</li>
         </ul></div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Praktyka:</strong> sub-agent może delegować dalej, gdy ma do tego uprawnienia. Konkretne limity głębokości zależą od harnessu - sprawdź w dokumentacji.</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Praktyka:</strong> zagnieżdżenie zwiększa autonomię, ale utrudnia kontrolę i debugowanie — zaczynaj od płaskiego łańcucha z orkiestratorem, zagnieżdżaj dopiero gdy pośrednie wyniki naprawdę nie powinny trafiać do głównego kontekstu.</div>
       </div>
     </div>
   </div>
@@ -1127,7 +1127,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <div class="card ok"><ul class="feature-list">
           <li>Ten sam wzorzec <strong>zespołu specjalistów</strong> działa poza Claude</li>
           <li>To nie jest funkcja unikalna dla jednego narzędzia</li>
-          <li>Definicje ról (be-dev, fe-dev, qa) przenoszą się między narzędziami</li>
+          <li>Przenosi się wzorzec ról (be-dev, fe-dev, qa), ale definicje wymagają adaptacji do harnessu</li>
           <li>Koncept orkiestratora + wykonawców jest uniwersalny</li>
         </ul></div>
       </div>
@@ -1141,7 +1141,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
           <li><strong>OpenCode</strong></li>
           <li><strong>Goose</strong></li>
         </ul></div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Praktyka:</strong> ten sam wzorzec specjalistów działa także w Codex, Antigravity, Cursor, Copilot, OpenCode i Goose - to nie jest funkcja unikalna dla jednego narzędzia.</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Praktyka:</strong> nie przenoś plików konfiguracyjnych 1:1. Składnia narzędzi, uprawnienia i model komunikacji różnią się między harnessami.</div>
       </div>
     </div>
   </div>
@@ -1204,7 +1204,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         </ul>
       </div>
       <div>
-        <h3 class="accent3">Zanim ruszymy dalej, upewnij się że</h3>
+        <h3 class="accent3">Zanim ruszymy dalej, upewnij się, że</h3>
         <ul class="feature-list check">
           <li>3 sub-agenci mają jasny zakres (bez nakładania ról)</li>
           <li>Każdy ma określony stack i narzędzia</li>
@@ -1288,13 +1288,13 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <div class="card warn"><ul class="feature-list cross">
           <li>Nie pisz kodu bez testu</li>
           <li>Nie pisz więcej kodu niż wymaga test</li>
-          <li>Nie mockuj - testuj na żywo</li>
+          <li>Unit: mockuj zależności; integracja: mockuj tylko zewnętrzny LLM; E2E/manual: używaj realnego stosu</li>
         </ul></div>
         <div class="card ok" style="margin-top:.6rem"><ul class="feature-list check">
           <li>Test opisuje oczekiwane zachowanie</li>
           <li>Implementacja jest minimalna</li>
           <li>Refactor zachowuje zielone testy</li>
-          <li>LLM testowany na żywo (OpenRouter)</li>
+          <li>Realny LLM w E2E i testach manualnych (OpenRouter)</li>
         </ul></div>
       </div>
     </div>
@@ -1347,17 +1347,22 @@ const result = streamText({
           <li>Streaming wyświetlania odpowiedzi</li>
           <li>Formularz: ścieżka (zwrot/reklamacja) + opis + zdjęcie</li>
           <li>Komponent decyzji (pierwszy dymek w chacie)</li>
-          <li>Stylizacja wg design tokens z labu 2.1</li>
+          <li>Stylizacja wg design tokens z części RAZEM 2.1</li>
         </ul></div>
       </div>
       <div>
         <h3 class="accent">useChat hook</h3>
         <div class="card amber"><p><span class="code-inline">useChat</span> z Vercel AI SDK zarządza stanem czatu: wiadomości, wysyłanie, streaming. Minimalny boilerplate.</p></div>
-        <div class="code-block" style="margin-top:.6rem">// React + Vercel AI SDK
-const { messages, input, handleSubmit } = useChat({
-  api: '/api/chat'
-});</div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Design tokens:</strong> użyj tokens z labu 2.1 (kolory, typografia) do stylizacji. Spójność z badaną stroną.</div>
+        <div class="code-block" style="margin-top:.6rem">// React + AI SDK 5
+const [input, setInput] = useState('');
+const { messages, sendMessage } = useChat({
+  transport: new DefaultChatTransport({ api: '/api/chat' }),
+});
+
+// onSubmit:
+sendMessage({ text: input });
+setInput('');</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Design tokens:</strong> użyj tokenów z części RAZEM 2.1 (kolory, typografia) do stylizacji. Spójność z badaną stroną.</div>
       </div>
     </div>
   </div>
@@ -1429,8 +1434,8 @@ const { messages, input, handleSubmit } = useChat({
       <div>
         <h3 class="accent2">Zasada</h3>
         <div class="card ok"><ul class="feature-list check">
-          <li>Osobny commit <strong>po każdym przechodzącym teście</strong></li>
-          <li>Commit po każdej zielonej fazie TDD</li>
+          <li>Osobny commit po spójnej, <strong>zielonej i zweryfikowanej</strong> zmianie</li>
+          <li>Test i minimalna implementacja trafiają do jednego działającego commitu</li>
           <li>NIE jeden wielki commit na końcu</li>
           <li>Historia git = historia implementacji</li>
         </ul></div>
@@ -1444,9 +1449,8 @@ const { messages, input, handleSubmit } = useChat({
           <li>Brak opisu w komunikacie commitu</li>
         </ul></div>
         <div class="code-block" style="margin-top:.6rem"># Dobry cykl:
-git commit -m "test: endpoint analizy zdjęcia (red)"
-# ... implementacja ...
-git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
+# test (Red) → implementacja (Green) → weryfikacja
+git commit -m "Backend: endpoint analizy zdjęcia"</div>
       </div>
     </div>
     <div class="note-box" style="margin-top:1rem"><strong>Dlaczego:</strong> granularne commity pozwalają cofnąć się do działającego stanu. Jeśli refactor zepsuje kod, wracasz o jeden commit. Wymóg &#321;ukasza.</div>
@@ -1465,7 +1469,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
         <ul class="feature-list">
           <li><span class="code-inline">OPENROUTER_API_KEY</span> ustawiony jako zmienna środowiskowa na maszynach kursowych</li>
           <li><strong>Jeden klucz, wiele modeli</strong>, w tym multimodalne</li>
-          <li>Materialy i przykłady kursu używają OpenRouter jako domyślnego providera</li>
+          <li>Materiały i przykłady kursu używają OpenRouter jako domyślnego providera</li>
           <li>Nie potrzebujesz własnego klucza API</li>
         </ul>
       </div>
@@ -1554,7 +1558,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
       <div>
         <h3 class="accent">Dlaczego manualne</h3>
         <div class="card amber"><p>Automatyczne testy sprawdzają logikę. <strong>Manualne testy agenta</strong> sprawdzają doświadczenie użytkownika - czy aplikacja faktycznie działa z punktu widzenia człowieka.</p>
-        <p style="margin-top:.5rem">Weryfikacja screenów vs mocki i design guidelines (screeny strony źródłowej z labu 2.1).</p></div>
+        <p style="margin-top:.5rem">Weryfikacja screenów względem design guidelines i materiałów z części RAZEM 2.1.</p></div>
       </div>
     </div>
     <div class="note-box" style="margin-top:1rem"><strong>Bez mockowania:</strong> LLM testowany na żywo przez cały czas. Agent używa realnego modelu, realnego zdjęcia, realnej decyzji.</div>
@@ -1569,7 +1573,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
     <h2>Praca domowa D2</h2>
     <div class="cards">
       <div class="card amber"><div class="card-title">1. Dokończ aplikację</div>
-        <p>Skończ to, co zacząłeś w labie 2.4. Endpoint, formularz, decyzja, test E2E - wszystko działające end-to-end.</p>
+        <p>Skończ to, co zacząłeś we wspólnej praktyce 2.4. Endpoint, formularz, decyzja, test E2E - wszystko działające end-to-end.</p>
       </div>
       <div class="card ok"><div class="card-title">2. Rozbudowa: historia czatów</div>
         <p>Dodaj historię czatów - lista poprzednich rozmów, możliwość powrotu do wcześniejszej sesji.</p>
@@ -1624,8 +1628,8 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
     <div class="kicker">Dzień 3 - zapowiedź</div>
     <h2>Co jutro (dzień 3)</h2>
     <div class="cards">
-      <div class="card ok"><div class="card-title">3.1 Agent Teams - praca równoległa</div>
-        <p>Od sub-agentów do zespołów. Git worktrees. Task Plan Matrix. <strong>3 agentów równolegle</strong> (BE feature, FE feature, testy E2E - każdy w worktree). Merge i konflikty.</p>
+      <div class="card ok"><div class="card-title">3.1 Równoległe sesje agentów w git worktrees</div>
+        <p>Git worktrees i Task Plan Matrix. <strong>Dwie sesje równolegle</strong> (BE i FE), następnie QA po integracji. Merge i konflikty.</p>
       </div>
       <div class="card amber"><div class="card-title">3.2 Testowanie i jakość</div>
         <p>Self-assessment, feedback loop TDD. qa-engineer: testy E2E (skill) + manualne (MCP). Playwright MCP. Code review z agentem (security, jakość).</p>
@@ -1655,7 +1659,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
         <p>Sub-agenci mają jasny zakres. Nie każ be-dev pisać CSS. Nie każ fe-dev konfigurować bazy. Główny agent orkiestruje.</p>
       </div>
       <div class="card"><div class="card-title">CLAUDE.md iteracyjnie</div>
-        <p>Dodaj regułę za każdym razem, gdy agent popełni błąd. CLAUDE.md to żywy dokument. Max 200 linii.</p>
+        <p>Dodaj regułę za każdym razem, gdy agent popełni błąd. CLAUDE.md to żywy dokument; około 200 linii to zalecenie kursowe, nie limit.</p>
       </div>
       <div class="card warn"><div class="card-title">Twórz skille</div>
         <p>Po powtarzalnej pracy poproś agenta o zbudowanie skilla. Inwestycja 5 minut teraz = oszczędność 30 minut później.</p>
@@ -1737,7 +1741,7 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
       <div>
         <h3 class="accent">Co jutro (dzień 3)</h3>
         <ul class="feature-list">
-          <li><strong>Agent Teams</strong> - praca równoległa, git worktrees</li>
+          <li><strong>Równoległe sesje agentów</strong> - praca w git worktrees</li>
           <li><strong>Testowanie i jakość</strong> - E2E, code review</li>
           <li><strong>CI/CD</strong> - agent w chmurze i GitHub Actions</li>
           <li><strong>Podsumowanie</strong> - demo i retrospektywa</li>
@@ -1761,14 +1765,14 @@ git commit -m "feat: endpoint analizy zdjęcia (green)"</div>
       <li>Przypomnij o pracy domowej (duża - dokończenie aplikacji)</li>
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
-      <li>Upewnij się że każdy zapisał pracę domową</li>
+      <li>Upewnij się, że każdy zapisał pracę domową</li>
       <li>Odpowiedz na ostatnie pytania</li>
       <li>Pożegnaj grupę, przypomnij o godzinie startu dnia 3</li>
     </ul></div>
     <div class="tn-section"><h4>Co sprawdzić</h4><ul>
       <li>Czy wszyscy mają min. działający endpoint</li>
       <li>Czy commity są granularne w historii git</li>
-      <li>Czy design tokens z labu 2.1 są w repo</li>
+      <li>Czy design tokens z części RAZEM 2.1 są w repo</li>
       <li>Zapisz pytania na dzień 3</li>
     </ul></div>
   </div>

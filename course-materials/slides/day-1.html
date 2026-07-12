@@ -271,7 +271,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="break-badge">
       <div class="bb-label" data-schedule-label>Harmonogram dnia (godziny orientacyjne)</div>
       <div class="bb-items" data-schedule-items>
-        <span>wypelniane z konfiguracji SCHEDULE</span>
+        <span>wypełniane z konfiguracji SCHEDULE</span>
       </div>
     </div>
   </div>
@@ -352,7 +352,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
       <li>Pokaż klawisz F i T na żywo</li>
-      <li>Pokaż że klikanie po ekranie też działa</li>
+      <li>Pokaż, że klikanie po ekranie też działa</li>
     </ul></div>
     <div class="tn-section"><h4>Co sprawdzić</h4><ul>
       <li>Czy grupa rozumie format pracy</li>
@@ -446,7 +446,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
           <div class="timeline-item"><div class="timeline-time">2023</div><div>Chat z kodem (ChatGPT, Claude)</div></div>
           <div class="timeline-item"><div class="timeline-time">2024-25</div><div>Agenty kodujące (Claude Code, Cursor)</div></div>
           <div class="timeline-item"><div class="timeline-time">2026</div><div><strong>Zespoły agentów AI</strong></div></div>
-          <div class="timeline-item"><div class="timeline-time">202?</div><div><strong>"Dark Fabric"</strong> - autonomiczna fabryka software'u: agenci pracują 24/7, człowiek nadzoruje wyniki</div></div>
+          <div class="timeline-item"><div class="timeline-time">Kierunek</div><div><strong>dark factory</strong> - trend w stronę autonomicznego procesu wytwarzania oprogramowania, w którym agenci pracują ciągle, a człowiek nadzoruje wyniki</div></div>
         </div>
       </div>
       <div>
@@ -488,15 +488,15 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <p>Programista coraz częściej pełni rolę <strong>architekta i recenzenta</strong>, a nie tylko piszącego kod. Kod generuje agent, człowiek weryfikuje i kieruje.</p>
       </div>
       <div class="card ok"><div class="card-title">TDD z agentem</div>
-        <p>Agent pisze testy PRZED implementacją. Testuje manualnie przez Playwright/Chrome DevTools. <strong>Nic nie jest mockowane</strong> - LLM testowany na żywo.</p>
+        <p>Agent pisze testy PRZED implementacją. Unit testy mockują zależności, integracyjne tylko zewnętrzny LLM, a E2E i testy manualne sprawdzają realny stos.</p>
       </div>
       <div class="card warn"><div class="card-title">Krajobraz 2026</div>
         <ul class="feature-list">
           <li><strong>OpenAI</strong> - GPT-5.6 Sol/Terra/Luna, ChatGPT Work, Codex</li>
           <li><strong>Anthropic</strong> - Claude Fable 5 (redeploy 01.07)</li>
-          <li><strong>SpaceXAI+Cursor</strong> - Grok 4.5 (w UE na start tylko przez Cursor/OpenRouter)</li>
+          <li><strong>xAI</strong> - Grok 4.5, premiera 08.07; początkowo bez dostępu w aplikacjach/API xAI w UE, ale dostępny przez Cursor i OpenRouter; pełny rollout UE oczekiwany w połowie lipca</li>
           <li><strong>Z.ai</strong> - GLM-5.2 + ZCode (1M kontekst, MIT)</li>
-          <li><strong>Google</strong> - Antigravity 2.0: desktop app + CLI + SDK (zastąpiło Gemini CLI)</li>
+          <li><strong>Google</strong> - Antigravity 2.0: desktop app + CLI (zastąpiło Gemini CLI)</li>
         </ul>
       </div>
     </div>
@@ -514,7 +514,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <p>Agenci stają się asynchroniczni: delegujesz zadanie w chmurze lub z telefonu i odbierasz gotowy PR później. Nie blokujesz terminala, nie czekasz na odpowiedź.</p>
       </div>
       <div class="card warn"><div class="card-title">Agent 24/7 w chmurze</div>
-        <p>Agent działający ciągle na VPS lub w kontenerze zwiększa autonomię, ale wymaga <strong>izolacji, limitów i przeglądu zmian przed produkcją</strong>. Bez nadzoru może narobić szkód.</p>
+        <p>Agent działający ciągle na VPS lub w kontenerze zwiększa autonomię, ale wymaga <strong>izolacji, limitów i przeglądu zmian przed produkcją</strong>. Bez nadzoru może wprowadzić poważne błędy.</p>
       </div>
       <div class="card ok"><div class="card-title">Z telefonu</div>
         <p>Delegujesz zadanie z aplikacji mobilnej, agent pracuje w chmurze na Twoim repozytorium. Odbierasz gotowy pull request, gdy jesteś z powrotem przy komputerze.</p>
@@ -535,11 +535,11 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="two-col">
       <div>
         <h3 class="accent2">Screenshot jako kontekst</h3>
-        <div class="card ok"><p>Screenshot potrafi przekazać modelowi <strong>układ, kolory i treść</strong> taniej niż długi opis tekstowy.</p>
+        <div class="card ok"><p>Screenshot bywa wygodniejszy do przekazania modelowi <strong>układu, kolorów i stanu UI</strong>; koszt i jakość zależą od rozdzielczości oraz modelu.</p>
         <ul class="feature-list" style="margin-top:.4rem">
           <li>Jeden obraz zastępuje akapit opisu UI</li>
           <li>Model widzi layout, a nie tylko tekst</li>
-          <li>Kompresja kontekstu: obraz &gt; tysiące słów</li>
+          <li>Model nie zawsze poprawnie odczyta drobne szczegóły interfejsu</li>
           <li>Przydatne przy debugowaniu UI i analizie błędów wizualnych</li>
         </ul></div>
       </div>
@@ -659,7 +659,7 @@ git --version
 
 claude</div>
         <p style="margin-top:.6rem;font-size:.9rem">Repo: <a href="https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07">github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07</a><br>Dostępne od początku i bez limitu czasu - wracaj do niego także po kursie.</p>
-        <div class="note-box" style="margin-top:.6rem"><strong>OPENROUTER_API_KEY</strong> jest już ustawiony na VM (preset). Nie potrzebujesz własnego klucza API na dzisiaj.</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Claude Code:</strong> zaloguj się własnym kontem/subskrypcją Claude albo użyj <span class="code-inline">ANTHROPIC_API_KEY</span>. Preset <span class="code-inline">OPENROUTER_API_KEY</span> służy wyłącznie aplikacji, którą budujemy.</div>
       </div>
     </div>
   </div>
@@ -730,7 +730,7 @@ claude</div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 14: LAB 1.1 ============ -->
+<!-- ============ SLIDE 14: RAZEM 1.1 ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 1.1</div>
@@ -747,7 +747,7 @@ claude</div>
         </ul>
       </div>
       <div>
-        <h3 class="accent3">Zanim ruszymy dalej, upewnij się że</h3>
+        <h3 class="accent3">Zanim ruszymy dalej, upewnij się, że</h3>
         <ul class="feature-list check">
           <li>Claude Code CLI działa bez błędów</li>
           <li>Repo kursowe jest sklonowane i agent w nim pracuje</li>
@@ -764,7 +764,7 @@ claude</div>
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
       <li>Krąż po grupie, pomagaj z problemami środowiska</li>
-      <li>Sprawdź czy OPENROUTER_API_KEY jest widoczny</li>
+      <li>Sprawdź uwierzytelnienie Claude Code; klucz OPENROUTER_API_KEY zweryfikujemy osobno dla budowanej aplikacji</li>
       <li>Uczestnicy Java: uruchom też Claude Code, nie IntelliJ</li>
     </ul></div>
     <div class="tn-section"><h4>Co sprawdzić</h4><ul>
@@ -795,7 +795,7 @@ claude</div>
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
       <li>Pokaż na żywo różnicę CLI interaktywny vs -p</li>
-      <li>Pokaż Desktop App z Hyper-V sandbox</li>
+      <li>Pokaż lokalną sesję Desktop i tryb sandbox Claude Code; na Windows sandbox wymaga WSL2</li>
       <li>Miej gotowe przykłady /compact, /permissions</li>
     </ul></div>
     <div class="tn-section"><h4>Co sprawdzić</h4><ul>
@@ -848,14 +848,14 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
       <div class="card ok"><div class="card-title">Chat z kodem</div>
         <p>Graficzny interfejs do rozmowy z agentem. Wizualne zarządzanie plikami, podgląd diff, sesje w zakładkach.</p>
       </div>
-      <div class="card amber"><div class="card-title">Hyper-V Sandbox</div>
-        <p>Izolowane środowisko wykonania. Agent działa w odizolowanej przestrzeni, nie może wyjść poza wyznaczone granice. Bezpieczne uruchamianie niezweryfikowanego kodu.</p>
+      <div class="card amber"><div class="card-title">Sesje lokalne, chmurowe i SSH</div>
+        <p>Desktop może uruchamiać sesje lokalnie, w chmurze albo przez SSH. Tryb sandbox Claude Code izoluje wykonanie; na Windows wymaga WSL2.</p>
       </div>
       <div class="card"><div class="card-title">Integracja z IDE</div>
         <p>Desktop App współpracuje z edytorami kodu. Możesz mieć agenta obok edytora, bez przełączania okien.</p>
       </div>
       <div class="card warn"><div class="card-title">Kiedy używać</div>
-        <p>Do wizualnej pracy, prezentacji, debugowania z podglądem diff. Sandbox przydatny przy testowaniu niepewnego kodu.</p>
+        <p>Do wizualnej pracy, prezentacji i debugowania z podglądem diff. Sandbox przydatny przy testowaniu niezweryfikowanego kodu.</p>
       </div>
     </div>
   </div>
@@ -871,19 +871,19 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
       <div>
         <h3 class="accent2">Praca w przeglądarce</h3>
         <ul class="feature-list">
-          <li>Dostęp z dowolnego urządzenia z przeglądarką</li>
-          <li>Brak instalacji lokalnej</li>
-          <li>Szybkie zapytania bez kontekstu projektu</li>
-          <li>Przydatne gdy pracujesz na wielu maszynach</li>
+          <li>Chmurowa sesja pracująca na repozytorium GitHub</li>
+          <li>Repo jest klonowane do izolowanej maszyny Anthropic</li>
+          <li>Zmiany trafiają na osobny branch i mogą zakończyć się pull requestem</li>
+          <li>Przydatne, gdy pracujesz na wielu maszynach</li>
         </ul>
       </div>
       <div>
-        <h3 class="accent">Remote environments</h3>
+        <h3 class="accent">Remote Control i SSH</h3>
         <ul class="feature-list">
-          <li>Połączenie z serwerem lub VM przez przeglądarkę</li>
-          <li>Agent działa na zdalnej maszynie, ma dostęp do jej plików</li>
-          <li>Przydatne dla zespołów rozproszonych</li>
-          <li>Limitacje: mniejsza kontrola nad uprawnieniami niż w CLI</li>
+          <li>Remote Control pozwala sterować działającą sesją z innego urządzenia</li>
+          <li>SSH uruchamia sesję na wskazanym serwerze lub VM</li>
+          <li>To osobne mechanizmy od Claude Code Web</li>
+          <li>Uprawnienia i dostęp wynikają ze środowiska, w którym działa sesja</li>
         </ul>
         <div class="note-box" style="margin-top:.8rem">Na tym kursie pracujemy głównie w <strong>CLI</strong> na lokalnej VM. Web i Desktop jako uzupełnienie.</div>
       </div>
@@ -923,11 +923,11 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
         </ul>
       </div>
       <div class="card warn"><div class="card-title">Claude Web</div>
-        <p class="danger"><strong>Szybkie zapytania</strong></p>
+        <p class="danger"><strong>Praca na repozytorium w chmurze</strong></p>
         <ul class="feature-list">
-          <li>Bez dostępu do lokalnego środowiska</li>
-          <li>Remote environments</li>
-          <li>Szybkie konsultacje</li>
+          <li>Izolowana maszyna z repozytorium GitHub</li>
+          <li>Osobny branch i praca asynchroniczna</li>
+          <li>Dostęp z przeglądarki</li>
         </ul>
       </div>
     </div>
@@ -944,12 +944,12 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
       <div>
         <h3 class="accent2"><span class="code-inline">/resume</span></h3>
         <div class="card"><p>Wznawia poprzednią sesję. Agent odtwarza kontekst, historię rozmowy i stan projektu.</p>
-        <p style="margin-top:.5rem">Przydatne gdy przerwałeś pracę i chcesz wrócić, lub gdy przypadkowo zamknąłeś CLI.</p></div>
+        <p style="margin-top:.5rem">Przydatne, gdy przerwałeś pracę i chcesz wrócić lub gdy przypadkowo zamknąłeś CLI.</p></div>
       </div>
       <div>
         <h3 class="accent"><span class="code-inline">/compact</span></h3>
         <div class="card"><p>Kompresuje kontekst sesji. Agent streszcza dotychczasową rozmowę, zachowując kluczowe informacje, a pomijając detale.</p>
-        <p style="margin-top:.5rem">Stosuj gdy sesja robi się długa i agent zaczyna gubić wątki (context rot).</p></div>
+        <p style="margin-top:.5rem">Stosuj, gdy sesja robi się długa i agent zaczyna gubić wątki (context rot).</p></div>
       </div>
     </div>
     <div class="note-box" style="margin-top:1rem"><strong>Wskazówka:</strong> <span class="code-inline">/compact</span> nie usuwa plików ani zmian w kodzie. Kompresuje tylko historię rozmowy w kontekście agenta.</div>
@@ -965,15 +965,15 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
     <div class="cards">
       <div class="card ok"><div class="card-title"><span class="code-inline">/context</span></div>
         <p>Pokazuje strukturę kontekstu agenta: co widzi (system prompt, CLAUDE.md, otwarte pliki, historia sesji).</p>
-        <p style="margin-top:.5rem"><strong>Używaj</strong> gdy agent dziwnie odpowiada - sprawdź co naprawdę wie.</p>
+        <p style="margin-top:.5rem"><strong>Używaj</strong>, gdy agent dziwnie odpowiada - sprawdź, co naprawdę wie.</p>
       </div>
       <div class="card amber"><div class="card-title"><span class="code-inline">/model</span></div>
         <p>Przełącza model (Fable / Opus / Sonnet / Haiku). Mocniejszy model = lepsze wyniki, ale drożej i wolniej.</p>
-        <p style="margin-top:.5rem"><strong>Używaj</strong> gdy potrzebujesz innej jakości/kosztu do konkretnego zadania.</p>
+        <p style="margin-top:.5rem"><strong>Używaj</strong>, gdy potrzebujesz innej jakości lub innego kosztu do konkretnego zadania.</p>
       </div>
       <div class="card warn"><div class="card-title"><span class="code-inline">/permissions</span></div>
         <p>Reguły uprawnień: <span class="code-inline">allow</span> (bez pytania), <span class="code-inline">ask</span> (zawsze pyta), <span class="code-inline">deny</span> (nigdy). Zapisywane w <span class="code-inline">settings.json</span>.</p>
-        <p style="margin-top:.5rem"><strong>Używaj</strong> gdy chcesz kontrolować co agent może robić z Twoim systemem.</p>
+        <p style="margin-top:.5rem"><strong>Używaj</strong>, gdy chcesz kontrolować, co agent może robić z Twoim systemem.</p>
       </div>
     </div>
   </div>
@@ -1018,7 +1018,7 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
     <p class="subtitle">Ceny API za 1M tokenów (wejście / wyjście), stan na 07.2026</p>
     <div class="cards">
       <div class="card warn"><div class="card-title">Claude Fable 5</div>
-        <p>Najinteligentniejszy model Anthropic. $10 / $50, kontekst 1M tokenów, thinking zawsze włączony.</p>
+        <p>Flagowy model Anthropic. $10 / $50, kontekst 1M tokenów, thinking zawsze włączony.</p>
               </div>
       <div class="card ok"><div class="card-title">Claude Opus 4.8</div>
         <p>Koń roboczy do pracy agentowej: długie, autonomiczne zadania. $5 / $25, kontekst 1M.</p>
@@ -1027,16 +1027,16 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
         <p>Sonnet 5: $3 / $15 (promocja $2/$10 do 31.08). Haiku: $1 / $5. Do prostszych zadań i sub-agentów - do trudnej pracy nie dorównują Fable, Opusowi ani GPT-5.6 Sol.</p>
               </div>
       <div class="card amber"><div class="card-title">GPT-5.6 (OpenAI)</div>
-        <p>Trzy poziomy: <strong>Sol</strong> (flagowy, $5 / $30 - klasa Fable/Opus), <strong>Terra</strong> (średni), <strong>Luna</strong> (szybki i tani). Napędza Codex.</p>
+        <p>Trzy poziomy: <strong>Sol</strong> (flagowy, $5 / $30), <strong>Terra</strong> (średni), <strong>Luna</strong> (szybki i tani). Napędza Codex.</p>
               </div>
-      <div class="card"><div class="card-title">Grok 4.5 (SpaceXAI + Cursor)</div>
-        <p>$2 / $6, deklarowana "klasa Opusa" (release z Cursorem 08.07). Start bez UE przez aplikacje/API xAI (EU AI Act) - ale w UE działa już przez Cursora i OpenRouter.</p>
+      <div class="card"><div class="card-title">Grok 4.5 (xAI)</div>
+        <p>$2 / $6, premiera 08.07. Początkowo bez dostępu w aplikacjach/API xAI w UE, ale dostępny przez Cursor i OpenRouter; pełny rollout UE oczekiwany w połowie lipca.</p>
               </div>
       <div class="card ok"><div class="card-title">GLM-5.2 (Z.ai)</div>
-        <p>Open source (MIT), 1M kontekstu, ~1/5 ceny Opusa. Świetne UI, dobry copywriting, autentyczne poczucie humoru. Harness: ZCode.</p>
+        <p>Open source (MIT), 1M kontekstu, ~1/5 ceny Opusa. Świetne UI, dobry copywriting i autentyczne poczucie humoru to <strong>subiektywna ocena trenera po kilkudziesięciu godzinach pracy</strong>. Harness: ZCode.</p>
               </div>
     </div>
-    <div class="note-box" style="margin-top:.8rem">Na VM masz wiele modeli przez <span class="code-inline">OPENROUTER_API_KEY</span> - dobieraj model do zadania, nie odwrotnie.</div>
+    <div class="note-box" style="margin-top:.8rem"><span class="code-inline">OPENROUTER_API_KEY</span> daje budowanej aplikacji dostęp do wielu modeli. Nie uwierzytelnia Claude Code, który wymaga własnego konta/subskrypcji Claude albo <span class="code-inline">ANTHROPIC_API_KEY</span>.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1110,16 +1110,16 @@ cat error.log | claude -p "wyjaśnij błąd"</div>
   <div class="slide-body">
     <div class="kicker">Moduł 1.2</div>
     <h2>Uprawnienia: tryby pracy agenta</h2>
-    <p class="subtitle">Przełączasz na żywo klawiszem <span class="code-inline">Shift+Tab</span> - aktualny tryb widać w pasku stanu</p>
+    <p class="subtitle"><span class="code-inline">Shift+Tab</span> domyślnie przełącza: default → acceptEdits → plan; aktualny tryb widać w pasku stanu</p>
     <div class="two-col">
       <div>
         <h3 class="accent2">Tryby uprawnień</h3>
         <ul class="feature-list">
-          <li><span class="code-inline">default</span> - pyta o zgodę na każdą akcję (bezpieczny start)</li>
+          <li><span class="code-inline">default</span> - odczyt bez pytania; edycje, komendy i sieć według reguł uprawnień</li>
           <li><span class="code-inline">accept edits</span> - automatycznie akceptuje edycje plików, o resztę pyta</li>
           <li><span class="code-inline">plan</span> - agent tylko czyta i planuje; zmiany dopiero po Twoim zatwierdzeniu</li>
-          <li><span class="code-inline">auto</span> - klasyfikator w tle sam ocenia, co jest bezpieczne (nowość 2026)</li>
-          <li><span class="code-inline">bypass permissions</span> - zero pytań ("YOLO"). Tylko w izolowanym środowisku!</li>
+          <li><span class="code-inline">auto</span> - dostępny po spełnieniu dodatkowych warunków; klasyfikator ocenia ryzyko akcji</li>
+          <li><span class="code-inline">bypass permissions</span> - pełne pominięcie pytań o zgodę; tylko w izolowanym środowisku i po świadomym włączeniu</li>
         </ul>
         <div class="code-block" style="margin-top:.6rem">claude --permission-mode plan
 claude --dangerously-skip-permissions</div>
@@ -1130,7 +1130,7 @@ claude --dangerously-skip-permissions</div>
           <p><span class="code-inline">allow</span> / <span class="code-inline">ask</span> / <span class="code-inline">deny</span> per narzędzie lub komenda - np. deny na <span class="code-inline">rm</span> i deploy, allow na testy i lint. Edytuj przez <span class="code-inline">/permissions</span>.</p>
         </div>
         <div class="card amber" style="margin-top:.6rem"><div class="card-title">Sandbox</div>
-          <p>Izolowane środowisko wykonania - Hyper-V sandbox w Desktop App do kodu, któremu nie ufasz.</p>
+          <p>Izolowane środowisko wykonania Claude Code. Na Windows sandbox wymaga WSL2.</p>
         </div>
         <div class="note-box" style="margin-top:.6rem"><strong>Zasada:</strong> minimalne uprawnienia na start, rozszerzaj świadomie. W Codex analogiczne tryby: read-only / auto / full access.</div>
       </div>
@@ -1139,7 +1139,7 @@ claude --dangerously-skip-permissions</div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 25: LAB 1.2 ============ -->
+<!-- ============ SLIDE 25: RAZEM 1.2 ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 1.2</div>
@@ -1158,9 +1158,9 @@ claude --dangerously-skip-permissions</div>
         </ul>
       </div>
       <div>
-        <h3 class="accent3">Zanim ruszymy dalej, upewnij się że</h3>
+        <h3 class="accent3">Zanim ruszymy dalej, upewnij się, że</h3>
         <ul class="feature-list check">
-          <li>Wiesz kiedy użyć CLI interaktywnego, a kiedy <span class="code-inline">-p</span></li>
+          <li>Wiesz, kiedy użyć CLI interaktywnego, a kiedy <span class="code-inline">-p</span></li>
           <li>Rozumiesz co pokazuje <span class="code-inline">/context</span> i co robi <span class="code-inline">/compact</span></li>
           <li>Masz min. 1 własną regułę allow lub deny</li>
         </ul>
@@ -1242,7 +1242,7 @@ claude --dangerously-skip-permissions</div>
         </ul></div>
       </div>
     </div>
-    <div class="note-box" style="margin-top:1rem"><strong>Kluczowa różnica:</strong> prompt engineering = pojedyncze zapytanie. Context engineering = środowisko, w którym agent żyje i pracuje.</div>
+    <div class="note-box" style="margin-top:1rem"><strong>Kluczowa różnica:</strong> prompt engineering = pojedyncze zapytanie. Context engineering = środowisko, w którym agent działa i pracuje.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1293,7 +1293,7 @@ claude --dangerously-skip-permissions</div>
       <div class="card"><div class="card-title">5. Aktywne pliki</div><p>Pliki otwarte, wzmiankowane lub edytowane w bieżącej sesji.</p></div>
       <div class="card warn"><div class="card-title">= Kontekst agenta</div><p>Suma wszystkich powyższych. Im lepszy kontekst, tym lepsze wyniki.</p></div>
     </div>
-    <div class="note-box" style="margin-top:.8rem">Użyj <span class="code-inline">/context</span> aby zobaczyć aktualny stan kontekstu swojego agenta.</div>
+    <div class="note-box" style="margin-top:.8rem">Użyj <span class="code-inline">/context</span>, aby zobaczyć aktualny stan kontekstu swojego agenta.</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1317,9 +1317,13 @@ claude --dangerously-skip-permissions</div>
       </div>
       <div>
         <h3 class="accent">Path-based rules</h3>
-        <div class="card amber"><p>Reguły zależne od katalogu, definiowane w głównym pliku konfiguracyjnym.</p>
-        <p style="margin-top:.5rem">Zamiast wielu plików, reguły w jednym miejscu z warunkami na ścieżkę.</p>
-        <p style="margin-top:.5rem">Hierarchia czytania: <strong>global -&gt; root -&gt; subdir</strong>. Każdy poziom może nadpisać lub rozszerzyć poprzedni.</p></div>
+        <div class="card amber"><p>Reguły to pliki Markdown w <span class="code-inline">.claude/rules/</span> z polem <span class="code-inline">paths:</span> we frontmatter.</p>
+        <div class="code-block" style="margin-top:.5rem"># .claude/rules/frontend.md
+---
+paths:
+  - "frontend/**/*"
+---
+Używaj komponentów funkcyjnych React.</div></div>
       </div>
     </div>
     <div class="note-box"><strong>Wybór:</strong> nested dla dużych projektów z wyraźnymi modułami. Path-based dla mniejszych projektów z specyficznymi regułami per katalog.</div>
@@ -1333,8 +1337,8 @@ claude --dangerously-skip-permissions</div>
     <div class="kicker">Moduł 1.3</div>
     <h2>Best practices: jak pisać CLAUDE.md</h2>
     <div class="cards">
-      <div class="card ok"><div class="card-title">Maksymalnie ~200 linii</div>
-        <p>Krótki plik jest skuteczny. Agent czyta cały kontekst przy starcie - za długi plik = więcej tokenów, gorsza jakość.</p>
+      <div class="card ok"><div class="card-title">Krótko i konkretnie</div>
+        <p>Celuj w około 200 linii jako zalecenie kursowe, nie limit techniczny. Pełny CLAUDE.md jest ładowany niezależnie od długości.</p>
       </div>
       <div class="card amber"><div class="card-title">Konkretne reguły</div>
         <p>Źle: "Pisz czysty kod". Dobrze: "Używaj TypeScript strict mode, wszystkie funkcje muszą mieć typy zwracane."</p>
@@ -1358,12 +1362,12 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
 
 ## Testy
 - Testy PRZED implementacją (TDD)
-- Playwright do testów e2e, NIC nie mockuj</div>
+- Unit: mocki zależności; integracja: mock tylko zewnętrznego LLM; E2E: realny stos</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 32: LAB 1.3 ============ -->
+<!-- ============ SLIDE 32: RAZEM 1.3 ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 1.3</div>
@@ -1384,10 +1388,10 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
         <h3 class="accent3">Dobry plik poznasz po tym, że</h3>
         <ul class="feature-list check">
           <li>Reguły są konkretne, nie ogólniki ("TypeScript strict mode", nie "czysty kod")</li>
-          <li>Mieści się w ~200 liniach</li>
+          <li>Jest krótki i konkretny; około 200 linii to zalecenie kursowe</li>
           <li>Agent po restarcie faktycznie wczytał reguły (sprawdź <span class="code-inline">/context</span>)</li>
         </ul>
-        <div class="note-box" style="margin-top:.8rem">To żywy dokument - będziemy go rozwijać przez cały kurs, za każdym razem gdy agent popełni błąd.</div>
+        <div class="note-box" style="margin-top:.8rem">To żywy dokument - będziemy go rozwijać przez cały kurs za każdym razem, gdy agent popełni błąd.</div>
       </div>
     </div>
   </div>
@@ -1395,7 +1399,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
     <div class="tn-section"><h4>Co mówić</h4><ul>
       <li>To najważniejsza praktyka dnia</li>
       <li>Reguły mają być konkretne, nie ogólnikowe</li>
-      <li>Iteracja: dodaj regułę gdy agent się myli</li>
+      <li>Iteracja: dodaj regułę, gdy agent się myli</li>
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
       <li>Krąż, sprawdzaj czy reguły są konkretne</li>
@@ -1403,7 +1407,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
       <li>Pokaż swój własny CLAUDE.md jako przykład</li>
     </ul></div>
     <div class="tn-section"><h4>Co sprawdzić</h4><ul>
-      <li>Min. 5 reguł, max 200 linii</li>
+      <li>Min. 5 reguł; około 200 linii to zalecenie kursowe, nie limit</li>
       <li>Stack opisany</li>
       <li>Czy agent wczytał reguły (/context)</li>
       <li>Uczestnicy Java: niech też napiszą CLAUDE.md</li>
@@ -1425,7 +1429,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
   <div class="trener-notes">
     <div class="tn-section"><h4>Co mówić</h4><ul>
       <li>Ostatni moduł - planujemy projekt kursowy</li>
-      <li>Nie budujemy jeszcze, tylko projektujemy</li>
+      <li>Najpierw kończymy specyfikację; implementację zaczynamy po PRD i ADR</li>
       <li>To fundament na dni 2 i 3</li>
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
@@ -1463,12 +1467,12 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
         <ul class="feature-list">
           <li>Agent inicjalizuje template Vercel AI</li>
           <li>TDD: testy przed kodem</li>
-          <li>LLM testowany na żywo, nic nie mockujemy</li>
+          <li>Unit: mocki zależności; integracja: mock zewnętrznego LLM; E2E: realny stos</li>
           <li>3 dni: od planu do demo</li>
         </ul>
       </div>
       <div class="card warn"><div class="card-title">Dzisiaj</div>
-        <p>Planujemy: PRD, a jeśli zdążymy - ADR. <strong>Nie budujemy jeszcze</strong> - budowa to dni 2 i 3. Zaczynamy od pustej aplikacji, nie od gotowca.</p>
+        <p>Kończymy <strong>PRD i ADR</strong>. Implementację zaczynamy po specyfikacji; budowa trwa w dniach 2 i 3. Zaczynamy od pustej aplikacji, nie od gotowca.</p>
       </div>
     </div>
   </div>
@@ -1636,7 +1640,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
         </ul>
       </div>
     </div>
-    <div class="note-box" style="margin-top:1rem"><strong>Uwaga:</strong> to tylko wskazanie że wsparcie istnieje. Szczegóły i implementacja w dniach 2 i 3. Główny tor kursu to TypeScript + Vercel AI SDK (pokazuje Lucas).</div>
+    <div class="note-box" style="margin-top:1rem"><strong>Uwaga:</strong> to tylko wskazanie, że wsparcie istnieje. Szczegóły i implementacja w dniach 2 i 3. Główny tor kursu to TypeScript + Vercel AI SDK (pokazuje Lucas).</div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
@@ -1645,7 +1649,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 1.4</div>
-    <h2>Dostęp do LLM: OPENROUTER_API_KEY</h2>
+    <h2>Dostęp aplikacji do LLM: OPENROUTER_API_KEY</h2>
     <div class="two-col">
       <div>
         <h3 class="accent2">Co to jest?</h3>
@@ -1653,7 +1657,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
           <li>Zmienna środowiskowa <span class="code-inline">OPENROUTER_API_KEY</span> już ustawiona na VM</li>
           <li><strong>Jeden klucz, wiele modeli</strong> - nie potrzebujesz osobnych kont</li>
           <li>Modele multimodalne dostępne (analiza zdjęć)</li>
-          <li>Preset kursowy - gotowy do użycia od razu</li>
+          <li>Preset kursowy dla aplikacji - gotowy do użycia od razu</li>
         </ul>
       </div>
       <div>
@@ -1661,14 +1665,14 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
         <div class="code-block">echo %OPENROUTER_API_KEY%</div>
         <p style="margin-top:.6rem">Lub w PowerShell:</p>
         <div class="code-block">$env:OPENROUTER_API_KEY</div>
-        <div class="note-box" style="margin-top:.6rem"><strong>Nie potrzebujesz własnego klucza API</strong> na dzisiaj. Wszystko jest skonfigurowane na VM.</div>
+        <div class="note-box" style="margin-top:.6rem"><strong>To klucz aplikacji, nie Claude Code.</strong> Claude Code uwierzytelniasz własnym kontem/subskrypcją Claude albo przez <span class="code-inline">ANTHROPIC_API_KEY</span>.</div>
       </div>
     </div>
   </div>
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 42: LAB 1.4 ============ -->
+<!-- ============ SLIDE 42: RAZEM 1.4 ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 1.4</div>
@@ -1692,7 +1696,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
           <li>Opisuje CO budujemy i DLA KOGO - bez decyzji technicznych (te idą do ADR)</li>
           <li>Agent by go zrozumiał bez Ciebie obok</li>
         </ul>
-        <div class="note-box" style="margin-top:.8rem">PRD to Twój dokument projektowy na resztę kursu - jutro rano dokończymy ADR i zainicjalizujemy aplikację.</div>
+        <div class="note-box" style="margin-top:.8rem">PRD i ADR to Twoje dokumenty projektowe na resztę kursu. Dzisiaj je kończymy; w pracy domowej inicjalizujesz aplikację.</div>
       </div>
     </div>
   </div>
@@ -1724,7 +1728,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
     <h2>Praca domowa D1</h2>
     <div class="cards">
       <div class="card amber"><div class="card-title">1. Dokończ scaffolding</div>
-        <p>Uruchom template Vercel AI SDK. Upewnij się że projekt kompiluje się i startuje bez błędów.</p>
+        <p>Uruchom template Vercel AI SDK. Upewnij się, że projekt kompiluje się i startuje bez błędów.</p>
       </div>
       <div class="card ok"><div class="card-title">2. Rozbuduj CLAUDE.md</div>
         <p>Dodaj minimum 10 konkretnych reguł. Wymień wszystkie narzędzia, których agent ma używać i unikać.</p>
@@ -1756,13 +1760,13 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
           <li>Skonfigurowaliśmy środowisko (moduł 1.1)</li>
           <li>Opanowaliśmy tryby pracy i komendy (moduł 1.2)</li>
           <li>Stworzyliśmy CLAUDE.md / AGENTS.md (moduł 1.3)</li>
-          <li>Zaplanowaliśmy projekt: PRD (moduł 1.4)</li>
+          <li>Zaplanowaliśmy projekt: PRD + ADR (moduł 1.4)</li>
         </ul>
       </div>
       <div>
         <h3 class="accent">Co jutro (dzień 2)</h3>
         <ul class="feature-list">
-          <li>Rano: dokończenie <strong>ADR</strong> + inicjalizacja aplikacji</li>
+          <li>Start od gotowego <strong>PRD, ADR i scaffoldingu</strong> aplikacji</li>
           <li><strong>MCP</strong> - Model Context Protocol</li>
           <li><strong>Skills</strong> - umiejętności agenta</li>
           <li><strong>Sub-agenci</strong> - delegowanie zadań i budowa aplikacji</li>
@@ -1786,7 +1790,7 @@ TypeScript, Next.js, Tailwind CSS, PostgreSQL
       <li>Przypomnij o pracy domowej</li>
     </ul></div>
     <div class="tn-section"><h4>Co robić</h4><ul>
-      <li>Upewnij się że każdy zapisał pracę domową</li>
+      <li>Upewnij się, że każdy zapisał pracę domową</li>
       <li>Odpowiedz na ostatnie pytania</li>
       <li>Pożegnaj grupę</li>
     </ul></div>
