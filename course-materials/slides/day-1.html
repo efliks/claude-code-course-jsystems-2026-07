@@ -102,7 +102,7 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .code-block{
   background:var(--code-bg);color:var(--code-text);padding:.8rem 1.2rem;border-radius:8px;
   font-family:Consolas,Monaco,"Courier New",monospace;font-size:.85rem;
-  overflow-x:auto;line-height:1.5;margin:.5rem 0;
+  overflow-x:auto;line-height:1.5;margin:.5rem 0;white-space:pre-wrap;
   position:relative;border:1px solid rgba(125,132,168,.25);
 }
 .copy-btn{
@@ -271,7 +271,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="break-badge">
       <div class="bb-label" data-schedule-label>Harmonogram dnia (godziny orientacyjne)</div>
       <div class="bb-items" data-schedule-items>
-        <span>wypełniane z konfiguracji SCHEDULE</span>
+        <span>10:30 Przerwa 15 min</span><span>13:00 Obiad 30 min</span><span>14:45 Przerwa 10 min (opcjonalna)</span><span>16:00 Koniec</span>
       </div>
     </div>
   </div>
@@ -632,33 +632,61 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
   <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
 </section>
 
-<!-- ============ SLIDE 11: ŚRODOWISKO - VMs I START ============ -->
+<!-- ============ SLIDE 11: ŚRODOWISKO - DOSTĘP DO VM ============ -->
 <section class="slide">
   <div class="slide-body">
     <div class="kicker">Moduł 1.1 | Weryfikacja środowiska</div>
-    <h2>Klonowanie repozytorium kursowego</h2>
+    <h2>Twoja VM - dostęp i zasady pracy</h2>
     <div class="two-col">
       <div>
-        <h3 class="accent2">Kroki startowe</h3>
+        <h3 class="accent2">Logowanie (dane od trenera)</h3>
+        <ul class="feature-list">
+          <li>Każdy dostaje: <strong>adres IP + login + hasło</strong> (na czacie Zoom)</li>
+          <li>Połączenie: <strong>Remote Desktop</strong> (Win: <span class="code-inline">mstsc</span>, mac: aplikacja Windows App)</li>
+          <li>Windows Server 2022, wszystkie narzędzia preinstalowane</li>
+          <li>Na VM wszystko działa <strong>dokładnie tak, jak na pokazach trenera</strong></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="accent">VM czy własny komputer?</h3>
+        <div class="card ok"><ul class="feature-list">
+          <li><strong>Zalecane: VM</strong> - identyczne środowisko, zero niespodzianek, trener pomoże od ręki</li>
+        </ul></div>
+        <div class="note-box" style="margin-top:.6rem"><strong>Praca lokalna = na własne ryzyko.</strong> Możesz sklonować repo także u siebie, ale lokalne środowisko może się różnić - debugowanie różnic tylko, jeśli starczy czasu (najlepiej po kursie). Dobry układ: na kursie VM, po kursie powtórka lokalnie.</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">JSystems | Claude Code - od zera do zespołu agentów AI</div>
+</section>
+
+<!-- ============ SLIDE 11b: FORK + CLONE + BRANCH ============ -->
+<section class="slide">
+  <div class="slide-body">
+    <div class="kicker">Moduł 1.1 | Weryfikacja środowiska</div>
+    <h2>Fork, clone i branch - start pracy z repo</h2>
+    <div class="two-col">
+      <div>
+        <h3 class="accent2">Kroki startowe (RAZEM)</h3>
         <ol class="feature-list">
-          <li>Otwórz terminal (PowerShell lub cmd)</li>
-          <li>Przejdź do katalogu roboczego</li>
-          <li>Sklonuj repo kursowe</li>
-          <li>Sprawdź czy Node.js i Git działają</li>
+          <li><strong>Fork</strong> repo kursowego na swoje konto GitHub</li>
+          <li><strong>Clone</strong> swojego forka na VM</li>
+          <li>Dodaj <strong>upstream</strong> (repo trenera) - stąd pobierzesz aktualizacje</li>
+          <li>Utwórz <strong>branch roboczy</strong> - aplikację budujemy zawsze na branchu, <span class="code-inline">main</span> zostaje na materiały</li>
           <li>Uruchom <span class="code-inline">claude</span> w katalogu projektu</li>
         </ol>
+        <div class="note-box" style="margin-top:.6rem"><strong>Aktualizacje od trenera</strong> (w trakcie i po kursie - nowe przykłady, historia czatu, podsumowania): <span class="code-inline">git checkout main &amp;&amp; git pull upstream main</span></div>
       </div>
       <div>
         <h3 class="accent">Kluczowe komendy</h3>
         <div class="code-block">cd C:\Users\Participant\DEV
-git clone https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07.git
+git clone https://github.com/TWOJ-LOGIN/claude-code-course-jsystems-2026-07.git
 cd claude-code-course-jsystems-2026-07
 
-node --version
-git --version
+git remote add upstream https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07.git
+git checkout -b moja-praca
 
 claude</div>
-        <p style="margin-top:.6rem;font-size:.9rem">Repo: <a href="https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07">github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07</a><br>Dostępne od początku i bez limitu czasu - wracaj do niego także po kursie.</p>
+        <p style="margin-top:.6rem;font-size:.9rem">Repo trenera: <a href="https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07">github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07</a><br>Dostępne od początku i bez limitu czasu - wracaj do niego także po kursie. Pełna instrukcja: README.</p>
         <div class="note-box" style="margin-top:.6rem"><strong>Claude Code:</strong> zaloguj się własnym kontem/subskrypcją Claude albo użyj <span class="code-inline">ANTHROPIC_API_KEY</span>. Preset <span class="code-inline">OPENROUTER_API_KEY</span> służy wyłącznie aplikacji, którą budujemy.</div>
       </div>
     </div>

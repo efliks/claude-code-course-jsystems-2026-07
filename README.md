@@ -13,9 +13,11 @@
 
 ---
 
-## Start: fork → clone → upstream
+## Start: fork → clone → branch → upstream
 
 Materiały będą aktualizowane w trakcie i po kursie (nowe przykłady, historia czatu z Zoom, podsumowania nagrań). Dlatego **zrób fork zamiast zwykłego clone** — będziesz mógł pobierać aktualizacje, zachowując własną pracę.
+
+> **Zasada repo:** `main` = wyłącznie materiały kursowe (aktualizowane przez trenera). Aplikację budujemy **zawsze na osobnym branchu** — dzięki temu `main` w Twoim forku zostaje czysty i aktualizacje od trenera wchodzą bez konfliktów.
 
 1. **Fork:** kliknij `Fork` na stronie tego repozytorium (potrzebujesz konta GitHub).
 2. **Clone forka na VM:**
@@ -27,15 +29,24 @@ Materiały będą aktualizowane w trakcie i po kursie (nowe przykłady, historia
    ```bash
    git remote add upstream https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07.git
    ```
-4. **Pobieranie aktualizacji od trenera** (w trakcie i po kursie):
-   ```bash
-   git fetch upstream
-   git merge upstream/main
-   ```
-5. **Własna praca na osobnym branchu** (`main` zostaje na materiały kursowe):
+4. **Od razu utwórz branch roboczy** — na nim budujesz aplikację i robisz notatki:
    ```bash
    git checkout -b moja-praca
    ```
+5. **Pobieranie aktualizacji od trenera** (w trakcie i po kursie):
+   ```bash
+   git checkout main
+   git pull upstream main
+   git checkout moja-praca
+   ```
+   Jeśli chcesz mieć nowe materiały także na branchu roboczym: `git merge main`.
+
+## Praca na VM czy lokalnie?
+
+Każdy uczestnik dostaje **VM z Windows Server 2022** (IP + login + hasło od trenera na starcie) z preinstalowanymi wszystkimi narzędziami — tam wszystko działa dokładnie tak, jak na pokazach trenera.
+
+- **Zalecane: pracuj na VM** — identyczne środowisko, zero niespodzianek, trener może pomóc od ręki.
+- **Możesz pracować lokalnie** (sklonuj fork także u siebie), ale **na własne ryzyko**: lokalne środowisko może się różnić, a debugowanie różnic robimy tylko, jeśli starczy czasu (najlepiej po kursie).
 
 ## Dostęp do Claude Code (pierwszy dzień kursu)
 

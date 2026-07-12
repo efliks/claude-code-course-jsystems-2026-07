@@ -75,7 +75,7 @@ p{font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.6;margin-bottom:.6rem}
 .feature-list.cross li::before{content:"\2717";color:var(--danger)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:.5rem}
 @media(max-width:768px){.two-col{grid-template-columns:1fr}}
-.code-block{background:var(--code-bg);color:var(--code-text);padding:.8rem 1.2rem;border-radius:8px;font-family:Consolas,Monaco,"Courier New",monospace;font-size:.85rem;overflow-x:auto;line-height:1.5;margin:.5rem 0;position:relative;border:1px solid rgba(125,132,168,.25)}
+.code-block{background:var(--code-bg);color:var(--code-text);padding:.8rem 1.2rem;border-radius:8px;font-family:Consolas,Monaco,"Courier New",monospace;font-size:.85rem;overflow-x:auto;line-height:1.5;margin:.5rem 0;white-space:pre-wrap;position:relative;border:1px solid rgba(125,132,168,.25)}
 .copy-btn{position:absolute;top:.4rem;right:.4rem;background:var(--bg3);color:var(--text);border:1px solid var(--muted);border-radius:6px;font-size:.65rem;padding:.2rem .55rem;cursor:pointer;opacity:.65;transition:opacity .15s;font-family:inherit}
 .copy-btn:hover{opacity:1}
 .copy-btn.ok{background:var(--accent3);color:#0f172a;border-color:var(--accent3);opacity:1}
@@ -173,7 +173,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="break-badge">
       <div class="bb-label" data-schedule-label>Harmonogram dnia (godziny orientacyjne)</div>
       <div class="bb-items" data-schedule-items>
-        <span>wypełniane z konfiguracji SCHEDULE</span>
+        <span>10:30 Przerwa 15 min</span><span>13:00 Obiad 30 min</span><span>14:45 Przerwa 10 min (opcjonalna)</span><span>16:00 Koniec</span>
       </div>
     </div>
   </div>
