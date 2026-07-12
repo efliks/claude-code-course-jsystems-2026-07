@@ -36,7 +36,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 .slide.dark a{color:var(--accent)}
 .slide h1,.slide h2,.slide h3{color:var(--heading)}
 .slide.dark h1,.slide.dark h2,.slide.dark h3{color:var(--dark-text)}
-.slide-body{max-width:min(1680px,95vw);margin:0 auto;padding:clamp(1.2rem,2.5vw,2.5rem) clamp(1.6rem,3vw,3.5rem) 4rem;min-height:100%;display:flex;flex-direction:column;justify-content:center}
+.slide-body{max-width:min(1680px,95vw);margin:0 auto;padding:clamp(2rem,4vh,3rem) clamp(1.6rem,3vw,3.5rem) clamp(1.6rem,3.5vh,2.6rem);min-height:100%;display:flex;flex-direction:column;justify-content:center}
 .title-body{align-items:center;text-align:center}
 .kicker{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.5rem}
 h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:1rem}
@@ -216,6 +216,7 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
         <ul class="feature-list check">
           <li><span class="code-inline">&rarr;</span> / <span class="code-inline">Spacja</span> / <span class="code-inline">PgDn</span> - następny slajd</li>
           <li><span class="code-inline">&larr;</span> / <span class="code-inline">PgUp</span> - poprzedni slajd</li>
+          <li><span class="code-inline">&darr;</span> / <span class="code-inline">&uarr;</span> - przewijanie zbyt wysokiego slajdu</li>
           <li><span class="code-inline">Home</span> / <span class="code-inline">End</span> - pierwszy / ostatni slajd</li>
           <li><span class="code-inline">F</span> - pełny ekran (fullscreen)</li>
           <li>Klik w lewą / prawą połowę ekranu - nawigacja</li>
@@ -339,19 +340,14 @@ hr.sep{border:none;border-top:1px solid var(--muted);opacity:.2;margin:1rem 0}
     <div class="kicker">3.1 - narzędzie</div>
     <h2>Git worktrees - równoległe środowiska</h2>
     <p>Git worktree pozwala mieć wiele checkout-ów tego samego repozytorium w osobnych katalogach. Każdy agent pracuje w swoim katalogu bez blokowania innych.</p>
-    <div class="code-block">
-# Tworzenie worktree dla agenta backend
-git worktree add -b feature/backend-auth ../project-be
-
-# Tworzenie worktree dla agenta frontend
-git worktree add -b feature/frontend-chat ../project-fe
-
-# Tworzenie worktree dla agenta testów E2E
-git worktree add -b feature/e2e-tests ../project-e2e
-
-# Lista aktywnych worktrees
-git worktree list
-    </div>
+    <div class="code-block"># Tworzenie worktree dla agenta backend
+git worktree add -b feature/backend-auth ../project-be</div>
+    <div class="code-block"># Tworzenie worktree dla agenta frontend
+git worktree add -b feature/frontend-chat ../project-fe</div>
+    <div class="code-block"># Tworzenie worktree dla agenta testów E2E
+git worktree add -b feature/e2e-tests ../project-e2e</div>
+    <div class="code-block"># Lista aktywnych worktrees
+git worktree list</div>
     <div class="two-col">
       <div>
         <div class="card ok">
@@ -466,17 +462,15 @@ git worktree list
       </div>
       <div>
         <h3>Środowisko</h3>
-        <div class="code-block">cd ../project-be
-# Odpal Claude Code w tym worktree
-claude
-
-# Briefing:
+        <div class="code-block">cd ../project-be</div>
+        <div class="code-block"># Odpal Claude Code w tym worktree
+claude</div>
+        <div class="code-block"># Briefing:
 # Dodaj autoryzację JWT do API.
 # Endpointy: /api/auth/login,
 # /api/auth/register, middleware.
 # Testy jednostkowe w pliku
-# __tests__/auth.test.ts
-        </div>
+# __tests__/auth.test.ts</div>
         <div class="card ok">
           <div class="card-title">Branch</div>
           <p><span class="code-inline">feature/backend-auth</span></p>
@@ -504,16 +498,14 @@ claude
       </div>
       <div>
         <h3>Środowisko</h3>
-        <div class="code-block">cd ../project-fe
-# Odpal Claude Code w tym worktree
-claude
-
-# Briefing:
+        <div class="code-block">cd ../project-fe</div>
+        <div class="code-block"># Odpal Claude Code w tym worktree
+claude</div>
+        <div class="code-block"># Briefing:
 # Dodaj interfejs czatu używając
 # useChat z Vercel AI SDK.
 # Formularz logowania na kontraktowym stubie
-# (endpoint /api/auth/login).
-        </div>
+# (endpoint /api/auth/login).</div>
         <div class="card ok">
           <div class="card-title">Branch</div>
           <p><span class="code-inline">feature/frontend-chat</span></p>
@@ -544,20 +536,16 @@ claude
         <h3>Środowisko</h3>
         <div class="code-block"># Najpierw w głównym worktree na main:
 git merge feature/backend-auth
-git merge feature/frontend-chat
-
-# Następnie w worktree E2E:
+git merge feature/frontend-chat</div>
+        <div class="code-block"># Następnie w worktree E2E:
 cd ../project-e2e
-git merge main
-
-# Uruchom Claude Code:
-claude
-
-# Briefing:
+git merge main</div>
+        <div class="code-block"># Uruchom Claude Code:
+claude</div>
+        <div class="code-block"># Briefing:
 # Napisz testy Playwright dla
 # scenariuszy: rejestracja,
-# logowanie, czat, historia.
-        </div>
+# logowanie, czat, historia.</div>
         <div class="card ok">
           <div class="card-title">Branch</div>
           <p><span class="code-inline">feature/e2e-tests</span></p>
@@ -912,15 +900,12 @@ claude
     <div class="kicker">3.2 - automatyzacja</div>
     <h2>Testy E2E jako skill</h2>
     <p>Agent może pisać i uruchamiać testy Playwright jako dedykowaną umiejętność (skill). To oznacza, że ma zdefiniowane procedury, narzędzia i wzorce.</p>
-    <div class="code-block">
-# Agent generuje test E2E
+    <div class="code-block"># Agent generuje test E2E
 > Napisz test Playwright dla scenariusza:
 > użytkownik rejestruje się, loguje,
-> wysyła wiadomość i widzi odpowiedź
-
-# Agent tworzy plik testu i uruchamia:
-npx playwright test e2e/chat-flow.spec.ts
-    </div>
+> wysyła wiadomość i widzi odpowiedź</div>
+    <div class="code-block"># Agent tworzy plik testu i uruchamia:
+npx playwright test e2e/chat-flow.spec.ts</div>
     <div class="two-col">
       <div>
         <div class="card ok">
@@ -1710,6 +1695,7 @@ function show(n){
  S[i].classList.remove('on');
  i=n;
  S[i].classList.add('on');
+ S[i].scrollTop=0;
  document.getElementById('bar').style.width=((i+1)/S.length*100)+'%';
  document.getElementById('num').textContent=(i+1)+'/'+S.length;
  try{history.replaceState(null,'','#'+(i+1));}catch(_){}
@@ -1720,6 +1706,7 @@ function show(n){
 document.addEventListener('keydown',e=>{
  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(i+1);e.preventDefault();}
  else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(i-1);}
+ else if(e.key==='ArrowDown'||e.key==='ArrowUp'){const sl=S[i];if(sl.scrollHeight>sl.clientHeight+4){sl.scrollBy({top:(e.key==='ArrowDown'?1:-1)*Math.round(sl.clientHeight*.45),behavior:'smooth'});e.preventDefault();}}
  else if(e.key==='Home'){show(0);}
  else if(e.key==='End'){show(S.length-1);}
  else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}

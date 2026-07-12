@@ -85,8 +85,7 @@
     ],
     "deny": [
       // ── Always block — irreversible or dangerous
-      "Bash(rm:*)",
-      "Bash(rmdir:*)",
+      // rm/rmdir intentionally NOT denied: hard-denying deletes just makes agents route around it (scripts, moves); use permission modes + git/backups as the safety net. Deny only what is truly irreversible for you.
       "Bash(git push:*)",
       "Bash(git push --force:*)",
       "Bash(git reset --hard:*)",
