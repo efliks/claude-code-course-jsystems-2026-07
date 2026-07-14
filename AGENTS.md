@@ -6,20 +6,8 @@ This is a **course project** for the "Claude Code – od zera do zespołu agent�
 
 This is only the **base starting repository** for the course; concrete decisions are made live with the group.
 
-**Primary demo stack:** TypeScript/Node.js (Next.js, Vercel AI SDK).
-**Java is a first-class participant stack** (Spring Boot, Spring AI, LangChain4j or OpenAI Java SDK — see `course-materials/agent-configs/`); each participant picks their stack during the ADR phase.
+**Primary demo stack:** Python (Django, Flask, Fast API, etc. — see `course-materials/agent-configs/`); each participant picks their stack during the ADR phase.
 Participants may work in any language (Java, Python, C#, Go, Rust, etc.).
-
-All user-facing text in **Polish**.
-
-## Course Delivery Environment (Windows Server 2022 VMs)
-
-Participants work on prepared VMs with preinstalled tools:
-- **Agents:** Claude Desktop + Claude Code CLI, Codex (desktop + CLI), OpenCode (desktop + CLI), Antigravity
-- **Editors:** `micro` (default `$EDITOR` in git bash, PowerShell and git), Fresh (terminal), Lite XL (default GUI editor for code files). IntelliJ is installed (Java file association) but **slow on VMs — avoid for live work**
-- **Runtimes:** Node.js, Bun, Python, .NET runtime (no SDK — not used in this course)
-- **LLM access for built apps:** `OPENROUTER_API_KEY` preset in Windows env vars (multimodal models available via OpenRouter)
-- Participants clone this repository at course start; the app is built on a **separate branch** per participant/group — `main` stays course-materials-only.
 
 **Key docs** (created during the course — load only when in doubt):
 - `docs/PRD.md` — product requirements and acceptance criteria
@@ -93,18 +81,3 @@ A task is complete only when:
 - Tests were written first and pass honestly
 - Verification for the changed scope passed with no errors or warnings
 - The commit message is focused and the repository is in a consistent, reviewable state
-
----
-
-## Context7 MCP Library IDs
-
-Common libraries (resolve via `resolve-library-id` if the ID changes):
-
-| Library | Context7 ID |
-|---|---|
-| Vercel AI SDK | `/vercel/ai` |
-| Next.js | `/vercel/next.js` |
-| React | `/reactjs/react.dev` |
-| Tailwind CSS | `/tailwindlabs/tailwindcss.com` |
-| Shadcn/ui | `/shadcn-ui/ui` |
-| Mastra | `/mastra-ai/mastra` |
