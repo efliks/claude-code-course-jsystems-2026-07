@@ -60,10 +60,9 @@
       "Bash(docker images:*)",
 
       "Bash(which:*)",
-      "Bash(env:*)",
-      "Bash(printenv:*)",
       "Bash(date)",
       "Bash(whoami)",
+      "Bash(export:*)",
 
       "Edit",
       "Write",
@@ -75,6 +74,8 @@
       "WebFetch(domain:www.jetbrains.com)"
     ],
     "deny": [
+      "Bash(env:*)",
+      "Bash(printenv:*)",
       "Bash(rm:*)",
       "Bash(rmdir:*)",
       "Bash(git push:*)",
