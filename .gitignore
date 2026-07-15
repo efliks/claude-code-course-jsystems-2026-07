@@ -32,6 +32,11 @@ playwright-report/
 logs/
 *.log
 
+# Local runtime SQLite database (backend generates this at runtime; keep the dir via .gitkeep)
+app/backend/data/*.db
+app/backend/data/*.db-wal
+app/backend/data/*.db-shm
+
 # Secrets / credentials
 .env
 .env.local
