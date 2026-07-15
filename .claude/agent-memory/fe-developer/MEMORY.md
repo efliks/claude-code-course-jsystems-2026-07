@@ -1,0 +1,3 @@
+- [Angular course stack override](project_angular_course_stack.md) — this project is Angular 22 + Material + English UI, not the generic React/TS/Polish defaults.
+- [Node/Angular CLI 22 engine mismatch on course VM](env_node_angular22_engine_mismatch.md) — VM's Node 24.14.0 fails ng CLI 22 engine check; fix via winget to Node 26.x.
+- [Fleet concurrent-write gotcha](feedback_fleet_concurrent_writes.md) — check git log/status before committing; another agent may have already landed the same commits.
