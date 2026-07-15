@@ -1,0 +1,441 @@
+2026-07-15 09:13:30 From Mikołaj To Everyone:
+	a jeśli ktoś celowo wybrał Javę 😆
+
+2026-07-15 09:14:10 From Łukasz Matuszewski To Everyone:
+	In this repository there are already preliminarily outlined functionalities for our simple MVP application, which are in the file Prduct requirements document @docs/PRD.md
+	In the documentation there are also three documents from Architur Decision Records, which contain architectural decisions regarding how we want to build this application from a technical standpoint.
+	Check the contents of these files and their consistency with each other as well as their consistency also with the other instructions here in this repository, whether there are any instructions in Claude MD files or Agents MD, or other files that would be contradictory to the information contained in the documentation. Also, above all, skip the entire folder Course Materials; I include example training materials. I would also like you to remove the agents and skills that do not align with our techstack, that is, among other things, there are skills and agents there that relate to Java.
+
+2026-07-15 09:16:31 From Łukasz Matuszewski To Everyone:
+	https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html
+
+2026-07-15 09:20:05 From Łukasz Matuszewski To Everyone:
+	https://openrouter.ai/docs/api_reference/responses/overview
+
+2026-07-15 09:25:09 From Łukasz Matuszewski To Everyone:
+	https://azure.microsoft.com/en-us/products/ai-foundry/models/openai
+
+2026-07-15 09:26:56 From Łukasz Matuszewski To Everyone:
+	OpenRouter vs UE & GDPR:
+	Zero Data Retention i EU data storage - Research Perplexity
+	https://www.perplexity.ai/search/b0dcceb5-4772-4d01-90c0-81ae8ddcd247
+
+2026-07-15 09:42:00 From Łukasz Matuszewski To Everyone:
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/blob/main/course-materials/.claude-example/CLAUDE.md
+
+2026-07-15 09:43:06 From Łukasz Matuszewski To Everyone:
+	If you work in a Git repo, you should commit after every piece of work is complete. Keep commits granular, small and reviewable. Commit messages should be clear and concise.
+
+2026-07-15 10:09:49 From Łukasz Matuszewski To Everyone:
+	Testy E2E + Automatyzacja pracy w przeglądarce
+	Playwright
+	MCP lub CLI
+
+2026-07-15 10:10:06 From Łukasz Matuszewski To Everyone:
+	Chrome DevTools - automatyzacja przeglądarki
+
+2026-07-15 10:10:53 From Łukasz Matuszewski To Everyone:
+	shift+ctrl+i
+
+2026-07-15 10:10:56 From Łukasz Matuszewski To Everyone:
+	Devtools
+
+2026-07-15 10:11:59 From Łukasz Matuszewski To Everyone:
+	https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/main/docs/cli.md
+
+2026-07-15 10:12:21 From Łukasz Matuszewski To Everyone:
+	https://playwright.dev/docs/getting-started-mcp
+
+2026-07-15 10:12:31 From Łukasz Matuszewski To Everyone:
+	https://playwright.dev/agent-cli/introduction
+
+2026-07-15 10:16:51 From Łukasz Matuszewski To Everyone:
+	I have very important rule for you to follow. You should always, after every major step of the plan realization, use MCP Playwright or Playwright CLI to validate if the application works manually. So you should do manual quality assurance tests by opening the application, making the screen, filling the form, submitting and checking the flow of the application if it really works and make a screens and compare the screens to the original screen of play application that you have in assets from design guidelines.
+
+	Add this also as a final step in the TDD workflow in my @AGENTS.md instructions. Agents should always validate manually if the application really work. Automated E2E tests are much less trustwarthy and may provide false pass. So it should be both in the Plan and inside the AGENTS.md instruction
+
+2026-07-15 10:18:23 From Łukasz Matuszewski To Everyone:
+	7. **Manually validate the running application** (see Manual QA below). Automated tests — especially E2E — can produce false passes; a task
+	is not done until the real app has been exercised by hand.
+
+	If the area has no suitable test infrastructure yet, add it as part of the task — do not silently skip tests.
+
+	### Manual QA (required after every task that affects the running app)
+
+	Use **Playwright MCP or the Playwright CLI** to drive the real running app like a human tester:
+
+2026-07-15 10:18:25 From Łukasz Matuszewski To Everyone:
+
+	1. Start the app (`npm run dev`) and open it in the browser.
+	2. Take a screenshot of every screen you touched.
+	3. Exercise the real flow end-to-end by hand: fill the form, upload the image, submit, follow the navigation to the chat, send a message — w
+	hatever the changed scope covers.
+	4. Verify the flow actually works: correct navigation, correct data displayed, no console errors, Polish UI text.
+	5. **Compare your screenshots against the Play brand reference** (`assets/homepage.png` + `docs/design-guidelines.md` tokens): colors, typog
+	raphy (Manrope), spacing, button styles, logo placement must match the Play look.
+	6. Report what you validated (steps + screenshots) in your task summary. If anything looks or behaves wrong, fix it before committing.
+
+2026-07-15 10:24:32 From Piotr To Everyone:
+	● be-developer(S4.2 chat + latest-session endpoints)
+	Initializing…
+	Error: claude-opus-4-8[1m] is temporarily unavailable, so auto mode cannot determine the safety of Agent right now. Wait briefly and then try this action again. If it keeps failing, continue with other tasks that don't require this action and come back to it later. Note: reading files, searching code, and other read-only operations do not require the classifier and can still be used.
+
+	Stan na teraz:
+
+2026-07-15 10:24:33 From Piotr To Everyone:
+
+	- ✅ S4.1 zakończone (commit 604ef05) â€” endpoint POST /api/session z bramką BMI, potokiem obrazu w pamięci i 22 testami integracyjnymi; łącznie 135/135 testów zielonych.
+	- 🔄 F2 (UI czatu) nadal pracuje w tle.
+	- ⏸️ S4.2 (endpoint czatu + przywracanie sesji) â€” próba uruchomienia trafiła na przejściową awarię infrastruktury Claude Code (usługa weryfikująca uruchamianie narzędzi jest chwilowo niedostępna; to nie jest problem z kodem ani repo). Ponowię uruchomienie, gdy tylko dostanę powiadomienie o zakończeniu F2 â€” awarie tego typu mijają zwykle w kilka minut, więc nie zaburzy to harmonogramu.
+
+2026-07-15 10:26:40 From Piotr To Everyone:
+	Session
+
+	Total cost:            $30.39
+	Total duration (API):  1h 13m 24s
+	Total duration (wall): 1h 27m 41s
+	Total code changes:    4492 lines added, 190 lines removed
+	Usage by model:
+	      claude-fable-5:  5.3k input, 51.4k output, 3.0m cache read, 256.4k cache write ($9.76)
+	    claude-haiku-4-5:  79.6k input, 2.2k output, 0 cache read, 0 cache write, 4 web search ($0.1306)
+	     claude-sonnet-5:  4.3k input, 308.8k output, 41.2m cache read, 934.1k cache write ($20.51)
+
+2026-07-15 10:32:05 From Mikołaj To Everyone:
+	widzę takie ostrzeżenie :
+	{EF06BEC1-6052-49D3-AF6D-C2B44865318B}.png
+
+2026-07-15 10:56:36 From Łukasz Matuszewski To Everyone:
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/tree/main/course-materials/how-to-ralph-wiggum
+
+2026-07-15 10:57:26 From Łukasz Matuszewski To Everyone:
+	Ralph Loop - automatyczna pętla odpalająca nowych agentów na nowych zadaniach z listy
+
+2026-07-15 10:57:37 From Łukasz Matuszewski To Everyone:
+	Prompt - delegowanie do mniejszych model:
+
+	Please modify your plan and you should delegate to smaller LLMs. I think that you should probably delegate most of the code to Sonnet. But please think about this deeply and decide yourself which tasks are more demanding and may require a smarter model, and then you should delegate to Opus.
+
+2026-07-15 10:58:36 From Łukasz Matuszewski To Everyone:
+	Fable deleguje do Codex, AGY, Grok i OpenCode:
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/blob/main/course-materials/Prompt%20examples/Deletage-to-Codex-Agy-OpenCode-Grok.md
+
+2026-07-15 11:03:48 From Łukasz Matuszewski To Everyone:
+	Koniec przerwy 11:20
+
+2026-07-15 11:30:17 From Mikołaj To Everyone:
+	u mnie dwóch agentów się zablokowało przez limity :
+	{CB64FC73-D166-406C-A7C6-1D3AFFFA4F27}.png
+
+2026-07-15 11:36:45 From Łukasz Matuszewski To Everyone:
+	https://github.com/github/copilot-cli
+
+	Copilot CLI
+
+2026-07-15 11:37:16 From Łukasz Matuszewski To Everyone:
+	https://cursor.com/cli
+
+2026-07-15 11:43:22 From Łukasz Matuszewski To Everyone:
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/blob/main/course-materials/.bashrc
+
+	Custom function i alias dla Claude Code w .bashrc
+
+2026-07-15 11:56:06 From Łukasz Matuszewski To Everyone:
+	GLM 5.2 - referal link 10%
+	🚀 You’ve been invited to join the GLM Coding Plan! Enjoy full support for Claude Code, Cline, and 20+ top coding tools — starting at just $18/month. Subscribe now and grab the limited-time deal!
+	👉Join now: https://z.ai/subscribe?ic=IA5VBRGQV4
+
+2026-07-15 12:01:10 From Łukasz Matuszewski To Everyone:
+	https://x.com/mrLumatic/status/2077279243629666799
+
+2026-07-15 12:18:50 From Łukasz Matuszewski To Everyone:
+	https://www.reddit.com/r/ClaudeAI/comments/1lfvz30/simple_way_to_get_notified_when_claude_code/
+
+2026-07-15 12:19:02 From Łukasz Matuszewski To Everyone:
+	https://aitmpl.com/blog/simple-notifications-hook/#:~:text=How%20to%20Use%20the%20Hook,it%20works%20in%20the%20background!&text=After%20each%20operation%20completes%2C%20you,showing%20which%20tool%20was%20executed.
+
+2026-07-15 12:19:17 From Łukasz Matuszewski To Everyone:
+	Notification from Claude Code with hooks - could use any tool / endpoint to notify
+
+2026-07-15 12:19:53 From Łukasz Matuszewski To Everyone:
+	Hooks
+	https://code.claude.com/docs/en/hooks
+
+	https://code.claude.com/docs/en/overview#customize-with-instructions-skills-and-hooks
+
+2026-07-15 12:47:00 From Jakub To Everyone:
+	14:00 - odnowienie limitu
+
+2026-07-15 12:47:01 From Mikołaj To Everyone:
+	2 pm 🙁
+
+2026-07-15 12:47:10 From Piotr To Everyone:
+	13:50
+
+2026-07-15 12:47:15 From Daniel To Everyone:
+	14
+
+2026-07-15 12:47:20 From Michał To Everyone:
+	14
+
+2026-07-15 12:47:29 From Kasia To Everyone:
+	14
+
+2026-07-15 13:11:56 From Łukasz Matuszewski To Everyone:
+	13:45 koniec przerwy
+
+2026-07-15 13:29:22 From Piotr To Everyone:
+	⚠️ Wykryta blokada zewnętrzna, która wymaga Twojego działania (lub organizatora kursu):
+
+	Klucz OPENROUTER_API_KEY jest ważny (logowanie do API działa), ale konto OpenRouter odrzuca wszystkie wywołania modeli — każdy model zwraca: "No endpoints available matching your guardrail restrictions and data policy". Sprawdziłem niezależnie ~12 modeli (Gemini, GPT, Claude, Qwen, Mistral…) — wszystkie zablokowane. To ustawienie prywatności/guardrails na koncie OpenRouter, nie błąd w naszej aplikacji.
+
+	Jak to naprawić: właściciel konta OpenRouter (prawdopodobnie organizator — Łukasz) musi wejść na https://openrouter.ai/settings/privacy i poluzować ustawienia (np. zezwolić na dostawców według obowiązującej polityki danych). Jeśli masz dostęp do tego konta — możesz to zrobić sam; jeśli nie, warto zgłosić na kursie.
+
+2026-07-15 13:29:35 From Piotr To Everyone:
+	Co to blokuje, a co nie:
+	- ❌ Rozpoznawanie zdjęcia lodówki i odpowiedzi czatu (wszystko, co wymaga LLM) — dziś kończy się komunikatem błędu z przyciskiem "Spróbuj ponownie" (czyli aplikacja poprawnie obsługuje awarię).
+	- ✅ Cała reszta działa naprawdę: formularz, walidacja, bramka BMI (blokada przy niedowadze nie wywołuje LLM, więc działa w 100%), zapis/przywracanie sesji, disclaimer.
+
+2026-07-15 13:30:36 From Łukasz Matuszewski To Everyone:
+	gpt-5.4-mini powinien działać, tak jak jest w .env.example
+	OPENROUTER_TEXT_MODEL=openai/gpt-5.4-mini
+
+2026-07-15 13:31:26 From Łukasz Matuszewski To Everyone:
+	Być może nie skopiowałeś pliku .env.example i nie stworzyłeś .env ?
+	Albo model tego nie zauważył lub nie może czytać pliku .env.example jeśli w .claude/settings.json jest nadal w deny
+
+2026-07-15 13:32:45 From Łukasz Matuszewski To Everyone:
+	zaraz sprawdzę czy te modele działają. Zablokowałem wszystkie duże modele bo by zjadły cały limit dla całej grupy ($15) nawet po 1 prompcie. ale małe modele powinny działać.
+
+	Być możę agent zaczął sobie testować stare wersje modeli które są już nieaktualne i też ich nie dałem do dyspozycji.
+
+2026-07-15 13:35:02 From Łukasz Matuszewski To Everyone:
+	To są odblokowane modele:
+
+	Nemotron 3 Ultra (free)
+	×
+	MiniMax M3
+	X
+	Gemini 3.1 Flash Lite
+	×
+	Nemotron 3 Nano Omni (free)
+	X
+	Laguna M.1 (free)
+	X
+	Qwen3.6 35B A3B
+	×
+	Qwen3.627B
+	×
+	Qwen3.6 Flash
+	X
+	DeepSeek V4 Pro
+	DeepSeek V4 Flash
+	X
+	MiMo-V2.5
+	×
+	K
+	Kimi K2.6
+	×
+	GLM 5.1
+	Gemma 4 26B A4B (free)
+	X
+	Gemma 4 31B (free)
+	X
+	Qwen3.6 Plus
+	X
+	Qwen3.5 Plus 2026-04-20
+	×
+	Qwen3.7 Plus
+	X
+	MiniMax M2.7
+	×
+	GPT-5.4 Nano X
+	GPT-5.4 Mini
+	X
+	M Mistral Small 4 x
+	GLM 5 Turbo X
+	Nemotron 3 Super (free)
+	X
+	GPT-5.4
+	MiniMax M2.5
+	×
+	GLM 4.7 Flash
+	X
+	Nemotron 3 Nano 30B A3B (free)
+	X
+	DeepSeek V3.2
+	X
+	gpt-oss-20b (free)
+	X
+	Hy3 preview
+	KAT-Coder-Pro V2
+
+2026-07-15 13:37:08 From Piotr To Everyone:
+	ok. robi dalej. wybiera z dostępnych, który obsługuje obrazy
+
+2026-07-15 13:38:00 From Łukasz Matuszewski To Everyone:
+	powinien użyć z .env modelu ze zmiennej :)
+	OPENROUTER_TEXT_MODEL=openai/gpt-5.4-mini
+
+	Ale ok, poradzi sobie pewnie jak już ma listę :)
+
+2026-07-15 13:40:10 From Piotr To Everyone:
+	wybrał gemini 31.flash lite
+	Łukasz Matuszewski:👍
+
+2026-07-15 13:42:28 From Łukasz Matuszewski To Everyone:
+	jeśli tylko sprawdził, że działa, to jest dobry model multimodalny :)
+
+2026-07-15 13:43:06 From Łukasz Matuszewski To Everyone:
+	13:47 koniec przerwy :)
+	Mikołaj:👍
+
+2026-07-15 14:06:45 From Łukasz Matuszewski To Everyone:
+	Audit and maintain agent configuration files (.claude/agents, AGENTS.md, CLAUDE.md, agent-memory). Checks for duplicates, outdated info, naming conflicts, wrong technical facts, and files over 200 lines. Fixes all issues and commits.
+
+	use `audit-agents` skill to check all agents configuration files /audit-agents
+
+	Make Pull Request with changes.
+
+2026-07-15 14:07:08 From Łukasz Matuszewski To Everyone:
+	Pomysł na Rutynę / Routine dla Claude Code do sprzątania repo, poprawy instrukcji, niespójności
+
+2026-07-15 14:22:30 From Kasia To Everyone:
+	Wycięło mnie
+
+2026-07-15 14:27:29 From Łukasz Matuszewski To Everyone:
+	Jira / Confluence / Bitbucket MCP:
+	https://github.com/atlassian/atlassian-mcp-server
+
+	https://www.atlassian.com/blog/announcements/remote-mcp-server
+
+2026-07-15 14:40:39 From Łukasz Matuszewski To Everyone:
+	Historia chata + podsumowanie od Zoom:
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/tree/main/course-materials/zoom-summary-chat-history
+
+2026-07-15 14:43:43 From Łukasz Matuszewski To Everyone:
+	Osoby i konta do śledzenia w AI:
+
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/blob/main/course-materials/Course%20Notes%20-%20AI%20in%20Programming.md#people-and-accounts-to-follow-in-ai
+
+2026-07-15 14:47:28 From Piotr To Everyone:
+	{F111CB40-A2C8-4A8E-8DD6-1927BD9AF7CF}.png
+
+2026-07-15 14:53:19 From Łukasz Matuszewski To Everyone:
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/tree/main/course-materials/Prompt%20examples
+
+2026-07-15 15:11:55 From Łukasz Matuszewski To Everyone:
+	 I had to stop your work because we need to clean this VM because it will be killed in two hours. So first I want you to analyze our git worktrees and make sure that you already merged code from worktrees created previously for subagents to the mine repository to
+	course-application-implementation branch. So check carefully whether you already minced this code earlier, because I see that you continued working here
+	on the main branch. You are not delegating work to agents at this moment anymore, so check whether you minced these data earlier and whether we need to
+	mince something else for this main repository. Once you are sure that all the data are on the main repository, delete, please, get rid of these Worktrees
+	so they don't clutter up our place here.
+
+2026-07-15 15:11:57 From Łukasz Matuszewski To Everyone:
+	Then make sure that you have committed the current state of the application, so that everything you did is in
+	separate granular, small commits with good descriptions. I would like us to push all changes to the remote repository after this, before this virtual
+	machine is turned off.
+
+2026-07-15 15:12:16 From Łukasz Matuszewski To Everyone:
+	git worktree list
+
+2026-07-15 15:12:59 From Łukasz Matuszewski To Everyone:
+	Tokeny GitHub ustawienia:
+	https://github.com/settings/personal-access-tokens
+
+2026-07-15 15:16:11 From Łukasz Matuszewski To Everyone:
+	Contents
+	Repository contents, commits, branches, downloads, releases, and merges.
+	Learn more.
+
+	Read and Write
+	Odczyt i zapis danych z repozytorium, np. tworzenie commitów, branchy na GitHub
+
+2026-07-15 15:16:37 From Łukasz Matuszewski To Everyone:
+	https://devpowers.com/szkolenia/claude-code-jsystems/Prezentacja_Dzien1.html#15
+
+2026-07-15 15:18:52 From Łukasz Matuszewski To Everyone:
+	gh auth setup-git
+
+2026-07-15 15:34:28 From Łukasz Matuszewski To Everyone:
+	Open Source dla agentów
+
+	https://opencode.ai/ CLI + Desktop dla agentów
+
+	https://zed.dev/ Zed IDE
+
+2026-07-15 15:35:53 From Piotr To Everyone:
+	Ja dziś wyjątkowo muszę wyjść o czasie - montuje dach na altance i jestem umówiony na konkretną godzinę.
+	Bardzo dziękuję za wspólnie spędzony czas.
+	Dowiedziałem się, że cloade code można też pracować z linii tekstu. Co do tworzenia aplikacji dowiedziałem się, że jest coś takiego jak git,  DPR, ADR i PlAn i można tak pracować zamiast tylko powiedzieć zrób aplikację.
+	Dowiedziałem się też, że przy jednej pracy można korzystać z kilku kont(jak się ma).
+	No i zrobiłem pierwszą aplikacje z zespołem agentów :)
+	Wyjdę po angielsku przed 16. Dziękuję i do zobaczenia.
+	Jakub Sienko:👋
+
+2026-07-15 15:37:06 From Łukasz Matuszewski To Everyone:
+	https://ankiety.jsystems.pl/
+
+2026-07-15 15:37:24 From Łukasz Matuszewski To Everyone:
+	Dane do ankiety to ID
+	Dane_dostepowe_do_hostow_szkoleniowych.pdf
+
+2026-07-15 15:46:17 From Łukasz Matuszewski To Everyone:
+	gh org list
+
+	There are no organizations associated with @LucasMatuszewski
+
+2026-07-15 15:47:09 From Łukasz Matuszewski To Everyone:
+	git remote
+	origin
+
+2026-07-15 15:51:32 From Łukasz Matuszewski To Everyone:
+	I want you to check for me why I couldn't push changes to the GitHub remote repository. You can use `gh` GitHub CLI. I think my branch isn't connected, and it's also not connected to remote repo on Github, and the Upstream repository isn't connected either, from which I made the Fork. The repository was created as a FORK, first from another repository, then we made a clone from my repository, but it is not connected to my repository.
+	Upstream: https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07
+	My origin (fork of upstream): ...
+
+2026-07-15 15:56:14 From Piotr To Everyone:
+	Dzięki jeszcze raz. Do zobaczenia
+
+2026-07-15 15:58:51 From Łukasz Matuszewski To Everyone:
+	https://github.com/settings/personal-access-tokens
+
+2026-07-15 15:59:41 From Łukasz Matuszewski To Everyone:
+	Contents
+	Repository contents, commits, branches, downloads, releases, and merges.
+	Learn more.
+
+	Read and write
+
+2026-07-15 16:03:20 From Łukasz Matuszewski To Everyone:
+	https://code.claude.com/docs/en/agent-view
+
+	Praca z wieloma agentami w Claude Code na kilku sesjach detached
+
+2026-07-15 16:05:25 From Łukasz Matuszewski To Everyone:
+	https://github.com/tmux/tmux/wiki
+
+	Alternatywa do Agent View - wielu agentów CLI na raz w sesjach osobnych
+
+2026-07-15 16:06:18 From Łukasz Matuszewski To Everyone:
+	https://code.claude.com/docs/en/agent-teams
+
+	CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS
+
+2026-07-15 16:09:14 From Jakub To Everyone:
+	Ja niestety też muszę już uciekać. Również wielkie dzięki za bardzo ciekawe szkolenie. Zdecydowanie przyda się w pracy i ułatwiło zrozumienie pracy z agentami 🙂
+
+2026-07-15 16:09:21 From Łukasz Matuszewski To Everyone:
+	https://code.claude.com/docs/en/workflows
+
+	Workflows = Ralph Loop, skrypt wywołuje sub-agentów, a nie główny agent.
+
+2026-07-15 16:25:17 From Łukasz Matuszewski To Everyone:
+	https://developer.apple.com/documentation/coreaudio/audioconverthosttimetonanos(_:)
+
+2026-07-15 16:37:10 From Łukasz Matuszewski To Everyone:
+	https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/pull/1
+
+	Code review od GitHub Copilot
+
+2026-07-15 16:38:08 From Łukasz Matuszewski To Everyone:
+	lucas@devpowers.com
