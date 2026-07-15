@@ -334,3 +334,6 @@ sequenceDiagram
 
 - TAC-[NNN]-01: [concrete, testable statement]
 ```
+
+1. Ask the user if they have the Context7 handle (e.g., `/vercel/ai`, `/spring-projects/spring-boot`). 2. If not provided, use Contex7 CLI or `mcp__context7__resolve-library-id` to find the correct handle. 3. Use Contex7 CLI or `mcp__context7__query-docs` to fetch relevant documentation sections needed to make informed decisions. 4. Store all resolved handles in the ADR under the **Context7 References** section so future agents can fetch docs directly without searching again.
+
