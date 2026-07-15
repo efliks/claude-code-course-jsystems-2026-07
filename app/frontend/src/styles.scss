@@ -1,39 +1,80 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
+// Play brand theme, built on Angular Material 3 (`mat.theme()`).
+//
+// - Color: custom M3 palette generated from `brand.primary` (#6C43BF) via
+//   `ng generate @angular/material:theme-color --primary-color="#6C43BF" --directory="src/"`.
+//   The generated palettes live in `theme-colors.scss` (do not hand-edit; regenerate instead).
+// - Typography: Manrope, with the base/body weight mapped to 500 — Play's own "Regular" font
+//   file is registered at weight 500 (not the usual 400), so `regular-weight: 500` replicates
+//   that mapping for Material's typescale.
+// - Shape: Play's signature 7px button radius and ~10.5px card radius, applied via the
+//   button/card token override mixins (`mat.theme()` itself has no top-level `shape` config).
+//
+// Source of truth: docs/design-guidelines.md and assets/design-tokens.json.
 @use '@angular/material' as mat;
+@use './theme-colors' as theme;
 
 html {
   height: 100%;
+  color-scheme: light;
+
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        theme-type: light,
+        primary: theme.$primary-palette,
+        tertiary: theme.$tertiary-palette,
       ),
-      typography: Roboto,
+      typography: (
+        plain-family: Manrope,
+        brand-family: Manrope,
+        regular-weight: 500,
+        medium-weight: 600,
+        bold-weight: 700,
+      ),
       density: 0,
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 7px,
+      outlined-container-shape: 7px,
+      protected-container-shape: 7px,
+      text-container-shape: 7px,
+      tonal-container-shape: 7px,
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      elevated-container-shape: 10.5px,
+      filled-container-shape: 10.5px,
+      outlined-container-shape: 10.5px,
     )
   );
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
+  // Play canvas: white background, near-black default text.
+  background-color: var(--mat-sys-surface, #ffffff);
+  color: var(--mat-sys-on-surface, #1f1f1f);
 
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
+  // Base body type: Manrope 500, 14px/1.5 (docs/design-guidelines.md#typography).
+  font-family: Manrope, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
 
   // Reset the user agent margin.
   margin: 0;
   height: 100%;
 }
-/* You can add global styles to this file, and also import other style files */
+
+// Play accent colors are reserved for badges/highlights — never body text or default buttons
+// (docs/design-guidelines.md#colors). Exposed here as CSS custom properties so feature
+// components can opt in without redefining the hex values.
+:root {
+  --play-color-accent: #e6144b;
+  --play-color-highlight: #fff200;
+  --play-color-subtle-bg: #f5f5f5;
+}

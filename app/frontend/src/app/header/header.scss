@@ -1,0 +1,14 @@
+// Minimal Play header: logo only for now — full nav/actions arrive with later screens.
+// Clear space around the mark follows docs/design-guidelines.md#logo-usage
+// (at least the height of the "P", i.e. the logo's own height, ~28px here).
+.header {
+  display: flex;
+  align-items: center;
+  background-color: var(--mat-sys-surface, #ffffff);
+  padding: 14px 21px; // 3.5px rhythm (4 x 3.5, 6 x 3.5)
+}
+
+.header__logo {
+  height: 28px;
+  width: auto;
+}
