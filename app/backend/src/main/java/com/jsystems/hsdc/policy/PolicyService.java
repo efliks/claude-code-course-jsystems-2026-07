@@ -44,7 +44,7 @@ public class PolicyService {
     }
 
     @PostConstruct
-    void loadPolicies() {
+    public void loadPolicies() {
         returnPolicy = readPolicyFile(RETURN_POLICY_FILENAME);
         complaintPolicy = readPolicyFile(COMPLAINT_POLICY_FILENAME);
         log.info("Loaded policy documents from {}", policiesDir.toAbsolutePath());

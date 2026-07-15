@@ -122,12 +122,12 @@ The backend maps these to Spring properties; `.env.example` at repo root documen
 |---|---|---|---|
 | `OPENROUTER_API_KEY` | OpenRouter API key (already set on course VMs) | Yes | `sk-or-…` |
 | `OPENROUTER_BASE_URL` | OpenRouter API base URL | No (default `https://openrouter.ai/api/v1`) | `https://openrouter.ai/api/v1` |
-| `HSDC_VISION_MODEL` | Multimodal model for image analysis | No (default `openai/gpt-4o-mini`) | `openai/gpt-4o-mini` |
-| `HSDC_DECISION_MODEL` | Reasoning model for decision + chat | No (default `openai/gpt-4o`) | `openai/gpt-4o` |
+| `HSDC_VISION_MODEL` | Multimodal model for image analysis | No (default `openai/gpt-5.6-luna`) | `openai/gpt-5.6-luna` |
+| `HSDC_DECISION_MODEL` | Reasoning model for decision + chat | No (default `openai/gpt-5.6-terra`) | `openai/gpt-5.6-terra` |
 | `HSDC_DB_PATH` | SQLite database file path | No (default `./data/hsdc.db`) | `./data/hsdc.db` |
 | `HSDC_POLICIES_DIR` | Directory with the two policy markdown files | No (default `../../docs/policies`) | `../../docs/policies` |
 
-Model defaults must be confirmed against the live OpenRouter model catalog at implementation time and adjusted if deprecated.
+Model defaults were confirmed against the live OpenRouter model catalog at implementation time (2026-07-15): `openai/gpt-4o-mini`/`openai/gpt-4o` are deprecated/absent, replaced by `openai/gpt-5.6-luna` (vision) and `openai/gpt-5.6-terra` (decision) — see ADR-002 "Model defaults" decision record for detail.
 
 ---
 

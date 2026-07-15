@@ -93,9 +93,9 @@ All operations are synchronous from the caller's view (streaming via callbacks o
 
 ### Model defaults and multimodal input format
 **Status:** Accepted
-**Date:** 2026-07-14
+**Date:** 2026-07-14 (model IDs corrected 2026-07-15 at implementation time)
 **Context:** Models must exist on OpenRouter and be swappable (course participants may experiment).
-**Decision:** Defaults `openai/gpt-4o-mini` (vision) and `openai/gpt-4o` (decision/chat), overridable via env. Image sent as a base64 `data:` URL content part (no external image hosting). Defaults MUST be validated against the OpenRouter catalog at implementation time; if deprecated, choose the closest current equivalents and update `.env.example` + this ADR.
+**Decision:** Original defaults `openai/gpt-4o-mini` (vision) and `openai/gpt-4o` (decision/chat) were validated against the live OpenRouter catalog (`GET https://openrouter.ai/api/v1/models`) at implementation time and found **absent** — the GPT-4o family has been retired from the catalog. This was independently corroborated by decompiling the `com.openai:openai-java:4.43.0` jar actually on the classpath: its `ChatModel` enum (baked in at SDK build time) no longer contains any `GPT_4O*` constant but does contain `GPT_5_6_LUNA`, `GPT_5_6_TERRA`, `GPT_5_6_SOL` (each with a `-PRO` variant). New defaults: **`openai/gpt-5.6-luna`** (vision — cheapest/fastest tier, multimodal, replaces `gpt-4o-mini`'s cost-conscious role) and **`openai/gpt-5.6-terra`** (decision/chat — balanced "everyday reasoning and agentic" tier, multimodal, replaces plain `gpt-4o`'s mid-tier role; `gpt-5.6-sol` is reserved as the pricier flagship tier, not the default). Both overridable via env. Image sent as a base64 `data:` URL content part (no external image hosting).
 **Rejected alternatives:** Hardcoded single model (blocks experimentation); uploading images to a URL host (new infrastructure + privacy concerns for customer photos).
 **Consequences:** (+) zero-config start on course VMs; (−) base64 inflates request size ~33% (bounded by our 1568 px compression).
 **Review trigger:** Default models deprecated, or image-related failures on chosen models.

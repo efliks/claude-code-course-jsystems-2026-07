@@ -55,9 +55,31 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- wiremock:3.13.2's own transitive Jetty 11 deps (jetty-servlet/-webapp/-servlets,
+			 old-groupId org.eclipse.jetty.http2:http2-server) are excluded: they collide on
+			 the classpath with the Jetty 12 classes pulled in by wiremock-jetty12 below
+			 (IncompatibleClassChangeError on HttpChannel). wiremock-jetty12 is the actual
+			 HttpServerFactory extension that starts the stub server (ADR-002 §8,
+			 LlmServiceIntegrationTest). -->
 		<dependency>
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock</artifactId>
+			<version>3.13.2</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty.http2</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-jetty12</artifactId>
 			<version>3.13.2</version>
 			<scope>test</scope>
 		</dependency>
