@@ -28,7 +28,7 @@ The Angular SPA in `app/frontend`: project initialization, component/service str
 ### Project initialization
 
 1. `ng new hsdc-frontend` with the current Angular CLI (Angular 22 line): standalone components (default), SCSS styles, routing enabled, into `app/frontend`.
-2. `ng add @angular/material` — accept a prebuilt theme, enable typography and animations. This wires Material + CDK + theming in one step (the researched, officially supported path).
+2. `ng add @angular/material` — accept a prebuilt theme, enable typography and animations. This wires Material + CDK + theming in one step (the researched, officially supported path). The prebuilt theme is a bootstrap step only: it is later replaced by a custom Play brand theme built from `docs/design-guidelines.md` and `assets/design-tokens.json` (separate frontend task, not part of initialization).
 3. Add `ngx-markdown` and `ngx-sse-client` via npm.
 4. Create `proxy.conf.json` mapping `/api` → `http://localhost:8080`, referenced by the dev-server config, so the SPA calls relative `/api/...` URLs and CORS never arises in development.
 5. Commit the generated skeleton before feature work (same rule as backend).

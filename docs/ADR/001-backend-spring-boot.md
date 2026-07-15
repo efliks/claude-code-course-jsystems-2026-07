@@ -71,7 +71,7 @@ DTOs (conceptual):
 ### `POST /api/cases` — multipart/form-data
 - Input: fields above + exactly one `image` part.
 - Output `201`: CaseCreatedResponse.
-- Errors: `400` VALIDATION_ERROR (fieldErrors filled; covers AC-01..06 server side), `413`→mapped to IMAGE_TOO_LARGE, `502` LLM_UNAVAILABLE (either LLM step failed; safe to retry with identical payload), `500` INTERNAL.
+- Errors: `400` VALIDATION_ERROR (fieldErrors filled; covers AC-01..06 server side), `400` IMAGE_TOO_LARGE (`MaxUploadSizeExceededException`, message names the 5 MB limit), `502` LLM_UNAVAILABLE (either LLM step failed; safe to retry with identical payload), `500` INTERNAL.
 - Retry semantics: idempotency is NOT guaranteed (a retry after a late failure may create a second case); accepted for MVP and noted for the frontend to reuse the same case only from a `201`.
 
 ### `POST /api/cases/{id}/messages` — JSON in, `text/event-stream` out
@@ -84,7 +84,7 @@ DTOs (conceptual):
 - `200` with status body (Actuator health endpoint exposed under `/api/health` or Actuator default mapped path; exact mapping chosen at implementation).
 
 ### Multipart limits
-Spring multipart max file size 5 MB and max request size 6 MB, so the 5 MB rule is enforced before controller code runs; the resulting exception maps to IMAGE_TOO_LARGE with the message naming the limit (AC-06).
+Spring multipart max file size 5 MB and max request size 6 MB, so the 5 MB rule is enforced before controller code runs; the resulting `MaxUploadSizeExceededException` maps to HTTP 400 with code IMAGE_TOO_LARGE, message naming the limit (AC-06).
 
 ---
 
@@ -195,7 +195,7 @@ sequenceDiagram
 | Scenario | Type | Input | Expected output | Edge cases |
 |---|---|---|---|---|
 | Field validation matrix | Unit (validator) + Integration (MockMvc) | Each AC-01..04 violation | 400, fieldErrors names exactly the bad field | reason required flips with requestType; future date |
-| Image format/size | Integration | GIF, 6 MB JPEG, 4.9 MB JPEG, 0-byte file | 400/400(413-mapped)/201/400 | file part missing entirely |
+| Image format/size | Integration | GIF, 6 MB JPEG, 4.9 MB JPEG, 0-byte file | 400/400/201/400 | file part missing entirely |
 | Compression behavior | Unit | 4000×3000 JPEG; 800×600 JPEG; 3 MB PNG | longest edge 1568; passthrough; JPEG re-encode smaller | corrupt image data → VALIDATION_ERROR |
 | Pipeline orchestration order | Unit (mocks) | valid command | compress → analyze → lookup → decide call order; registry + repos written | lookup miss → decide still called, orderVerified=false |
 | Persistence failure tolerance | Unit | repository insert throws | processSubmission still returns result; error logged | AC-29 |
