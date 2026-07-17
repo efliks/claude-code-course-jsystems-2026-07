@@ -25,6 +25,22 @@
 >
 > Zmiany można przejrzeć w otwartym **Pull Requeście** (opis + diff + historia commitów): **[lista PR-ów tego repozytorium](https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/pulls)**.
 >
+> ## Efekt: działająca aplikacja (zrzuty ekranu)
+>
+> **Aplikacja jest w 100% działająca — bez żadnej mojej ręcznej pracy ani testowania na końcu.** Agenci w pętli **manualnych testów E2E** (Playwright + prawdziwy LLM) sami znaleźli wszystkie usterki i sami je naprawili (np. podwójny disklajmer, zbyt „surowe” prompty odrzucające każde zgłoszenie, walidacja formularza, kolory bannera błędu). W efekcie dostałem gotową, działającą aplikację.
+>
+> Zrzuty ekranu z działającej aplikacji (pliki na branchu [`course-application-implementation`](https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/tree/course-application-implementation/assets/screenshots)):
+>
+> **1. Formularz zgłoszenia** — [`assets/screenshots/app-form.png`](https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/blob/course-application-implementation/assets/screenshots/app-form.png)
+>
+> <img src="https://raw.githubusercontent.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/course-application-implementation/assets/screenshots/app-form.png" alt="Formularz zgłoszenia — Play, zwroty i reklamacje" width="820">
+>
+> **2. Decyzja + czat z klientem i zmianą decyzji na eskalację** — [`assets/screenshots/app-decision-chat.png`](https://github.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/blob/course-application-implementation/assets/screenshots/app-decision-chat.png)
+>
+> Wstępna decyzja **Odrzucono** (pęknięty ekran, C-6). Klient dopisuje w czacie, że sprzęt *„już taki przyszedł do mnie”* — na tej podstawie asystent (narzędzie `revise_decision`) zmienia decyzję na **Eskalacja** (C-13: sprawa wymaga oględzin fizycznych przez pracownika).
+>
+> <img src="https://raw.githubusercontent.com/LucasMatuszewski/claude-code-course-jsystems-2026-07/course-application-implementation/assets/screenshots/app-decision-chat.png" alt="Decyzja i czat — zmiana decyzji z Odrzucono na Eskalacja na podstawie informacji od klienta" width="820">
+>
 > ---
 >
 > <!-- ⬇⬇⬇ ORYGINALNY README KURSU ZACZYNA SIĘ TUTAJ ⬇⬇⬇ -->
